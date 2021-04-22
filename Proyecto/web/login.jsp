@@ -11,7 +11,7 @@
     <body>
         <div class="login-backround">
             <div class="login-square">
-                <h2 class="sign" align="center">Proyecto</h2>
+                <h2 class="titulo" align="center">Proyecto</h2>
                 <form class="formulario">
                     <input class="campo" type="text" align="center" placeholder="Usuario">
                     <input class="campo" type="password" align="center" placeholder="Contrase&ntilde;a">

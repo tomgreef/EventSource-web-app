@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
 
+/* COMPONENTES */
+.titulo {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 50px;
+    letter-spacing: 0.1px;
+    color: #252B42;
+    margin: 0px;
+}
+
+/* LOGIN */
 .login-backround{
     background: linear-gradient(180deg, #9D4EDD 0%, #9D4EDD 0.01%, #240046 100%);
     min-height: 100%;
@@ -24,16 +36,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 50px;
-}
-
-.sign {
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: bolder;
-    font-size: 50px;
-    letter-spacing: 0.1px;
-    color: #252B42;
-    margin: 0px;
 }
 
 .campo {
@@ -89,3 +91,5 @@ a {
         border-radius: 0px;
     }
 }
+
+/* INICIO */
