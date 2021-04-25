@@ -18,7 +18,7 @@
                     <input class="submit" type="submit" align="center">
                 </form>
                 <div align="center">
-                    <a href="" class="forgot">¡Registrate aquí!</a>
+                    <a href="" class="forgot">¡Registrate aquí! <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
