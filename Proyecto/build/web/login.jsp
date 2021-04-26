@@ -11,14 +11,14 @@
     <body>
         <div class="login-backround">
             <div class="login-square">
-                <h2 class="titulo" align="center">Proyecto</h2>
+                <h2 class="titulo" align="center">BrandName</h2>
                 <form class="formulario">
                     <input class="campo" type="text" align="center" placeholder="Usuario">
                     <input class="campo" type="password" align="center" placeholder="Contrase&ntilde;a">
                     <input class="submit" type="submit" align="center">
                 </form>
                 <div align="center">
-                    <a href="" class="forgot">¡Registrate aquí! <i class="fas fa-arrow-right"></i></a>
+                    <a href="signUp.jsp" class="forgot">¡Registrate aquí!</a>
                 </div>
             </div>
         </div>
