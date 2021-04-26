@@ -11,6 +11,66 @@
     margin: 0px;
 }
 
+.container {
+    padding: 0 15vh;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+}
+
+.boton {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    background: #FF9E00;
+    border-radius: 10px;
+}
+
+.filas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh 0;
+}
+
+.fila {
+    padding: 1vh;
+}
+
+.columnas {
+    display: flex;
+    justify-content: space-between;
+}
+
+.columna {
+    display: flex;
+    align-items: baseline;
+}
+
+.objeto-col {
+    padding: 0 2vh;
+}
+
+.objeto-col:first-child {
+    padding-left: 0;
+}
+
+.objeto-col:last-child {
+    padding-right: 0;
+}
+
+.ptb-3 {
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
+
 /* LOGIN */
 .login-backround{
     background: linear-gradient(180deg, #9D4EDD 0%, #9D4EDD 0.01%, #240046 100%);
@@ -81,10 +141,6 @@
     text-align: center;
 }
 
-a {
-    color: #E1BEE7;
-    text-decoration: none
-}
 
 @media (max-width: 600px) {
     .main {
@@ -92,8 +148,53 @@ a {
     }
 }
 
-/* INICIO */
+/* BARRA NAVEGACIÓN */
+.enlace-negro {
+    text-decoration: none;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 24px;
+    color: black;
+    font-size: 2vh;
+}
 
+.logo {
+    text-decoration: none;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 28px;
+    color: black;
+    font-size: 3vh;
+}
+
+/* FOOTER */
+footer {
+    background: #240046;
+    color: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.enlace {
+    text-decoration: none;
+    font-family: Montserrat;
+    font-style: normal;
+    line-height: 24px;
+    color: white;
+    font-size: 2vh;
+}
+
+.copyright {
+    color: #FFFFFF;
+    mix-blend-mode: normal;
+    opacity: 0.5;
+}
+
+/* INICIO */
 
 /* SIGN IN */
 .signUp-square {
