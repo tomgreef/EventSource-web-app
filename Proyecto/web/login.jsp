@@ -12,9 +12,9 @@
         <div class="login-backround">
             <div class="login-square">
                 <h2 class="titulo logo" align="center">Eventsource</h2>
-                <form class="formulario">
-                    <input class="campo" type="text" align="center" placeholder="Usuario">
-                    <input class="campo" type="password" align="center" placeholder="Contrase&ntilde;a">
+                <form class="formulario" method="POST" action="ServletAutenticar">
+                    <input class="campo" type="text" align="center" placeholder="Email" name="email">
+                    <input class="campo" type="password" align="center" placeholder="Contrase&ntilde;a" name="password">
                     <input class="submit" type="submit" align="center">
                 </form>
                 <div align="center">
