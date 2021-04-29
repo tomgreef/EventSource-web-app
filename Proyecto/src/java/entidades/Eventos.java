@@ -6,12 +6,14 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,24 +35,24 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Eventos.findAll", query = "SELECT e FROM Eventos e")
-    , @NamedQuery(name = "Eventos.findById", query = "SELECT e FROM Eventos e WHERE e.id = :id")
+    , @NamedQuery(name = "Eventos.findByEventoId", query = "SELECT e FROM Eventos e WHERE e.eventoId = :eventoId")
     , @NamedQuery(name = "Eventos.findByTitulo", query = "SELECT e FROM Eventos e WHERE e.titulo = :titulo")
     , @NamedQuery(name = "Eventos.findByDescripcion", query = "SELECT e FROM Eventos e WHERE e.descripcion = :descripcion")
     , @NamedQuery(name = "Eventos.findByFecha", query = "SELECT e FROM Eventos e WHERE e.fecha = :fecha")
-    , @NamedQuery(name = "Eventos.findByFechaLimiteReserva", query = "SELECT e FROM Eventos e WHERE e.fechaLimiteReserva = :fechaLimiteReserva")
+    , @NamedQuery(name = "Eventos.findByFechaLimite", query = "SELECT e FROM Eventos e WHERE e.fechaLimite = :fechaLimite")
     , @NamedQuery(name = "Eventos.findByCoste", query = "SELECT e FROM Eventos e WHERE e.coste = :coste")
     , @NamedQuery(name = "Eventos.findByAforo", query = "SELECT e FROM Eventos e WHERE e.aforo = :aforo")
-    , @NamedQuery(name = "Eventos.findByEntradasMaximasPorUsuario", query = "SELECT e FROM Eventos e WHERE e.entradasMaximasPorUsuario = :entradasMaximasPorUsuario")
+    , @NamedQuery(name = "Eventos.findByEntradasMaxima", query = "SELECT e FROM Eventos e WHERE e.entradasMaxima = :entradasMaxima")
     , @NamedQuery(name = "Eventos.findByFilas", query = "SELECT e FROM Eventos e WHERE e.filas = :filas")
     , @NamedQuery(name = "Eventos.findByColumnas", query = "SELECT e FROM Eventos e WHERE e.columnas = :columnas")})
 public class Eventos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "EVENTO_ID")
+    private Integer eventoId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
@@ -68,9 +70,9 @@ public class Eventos implements Serializable {
     private Date fecha;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FECHA_LIMITE_RESERVA")
+    @Column(name = "FECHA_LIMITE")
     @Temporal(TemporalType.DATE)
-    private Date fechaLimiteReserva;
+    private Date fechaLimite;
     @Basic(optional = false)
     @NotNull
     @Column(name = "COSTE")
@@ -81,41 +83,41 @@ public class Eventos implements Serializable {
     private int aforo;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ENTRADAS_MAXIMAS_POR_USUARIO")
-    private int entradasMaximasPorUsuario;
+    @Column(name = "ENTRADAS_MAXIMA")
+    private int entradasMaxima;
     @Column(name = "FILAS")
     private Integer filas;
     @Column(name = "COLUMNAS")
     private Integer columnas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
-    private Collection<Reservas> reservasCollection;
+    private List<Reservas> reservasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
-    private Collection<Etiquetas> etiquetasCollection;
+    private List<Etiquetas> etiquetasList;
 
     public Eventos() {
     }
 
-    public Eventos(Integer id) {
-        this.id = id;
+    public Eventos(Integer eventoId) {
+        this.eventoId = eventoId;
     }
 
-    public Eventos(Integer id, String titulo, String descripcion, Date fecha, Date fechaLimiteReserva, double coste, int aforo, int entradasMaximasPorUsuario) {
-        this.id = id;
+    public Eventos(Integer eventoId, String titulo, String descripcion, Date fecha, Date fechaLimite, double coste, int aforo, int entradasMaxima) {
+        this.eventoId = eventoId;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.fechaLimiteReserva = fechaLimiteReserva;
+        this.fechaLimite = fechaLimite;
         this.coste = coste;
         this.aforo = aforo;
-        this.entradasMaximasPorUsuario = entradasMaximasPorUsuario;
+        this.entradasMaxima = entradasMaxima;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getEventoId() {
+        return eventoId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEventoId(Integer eventoId) {
+        this.eventoId = eventoId;
     }
 
     public String getTitulo() {
@@ -142,12 +144,12 @@ public class Eventos implements Serializable {
         this.fecha = fecha;
     }
 
-    public Date getFechaLimiteReserva() {
-        return fechaLimiteReserva;
+    public Date getFechaLimite() {
+        return fechaLimite;
     }
 
-    public void setFechaLimiteReserva(Date fechaLimiteReserva) {
-        this.fechaLimiteReserva = fechaLimiteReserva;
+    public void setFechaLimite(Date fechaLimite) {
+        this.fechaLimite = fechaLimite;
     }
 
     public double getCoste() {
@@ -166,12 +168,12 @@ public class Eventos implements Serializable {
         this.aforo = aforo;
     }
 
-    public int getEntradasMaximasPorUsuario() {
-        return entradasMaximasPorUsuario;
+    public int getEntradasMaxima() {
+        return entradasMaxima;
     }
 
-    public void setEntradasMaximasPorUsuario(int entradasMaximasPorUsuario) {
-        this.entradasMaximasPorUsuario = entradasMaximasPorUsuario;
+    public void setEntradasMaxima(int entradasMaxima) {
+        this.entradasMaxima = entradasMaxima;
     }
 
     public Integer getFilas() {
@@ -191,27 +193,27 @@ public class Eventos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Reservas> getReservasCollection() {
-        return reservasCollection;
+    public List<Reservas> getReservasList() {
+        return reservasList;
     }
 
-    public void setReservasCollection(Collection<Reservas> reservasCollection) {
-        this.reservasCollection = reservasCollection;
+    public void setReservasList(List<Reservas> reservasList) {
+        this.reservasList = reservasList;
     }
 
     @XmlTransient
-    public Collection<Etiquetas> getEtiquetasCollection() {
-        return etiquetasCollection;
+    public List<Etiquetas> getEtiquetasList() {
+        return etiquetasList;
     }
 
-    public void setEtiquetasCollection(Collection<Etiquetas> etiquetasCollection) {
-        this.etiquetasCollection = etiquetasCollection;
+    public void setEtiquetasList(List<Etiquetas> etiquetasList) {
+        this.etiquetasList = etiquetasList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (eventoId != null ? eventoId.hashCode() : 0);
         return hash;
     }
 
@@ -222,7 +224,7 @@ public class Eventos implements Serializable {
             return false;
         }
         Eventos other = (Eventos) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.eventoId == null && other.eventoId != null) || (this.eventoId != null && !this.eventoId.equals(other.eventoId))) {
             return false;
         }
         return true;
@@ -230,7 +232,7 @@ public class Eventos implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Eventos[ id=" + id + " ]";
+        return "entidades.Eventos[ eventoId=" + eventoId + " ]";
     }
     
 }

@@ -3,15 +3,14 @@
 <nav>
     <div class="container columnas ptb-3 navbar">
         <div class="columna">
-            <a href="" class="objeto-col enlace-negro">
-                <span class="logo">BrandName</span>
+            <a href="index.jsp" class="objeto-col enlace-negro">
+                <span class="logo">Eventsource</span>
             </a>    
-            <a href="" class="objeto-col enlace-negro">Home</a>
-            <a href="" class="objeto-col enlace-negro">Eventos</a>
+            <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
         </div>
         <div class="columna">
-            <a href="" class="objeto-col boton">
-                Ir a eventos 
+            <a href="login.jsp" class="objeto-col boton">
+                Login
             </a>
         </div>
     </div>
