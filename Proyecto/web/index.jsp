@@ -11,8 +11,8 @@
     </head>
     <body>
         <jsp:include page="navBar.jsp" />            
-        <h1>Hello people de mi equipo</h1>
-        <a href="login.jsp">Ir a Login</a>
+        <jsp:include page="navBar.jsp" />            
+        <img src="img/eventos.svg" width="100%" height="100%" alt="eventos"/>
         <jsp:include page="footer.jsp" />  
     </body>
 </html>
