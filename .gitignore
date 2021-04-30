@@ -1,7 +1,4 @@
-# NetBeans specific #
-
-
-# Class Files #
-*.class
-
-# Package Files #
+/Proyecto/build/
+/Proyecto/dist/
+/Proyecto/nbproject/
+/Proyecto/build.xml

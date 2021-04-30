@@ -10,25 +10,22 @@ import entidades.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
  *
  * @author tomvg
  */
-@WebServlet(name = "ServletAutenticar", urlPatterns = {"/ServletAutenticar"})
-public class ServletAutenticar extends HttpServlet {
+@WebServlet(name = "UsuarioGuardar", urlPatterns = {"/UsuarioGuardar"})
+public class UsuarioGuardar extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuariosFacade;
-
+    private UsuariosFacade usuarioFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,35 +37,45 @@ public class ServletAutenticar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+  
+            String id, nombre, email, apellidos, domicilio, ciudad, sexo, edad, password, rol;
+            Usuarios usuario; 
 
-        String email, password, strError = "", goTo = "index.jsp";
-        Usuarios usuario;
-        RequestDispatcher rd;
-        HttpSession session = request.getSession();
-        
-        email = request.getParameter("email");
-        password = request.getParameter("password");
+            id = request.getParameter("id");
+            nombre = request.getParameter("nombre");
+            apellidos = request.getParameter("apellidos");
+            email = request.getParameter("email");      
+            domicilio = request.getParameter("domicilio");
+            ciudad = request.getParameter("ciudad");
+            edad = request.getParameter("edad");
+            sexo = request.getParameter("sexo");
+            password = request.getParameter("password");
+            rol = request.getParameter("rol");
 
-        if (email == null || email.isEmpty() || 
-            password == null || password.isEmpty()) {  // Error de autenticación por email o clave
-                                                       // vacíos o nulos.
-            strError = "Error de autenticación: alguno de los valores está vacío";
-            request.setAttribute("error", strError);
-            goTo = "login.jsp";
-        
-        } else { //El usuario sí está en la base de datos
-            usuario = this.usuariosFacade.findByEmailAndPassword(email, password);
-            if (usuario == null) { //La contraseña introducida es incorrecta
-                strError = "La clave es incorrecta";
-                request.setAttribute("error", strError);
-                goTo = "login.jsp";
-            } else { //Login correcto
-                session.setAttribute("usuario", usuario);
+            if (id == null || id.isEmpty()) { // Crear nuevo cliente
+                usuario = new Usuarios();            
+            } else { // Editar cliente existente
+                usuario = this.usuarioFacade.find(new Integer(id));
             }
-        }
+            
+            usuario.setNombre(nombre);
+            usuario.setApellidos(apellidos);
+            usuario.setEmail(email);
+            usuario.setDomicilio(domicilio);
+            usuario.setCiudad(ciudad);
+            usuario.setEdad(new Integer(edad));
+            usuario.setSexo(new Integer(sexo));
+            usuario.setPassword(password);
         
-        rd = request.getRequestDispatcher(goTo);
-        rd.forward(request, response);
+            if (id == null || id.isEmpty()) { // Crear nuevo cliente 
+                usuario.setRol(0);
+                this.usuarioFacade.create(usuario);
+            } else { // Editar cliente existente
+                usuario.setRol(new Integer(rol));
+                this.usuarioFacade.edit(usuario);
+            }
+            
+            response.sendRedirect("index.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

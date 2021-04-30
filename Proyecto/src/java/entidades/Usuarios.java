@@ -6,11 +6,13 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,10 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")
-    , @NamedQuery(name = "Usuarios.findById", query = "SELECT u FROM Usuarios u WHERE u.id = :id")
+    , @NamedQuery(name = "Usuarios.findByUsuarioId", query = "SELECT u FROM Usuarios u WHERE u.usuarioId = :usuarioId")
     , @NamedQuery(name = "Usuarios.findByEmail", query = "SELECT u FROM Usuarios u WHERE u.email = :email")
     , @NamedQuery(name = "Usuarios.findByPassword", query = "SELECT u FROM Usuarios u WHERE u.password = :password")
-    , @NamedQuery(name = "Usuarios.findByNobmre", query = "SELECT u FROM Usuarios u WHERE u.nobmre = :nobmre")
+    , @NamedQuery(name = "Usuarios.findByNombre", query = "SELECT u FROM Usuarios u WHERE u.nombre = :nombre")
     , @NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos")
     , @NamedQuery(name = "Usuarios.findByDomicilio", query = "SELECT u FROM Usuarios u WHERE u.domicilio = :domicilio")
     , @NamedQuery(name = "Usuarios.findByCiudad", query = "SELECT u FROM Usuarios u WHERE u.ciudad = :ciudad")
@@ -44,10 +46,10 @@ public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "USUARIO_ID")
+    private Integer usuarioId;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -60,8 +62,8 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "NOBMRE")
-    private String nobmre;
+    @Column(name = "NOMBRE")
+    private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 80)
@@ -90,25 +92,25 @@ public class Usuarios implements Serializable {
     @Column(name = "ROL")
     private int rol;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarios")
-    private Collection<Mensajes> mensajesCollection;
+    private List<Mensajes> mensajesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private Collection<Reservas> reservasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuariosId1")
-    private Collection<Chats> chatsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuariosId")
-    private Collection<Chats> chatsCollection1;
+    private List<Reservas> reservasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teleoperadorId")
+    private List<Chats> chatsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<Chats> chatsList1;
 
     public Usuarios() {
     }
 
-    public Usuarios(Integer id) {
-        this.id = id;
+    public Usuarios(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    public Usuarios(Integer id, String email, String nobmre, String apellidos, String domicilio, String ciudad, int edad, int sexo, int rol) {
-        this.id = id;
+    public Usuarios(Integer usuarioId, String email, String nombre, String apellidos, String domicilio, String ciudad, int edad, int sexo, int rol) {
+        this.usuarioId = usuarioId;
         this.email = email;
-        this.nobmre = nobmre;
+        this.nombre = nombre;
         this.apellidos = apellidos;
         this.domicilio = domicilio;
         this.ciudad = ciudad;
@@ -117,12 +119,12 @@ public class Usuarios implements Serializable {
         this.rol = rol;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public String getEmail() {
@@ -141,12 +143,12 @@ public class Usuarios implements Serializable {
         this.password = password;
     }
 
-    public String getNobmre() {
-        return nobmre;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNobmre(String nobmre) {
-        this.nobmre = nobmre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getApellidos() {
@@ -198,45 +200,45 @@ public class Usuarios implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Mensajes> getMensajesCollection() {
-        return mensajesCollection;
+    public List<Mensajes> getMensajesList() {
+        return mensajesList;
     }
 
-    public void setMensajesCollection(Collection<Mensajes> mensajesCollection) {
-        this.mensajesCollection = mensajesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Reservas> getReservasCollection() {
-        return reservasCollection;
-    }
-
-    public void setReservasCollection(Collection<Reservas> reservasCollection) {
-        this.reservasCollection = reservasCollection;
+    public void setMensajesList(List<Mensajes> mensajesList) {
+        this.mensajesList = mensajesList;
     }
 
     @XmlTransient
-    public Collection<Chats> getChatsCollection() {
-        return chatsCollection;
+    public List<Reservas> getReservasList() {
+        return reservasList;
     }
 
-    public void setChatsCollection(Collection<Chats> chatsCollection) {
-        this.chatsCollection = chatsCollection;
+    public void setReservasList(List<Reservas> reservasList) {
+        this.reservasList = reservasList;
     }
 
     @XmlTransient
-    public Collection<Chats> getChatsCollection1() {
-        return chatsCollection1;
+    public List<Chats> getChatsList() {
+        return chatsList;
     }
 
-    public void setChatsCollection1(Collection<Chats> chatsCollection1) {
-        this.chatsCollection1 = chatsCollection1;
+    public void setChatsList(List<Chats> chatsList) {
+        this.chatsList = chatsList;
+    }
+
+    @XmlTransient
+    public List<Chats> getChatsList1() {
+        return chatsList1;
+    }
+
+    public void setChatsList1(List<Chats> chatsList1) {
+        this.chatsList1 = chatsList1;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (usuarioId != null ? usuarioId.hashCode() : 0);
         return hash;
     }
 
@@ -247,7 +249,7 @@ public class Usuarios implements Serializable {
             return false;
         }
         Usuarios other = (Usuarios) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.usuarioId == null && other.usuarioId != null) || (this.usuarioId != null && !this.usuarioId.equals(other.usuarioId))) {
             return false;
         }
         return true;
@@ -255,7 +257,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Usuarios[ id=" + id + " ]";
+        return "entidades.Usuarios[ usuarioId=" + usuarioId + " ]";
     }
     
 }

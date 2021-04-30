@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Mensajes.findAll", query = "SELECT m FROM Mensajes m")
     , @NamedQuery(name = "Mensajes.findByChatId", query = "SELECT m FROM Mensajes m WHERE m.mensajesPK.chatId = :chatId")
-    , @NamedQuery(name = "Mensajes.findByFechaYHora", query = "SELECT m FROM Mensajes m WHERE m.mensajesPK.fechaYHora = :fechaYHora")
-    , @NamedQuery(name = "Mensajes.findByUsuariosId", query = "SELECT m FROM Mensajes m WHERE m.mensajesPK.usuariosId = :usuariosId")
+    , @NamedQuery(name = "Mensajes.findByFecha", query = "SELECT m FROM Mensajes m WHERE m.mensajesPK.fecha = :fecha")
+    , @NamedQuery(name = "Mensajes.findByUsuarioId", query = "SELECT m FROM Mensajes m WHERE m.mensajesPK.usuarioId = :usuarioId")
     , @NamedQuery(name = "Mensajes.findByMensaje", query = "SELECT m FROM Mensajes m WHERE m.mensaje = :mensaje")})
 public class Mensajes implements Serializable {
 
@@ -43,10 +43,10 @@ public class Mensajes implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "MENSAJE")
     private String mensaje;
-    @JoinColumn(name = "CHAT_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "CHAT_ID", referencedColumnName = "CHAT_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Chats chats;
-    @JoinColumn(name = "USUARIOS_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Usuarios usuarios;
 
@@ -62,8 +62,8 @@ public class Mensajes implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public Mensajes(int chatId, Date fechaYHora, int usuariosId) {
-        this.mensajesPK = new MensajesPK(chatId, fechaYHora, usuariosId);
+    public Mensajes(int chatId, Date fecha, int usuarioId) {
+        this.mensajesPK = new MensajesPK(chatId, fecha, usuarioId);
     }
 
     public MensajesPK getMensajesPK() {

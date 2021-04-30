@@ -9,13 +9,14 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Reservas.findAll", query = "SELECT r FROM Reservas r")
-    , @NamedQuery(name = "Reservas.findByIdReservas", query = "SELECT r FROM Reservas r WHERE r.idReservas = :idReservas")
+    , @NamedQuery(name = "Reservas.findByReservaId", query = "SELECT r FROM Reservas r WHERE r.reservaId = :reservaId")
     , @NamedQuery(name = "Reservas.findByCantidad", query = "SELECT r FROM Reservas r WHERE r.cantidad = :cantidad")
     , @NamedQuery(name = "Reservas.findByAsientoFila", query = "SELECT r FROM Reservas r WHERE r.asientoFila = :asientoFila")
     , @NamedQuery(name = "Reservas.findByAsientoColumna", query = "SELECT r FROM Reservas r WHERE r.asientoColumna = :asientoColumna")})
@@ -35,36 +36,36 @@ public class Reservas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_RESERVAS")
-    private Integer idReservas;
+    @Column(name = "RESERVA_ID")
+    private Integer reservaId;
     @Column(name = "CANTIDAD")
     private Integer cantidad;
     @Column(name = "ASIENTO_FILA")
     private Integer asientoFila;
     @Column(name = "ASIENTO_COLUMNA")
     private Integer asientoColumna;
-    @JoinColumn(name = "EVENTO_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "EVENTO_ID", referencedColumnName = "EVENTO_ID")
     @ManyToOne(optional = false)
     private Eventos eventoId;
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID")
     @ManyToOne(optional = false)
     private Usuarios usuarioId;
 
     public Reservas() {
     }
 
-    public Reservas(Integer idReservas) {
-        this.idReservas = idReservas;
+    public Reservas(Integer reservaId) {
+        this.reservaId = reservaId;
     }
 
-    public Integer getIdReservas() {
-        return idReservas;
+    public Integer getReservaId() {
+        return reservaId;
     }
 
-    public void setIdReservas(Integer idReservas) {
-        this.idReservas = idReservas;
+    public void setReservaId(Integer reservaId) {
+        this.reservaId = reservaId;
     }
 
     public Integer getCantidad() {
@@ -110,7 +111,7 @@ public class Reservas implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idReservas != null ? idReservas.hashCode() : 0);
+        hash += (reservaId != null ? reservaId.hashCode() : 0);
         return hash;
     }
 
@@ -121,7 +122,7 @@ public class Reservas implements Serializable {
             return false;
         }
         Reservas other = (Reservas) object;
-        if ((this.idReservas == null && other.idReservas != null) || (this.idReservas != null && !this.idReservas.equals(other.idReservas))) {
+        if ((this.reservaId == null && other.reservaId != null) || (this.reservaId != null && !this.reservaId.equals(other.reservaId))) {
             return false;
         }
         return true;
@@ -129,7 +130,7 @@ public class Reservas implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Reservas[ idReservas=" + idReservas + " ]";
+        return "entidades.Reservas[ reservaId=" + reservaId + " ]";
     }
     
 }

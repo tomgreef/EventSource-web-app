@@ -1,104 +1,84 @@
 
-CREATE TABLE chats (
-    id            INTEGER NOT NULL,
-    fecha_y_hora  TIMESTAMP NOT NULL,
-    usuarios_id   INTEGER NOT NULL,
-    usuarios_id1  INTEGER NOT NULL
+CREATE TABLE CHATS (
+    CHAT_ID             INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    FECHA           	TIMESTAMP NOT NULL,
+    USUARIO_ID     	INTEGER NOT NULL,
+    TELEOPERADOR_ID 	INTEGER NOT NULL,
+    PRIMARY KEY (CHAT_ID)
 );
 
-ALTER TABLE chats ADD CONSTRAINT chat_pk PRIMARY KEY ( id );
-
-CREATE TABLE etiquetas (
-    id         INTEGER NOT NULL,
-    nombre     VARCHAR(40) NOT NULL,
-    evento_id  INTEGER NOT NULL
+CREATE TABLE ETIQUETAS (
+    ETIQUETA_ID         INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    NOMBRE     		VARCHAR(40) NOT NULL,
+    EVENTO_ID  		INTEGER NOT NULL,
+    PRIMARY KEY (ETIQUETA_ID)
 );
 
-ALTER TABLE etiquetas ADD CONSTRAINT etiquetas_pk PRIMARY KEY ( id );
-
-ALTER TABLE etiquetas ADD CONSTRAINT etiquetas_nombre_un UNIQUE ( nombre );
-
-CREATE TABLE eventos (
-    id                            INTEGER NOT NULL,
-    titulo                        VARCHAR(40) NOT NULL,
-    descripcion                   VARCHAR(255) NOT NULL,
-    fecha                         DATE NOT NULL,
-    fecha_limite_reserva          DATE NOT NULL,
-    coste                         FLOAT NOT NULL,
-    aforo                         INTEGER NOT NULL,
-    entradas_maximas_por_usuario  INTEGER NOT NULL,
-    filas                         INTEGER,
-    columnas                      INTEGER
+CREATE TABLE EVENTOS (
+    EVENTO_ID         	INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    TITULO		VARCHAR(40) NOT NULL,
+    DESCRIPCION 	VARCHAR(255) NOT NULL,
+    FECHA		DATE NOT NULL,
+    FECHA_LIMITE     	DATE NOT NULL,
+    COSTE		FLOAT NOT NULL,
+    AFORO		INTEGER NOT NULL,
+    ENTRADAS_MAXIMA 	INTEGER NOT NULL,
+    FILAS               INTEGER,
+    COLUMNAS            INTEGER,
+    PRIMARY KEY (EVENTO_ID)
 );
 
-ALTER TABLE eventos ADD CONSTRAINT evento_pk PRIMARY KEY ( id );
-
-CREATE TABLE mensajes (
-    chat_id       INTEGER NOT NULL,
-    fecha_y_hora  TIMESTAMP NOT NULL,
-    usuarios_id   INTEGER NOT NULL,
-    mensaje       VARCHAR(255) NOT NULL
+CREATE TABLE MENSAJES (
+    CHAT_ID       	INTEGER NOT NULL,
+    FECHA  		TIMESTAMP NOT NULL,
+    USUARIO_ID	   	INTEGER NOT NULL,
+    MENSAJE		VARCHAR(255) NOT NULL,
+    PRIMARY KEY (CHAT_ID, FECHA, USUARIO_ID)
 );
 
-ALTER TABLE mensajes
-    ADD CONSTRAINT mensajes_pk PRIMARY KEY ( chat_id,
-                                             fecha_y_hora,
-                                             usuarios_id );
-
-CREATE TABLE reservas (
-    id_reservas      INTEGER NOT NULL,
-    evento_id        INTEGER NOT NULL,
-    usuario_id       INTEGER NOT NULL,
-    cantidad         INTEGER,
-    asiento_fila     INTEGER,
-    asiento_columna  INTEGER
+CREATE TABLE RESERVAS (
+    RESERVA_ID     	INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    EVENTO_ID        	INTEGER NOT NULL,
+    USUARIO_ID      	INTEGER NOT NULL,
+    CANTIDAD       	INTEGER,
+    ASIENTO_FILA    	INTEGER,
+    ASIENTO_COLUMNA 	INTEGER,
+    PRIMARY KEY (RESERVA_ID)
 );
 
-
-ALTER TABLE reservas ADD CONSTRAINT reserva_pk PRIMARY KEY ( id_reservas );
-
-CREATE TABLE usuarios (
-    id         INTEGER NOT NULL,
-    email      VARCHAR(40) NOT NULL,
-    password   VARCHAR(60),
-    nobmre     VARCHAR(40) NOT NULL,
-    apellidos  VARCHAR(80) NOT NULL,
-    domicilio  VARCHAR(80) NOT NULL,
-    ciudad     VARCHAR(30) NOT NULL,
-    edad       INTEGER NOT NULL,
-    sexo       INTEGER NOT NULL,
-    rol        INTEGER NOT NULL
+CREATE TABLE USUARIOS (
+    USUARIO_ID  	INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    EMAIL		VARCHAR(40) NOT NULL,
+    PASSWORD		VARCHAR(60),
+    NOMBRE		VARCHAR(40) NOT NULL,
+    APELLIDOS		VARCHAR(80) NOT NULL,
+    DOMICILIO		VARCHAR(80) NOT NULL,
+    CIUDAD		VARCHAR(30) NOT NULL,
+    EDAD		INTEGER NOT NULL,
+    SEXO		INTEGER NOT NULL,
+    ROL			INTEGER NOT NULL,
+    PRIMARY KEY (USUARIO_ID)    
 );
 
-ALTER TABLE usuarios ADD CONSTRAINT usuarios_pk PRIMARY KEY ( id );
+ALTER TABLE CHATS
+	ADD FOREIGN KEY (USUARIO_ID) REFERENCES USUARIOS;
 
-ALTER TABLE chats
-    ADD CONSTRAINT chat_usuarios_fk FOREIGN KEY ( usuarios_id )
-        REFERENCES usuarios ( id );
+ALTER TABLE CHATS
+	ADD FOREIGN KEY (TELEOPERADOR_ID) REFERENCES USUARIOS;
 
-ALTER TABLE chats
-    ADD CONSTRAINT chat_usuarios_fkv1 FOREIGN KEY ( usuarios_id1 )
-        REFERENCES usuarios ( id );
+ALTER TABLE ETIQUETAS
+	ADD FOREIGN KEY (EVENTO_ID) REFERENCES EVENTOS;
 
-ALTER TABLE etiquetas
-    ADD CONSTRAINT etiquetas_evento_fk FOREIGN KEY ( evento_id )
-        REFERENCES eventos ( id );
+ALTER TABLE MENSAJES
+	ADD FOREIGN KEY (CHAT_ID) REFERENCES CHATS;
 
-ALTER TABLE mensajes
-    ADD CONSTRAINT mensajes_chat_fk FOREIGN KEY ( chat_id )
-        REFERENCES chats ( id );
+ALTER TABLE MENSAJES
+	ADD FOREIGN KEY (USUARIO_ID) REFERENCES USUARIOS;
 
-ALTER TABLE mensajes
-    ADD CONSTRAINT mensajes_usuarios_fk FOREIGN KEY ( usuarios_id )
-        REFERENCES usuarios ( id );
+ALTER TABLE RESERVAS
+	ADD FOREIGN KEY (EVENTO_ID) REFERENCES EVENTOS;
 
-ALTER TABLE reservas
-    ADD CONSTRAINT reserva_evento_fk FOREIGN KEY ( evento_id )
-        REFERENCES eventos ( id );
-
-ALTER TABLE reservas
-    ADD CONSTRAINT reserva_usuarios_fk FOREIGN KEY ( usuario_id )
-        REFERENCES usuarios ( id );
-
+ALTER TABLE RESERVAS
+	ADD FOREIGN KEY (USUARIO_ID) REFERENCES USUARIOS;
 
 

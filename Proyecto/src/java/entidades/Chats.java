@@ -6,12 +6,14 @@
 package entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,87 +36,87 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Chats.findAll", query = "SELECT c FROM Chats c")
-    , @NamedQuery(name = "Chats.findById", query = "SELECT c FROM Chats c WHERE c.id = :id")
-    , @NamedQuery(name = "Chats.findByFechaYHora", query = "SELECT c FROM Chats c WHERE c.fechaYHora = :fechaYHora")})
+    , @NamedQuery(name = "Chats.findByChatId", query = "SELECT c FROM Chats c WHERE c.chatId = :chatId")
+    , @NamedQuery(name = "Chats.findByFecha", query = "SELECT c FROM Chats c WHERE c.fecha = :fecha")})
 public class Chats implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "CHAT_ID")
+    private Integer chatId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA_Y_HORA")
+    @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaYHora;
+    private Date fecha;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "chats")
-    private Collection<Mensajes> mensajesCollection;
-    @JoinColumn(name = "USUARIOS_ID1", referencedColumnName = "ID")
+    private List<Mensajes> mensajesList;
+    @JoinColumn(name = "TELEOPERADOR_ID", referencedColumnName = "USUARIO_ID")
     @ManyToOne(optional = false)
-    private Usuarios usuariosId1;
-    @JoinColumn(name = "USUARIOS_ID", referencedColumnName = "ID")
+    private Usuarios teleoperadorId;
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID")
     @ManyToOne(optional = false)
-    private Usuarios usuariosId;
+    private Usuarios usuarioId;
 
     public Chats() {
     }
 
-    public Chats(Integer id) {
-        this.id = id;
+    public Chats(Integer chatId) {
+        this.chatId = chatId;
     }
 
-    public Chats(Integer id, Date fechaYHora) {
-        this.id = id;
-        this.fechaYHora = fechaYHora;
+    public Chats(Integer chatId, Date fecha) {
+        this.chatId = chatId;
+        this.fecha = fecha;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getChatId() {
+        return chatId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
     }
 
-    public Date getFechaYHora() {
-        return fechaYHora;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaYHora(Date fechaYHora) {
-        this.fechaYHora = fechaYHora;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     @XmlTransient
-    public Collection<Mensajes> getMensajesCollection() {
-        return mensajesCollection;
+    public List<Mensajes> getMensajesList() {
+        return mensajesList;
     }
 
-    public void setMensajesCollection(Collection<Mensajes> mensajesCollection) {
-        this.mensajesCollection = mensajesCollection;
+    public void setMensajesList(List<Mensajes> mensajesList) {
+        this.mensajesList = mensajesList;
     }
 
-    public Usuarios getUsuariosId1() {
-        return usuariosId1;
+    public Usuarios getTeleoperadorId() {
+        return teleoperadorId;
     }
 
-    public void setUsuariosId1(Usuarios usuariosId1) {
-        this.usuariosId1 = usuariosId1;
+    public void setTeleoperadorId(Usuarios teleoperadorId) {
+        this.teleoperadorId = teleoperadorId;
     }
 
-    public Usuarios getUsuariosId() {
-        return usuariosId;
+    public Usuarios getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuariosId(Usuarios usuariosId) {
-        this.usuariosId = usuariosId;
+    public void setUsuarioId(Usuarios usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (chatId != null ? chatId.hashCode() : 0);
         return hash;
     }
 
@@ -125,7 +127,7 @@ public class Chats implements Serializable {
             return false;
         }
         Chats other = (Chats) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.chatId == null && other.chatId != null) || (this.chatId != null && !this.chatId.equals(other.chatId))) {
             return false;
         }
         return true;
@@ -133,7 +135,7 @@ public class Chats implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Chats[ id=" + id + " ]";
+        return "entidades.Chats[ chatId=" + chatId + " ]";
     }
     
 }

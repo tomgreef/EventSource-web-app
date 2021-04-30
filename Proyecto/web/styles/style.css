@@ -6,6 +6,171 @@ body {
 }
 
 /* COMPONENTES */
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+    margin: .4rem 0;
+}
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-right: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    right: 250px;
+    width: 0;
+    height: 100%;
+    margin-right: -250px;
+    overflow-y: auto;
+    background: #ffffff;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-right: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-right: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+.tituloConcierto {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 40px;
+    letter-spacing: 0.1px;
+    color: #FF8500;
+    margin: 0px;
+}
+
+.evento-square {
+
+	overflow: hidden;
+	min-height: 36px; /* Remember absolute positioning is outside the page flow! */
+	position: relative;
+    background-color: #7B2CBF;
+    width: 60%;
+    height: 15%;
+    left: 0%;
+    top: 15%;
+    border-radius: 0.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+    margin: 10vh auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+}
+
 .titulo {
     font-family: Montserrat;
     font-style: normal;
@@ -15,6 +180,66 @@ body {
     color: #252B42;
     margin: 0px;
 }
+
+.container {
+    padding: 0 15vh;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+}
+
+.boton {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    background: #FF9E00;
+    border-radius: 10px;
+}
+
+.filas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh 0;
+}
+
+.fila {
+    padding: 1vh;
+}
+
+.columnas {
+    display: flex;
+    justify-content: space-between;
+}
+
+.columna {
+    display: flex;
+    align-items: baseline;
+}
+
+.objeto-col {
+    padding: 0 2vh;
+}
+
+.objeto-col:first-child {
+    padding-left: 0;
+}
+
+.objeto-col:last-child {
+    padding-right: 0;
+}
+
+.ptb-3 {
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
 
 /* LOGIN */
 .login-backround{
@@ -86,10 +311,6 @@ body {
     text-align: center;
 }
 
-a {
-    color: #E1BEE7;
-    text-decoration: none
-}
 
 @media (max-width: 600px) {
     .main {
@@ -97,8 +318,53 @@ a {
     }
 }
 
-/* INICIO */
+/* BARRA NAVEGACIÓN */
+.enlace-negro {
+    text-decoration: none;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 24px;
+    color: black;
+    font-size: 2vh;
+}
 
+.logo {
+    text-decoration: none;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 28px;
+    color: black;
+    font-size: 3vh;
+}
+
+/* FOOTER */
+footer {
+    background: #240046;
+    color: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.enlace {
+    text-decoration: none;
+    font-family: Montserrat;
+    font-style: normal;
+    line-height: 24px;
+    color: white;
+    font-size: 2vh;
+}
+
+.copyright {
+    color: #FFFFFF;
+    mix-blend-mode: normal;
+    opacity: 0.5;
+}
+
+/* INICIO */
 
 /* SIGN IN */
 .signUp-square {

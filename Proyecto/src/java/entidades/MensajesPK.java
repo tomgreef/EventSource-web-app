@@ -27,21 +27,21 @@ public class MensajesPK implements Serializable {
     private int chatId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FECHA_Y_HORA")
+    @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaYHora;
+    private Date fecha;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "USUARIOS_ID")
-    private int usuariosId;
+    @Column(name = "USUARIO_ID")
+    private int usuarioId;
 
     public MensajesPK() {
     }
 
-    public MensajesPK(int chatId, Date fechaYHora, int usuariosId) {
+    public MensajesPK(int chatId, Date fecha, int usuarioId) {
         this.chatId = chatId;
-        this.fechaYHora = fechaYHora;
-        this.usuariosId = usuariosId;
+        this.fecha = fecha;
+        this.usuarioId = usuarioId;
     }
 
     public int getChatId() {
@@ -52,28 +52,28 @@ public class MensajesPK implements Serializable {
         this.chatId = chatId;
     }
 
-    public Date getFechaYHora() {
-        return fechaYHora;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaYHora(Date fechaYHora) {
-        this.fechaYHora = fechaYHora;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
-    public int getUsuariosId() {
-        return usuariosId;
+    public int getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuariosId(int usuariosId) {
-        this.usuariosId = usuariosId;
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) chatId;
-        hash += (fechaYHora != null ? fechaYHora.hashCode() : 0);
-        hash += (int) usuariosId;
+        hash += (fecha != null ? fecha.hashCode() : 0);
+        hash += (int) usuarioId;
         return hash;
     }
 
@@ -87,10 +87,10 @@ public class MensajesPK implements Serializable {
         if (this.chatId != other.chatId) {
             return false;
         }
-        if ((this.fechaYHora == null && other.fechaYHora != null) || (this.fechaYHora != null && !this.fechaYHora.equals(other.fechaYHora))) {
+        if ((this.fecha == null && other.fecha != null) || (this.fecha != null && !this.fecha.equals(other.fecha))) {
             return false;
         }
-        if (this.usuariosId != other.usuariosId) {
+        if (this.usuarioId != other.usuarioId) {
             return false;
         }
         return true;
@@ -98,7 +98,7 @@ public class MensajesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.MensajesPK[ chatId=" + chatId + ", fechaYHora=" + fechaYHora + ", usuariosId=" + usuariosId + " ]";
+        return "entidades.MensajesPK[ chatId=" + chatId + ", fecha=" + fecha + ", usuarioId=" + usuarioId + " ]";
     }
     
 }
