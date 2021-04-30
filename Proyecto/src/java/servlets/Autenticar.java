@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  * @author tomvg
  */
 @WebServlet(name = "ServletAutenticar", urlPatterns = {"/ServletAutenticar"})
-public class ServletAutenticar extends HttpServlet {
+public class Autenticar extends HttpServlet {
 
     @EJB
     private UsuariosFacade usuariosFacade;
