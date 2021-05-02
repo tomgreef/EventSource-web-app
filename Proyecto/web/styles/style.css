@@ -344,26 +344,6 @@ label {
     text-align: left;
 }
 
-.campoMorado {
-    width: 70%;
-    /* h5 */
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    background-color: rgba(123, 44, 191, 1);
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    outline: none;
-    box-sizing: border-box;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.44);
-    margin-bottom: 30px;
-    margin-left: 46px;
-    text-align: left;
-    
-}
 
 
 .submit {
