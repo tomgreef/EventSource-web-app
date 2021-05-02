@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,43 +30,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Etiquetas.findAll", query = "SELECT e FROM Etiquetas e")
-    , @NamedQuery(name = "Etiquetas.findById", query = "SELECT e FROM Etiquetas e WHERE e.id = :id")
+    , @NamedQuery(name = "Etiquetas.findByEtiquetaId", query = "SELECT e FROM Etiquetas e WHERE e.etiquetaId = :etiquetaId")
     , @NamedQuery(name = "Etiquetas.findByNombre", query = "SELECT e FROM Etiquetas e WHERE e.nombre = :nombre")})
 public class Etiquetas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "ETIQUETA_ID")
+    private Integer etiquetaId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
-    @JoinColumn(name = "EVENTO_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "EVENTO_ID", referencedColumnName = "EVENTO_ID")
     @ManyToOne(optional = false)
     private Eventos eventoId;
 
     public Etiquetas() {
     }
 
-    public Etiquetas(Integer id) {
-        this.id = id;
+    public Etiquetas(Integer etiquetaId) {
+        this.etiquetaId = etiquetaId;
     }
 
-    public Etiquetas(Integer id, String nombre) {
-        this.id = id;
+    public Etiquetas(Integer etiquetaId, String nombre) {
+        this.etiquetaId = etiquetaId;
         this.nombre = nombre;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getEtiquetaId() {
+        return etiquetaId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEtiquetaId(Integer etiquetaId) {
+        this.etiquetaId = etiquetaId;
     }
 
     public String getNombre() {
@@ -86,7 +88,7 @@ public class Etiquetas implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (etiquetaId != null ? etiquetaId.hashCode() : 0);
         return hash;
     }
 
@@ -97,7 +99,7 @@ public class Etiquetas implements Serializable {
             return false;
         }
         Etiquetas other = (Etiquetas) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.etiquetaId == null && other.etiquetaId != null) || (this.etiquetaId != null && !this.etiquetaId.equals(other.etiquetaId))) {
             return false;
         }
         return true;
@@ -105,7 +107,7 @@ public class Etiquetas implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Etiquetas[ id=" + id + " ]";
+        return "entidades.Etiquetas[ etiquetaId=" + etiquetaId + " ]";
     }
     
 }

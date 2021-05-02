@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
 
+body {
+    font-family: Montserrat;
+    color: black;
+}
+
 /* COMPONENTES */
 
 /*!
@@ -147,6 +152,7 @@ label {
     margin: 0px;
 }
 
+
 .tituloCrearUyE {
     font-family: Montserrat;
     font-style: normal;
@@ -185,6 +191,7 @@ label {
     color: #FFFFFF;
     font-size: 2vh;
 }
+
 
 
 .evento-square {
