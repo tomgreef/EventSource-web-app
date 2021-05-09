@@ -44,6 +44,8 @@
                     <br><br/>
                     <textarea class="campo" type="text" align="left"
                               rows="5" cols="45"></textarea>
+                <a href="CrearEvento" class="boton" align="right">
+                    Crear
             </form>
         </div>    
     </body>
