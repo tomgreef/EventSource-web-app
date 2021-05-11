@@ -20,7 +20,7 @@
         if(strError == null) strError = "";
     %>
     <body>
-        <div class="login-backround">
+        <div class="login-backround" style="height: 100vh">
             <div class="login-square">
                 <h2 class="titulo logo" align="center">Eventsource</h2>
                 <form class="formulario" method="POST" action="ServletAutenticar">
