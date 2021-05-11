@@ -3,6 +3,9 @@
 body {
     font-family: Montserrat;
     color: black;
+    background-image: url('../img/bg.svg');
+    background-size:cover;
+    background-repeat: no-repeat;
 }
 
 /* COMPONENTES */

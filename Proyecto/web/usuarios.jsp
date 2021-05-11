@@ -16,6 +16,15 @@
     <body>
         <jsp:include page="navBar.jsp" />   
         <div class="container">
+            <div class="columnas">
+                <div class="columna">
+                    <a href="" class="boton">Filtrar</a>
+                </div>
+                <div class="columna">
+                    <a href="EditarAgregarUsuario" class="boton">Registrar</a>
+                </div>
+
+            </div>
             <table class="tablaUsuarios">
                 <thead>
                     <tr>
@@ -27,7 +36,6 @@
                         <th scope="col">Edad</th>
                         <th scope="col">Sexo</th>
                         <th scope="col">Rol</th>
-                        <th scope="col" colspan="2"><a href="EditarAgregarUsuario" class="boton">Registrar</a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,13 +52,13 @@
                         <%
                             if (u.getSexo() == 0) {
                         %>
-                                <td>H</td>  
+                        <td>H</td>  
                         <%
                         } else {
                         %>
-                                <td>M</td>  
-                        <%                      
-                        }
+                        <td>M</td>  
+                        <%
+                            }
                         %>
                         <td><%= u.getRol()%></td>   
                         <td><a href="EditarAgregarUsuario?id=<%= u.getUsuarioId()%>" class="boton boton-peque">Editar</a></td>
@@ -62,5 +70,6 @@
                 </tbody>
             </table>
         </div>
+        <jsp:include page="footer.jsp" />   
     </body>
 </html>
