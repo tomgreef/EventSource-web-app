@@ -46,8 +46,15 @@
                     <input class="campo" type="text" placeholder="Email*" name="email" value="<%= email%>">
                     <input class="campo" type="text" placeholder="Domicilio*" name="domicilio" value="<%= domicilio%>">
                     <input class="campo" type="text" placeholder="Ciudad*" name="ciudad" value="<%= ciudad%>">
-                    <input class="campo" type="text" placeholder="Edad*" name="edad" value="<%= edad%>">
-                    <input class="campo" type="text" placeholder="Sexo*" name="sexo" value="<%= sexo%>">
+                    <input class="campo" type="text" placeholder="Edad*" name="edad" value="<%= edad%>"><br/>
+                    <div style="margin-left:46px;">
+                        Sexo*:
+                        <div style="margin-left:55px;">
+                            <input type="radio" name="sexo" value="1"/>Mujer<br/>
+                            <input type="radio" name="sexo" value="0"/>Hombre<br/>
+                            <input type="radio" name="sexo" value="-1"/>Otro<br/>
+                        </div>
+                    </div>
                     <input class="campo" type="password" placeholder="Contraseña*" name="password" value="<%= password%>">
                     <%
                         Usuarios admin = (Usuarios) session.getAttribute("usuario");
