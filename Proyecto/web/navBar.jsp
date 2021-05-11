@@ -1,7 +1,5 @@
+<%@page import="entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<<<<<<< Updated upstream
-=======
 <%
     Usuarios usuario = (Usuarios) session.getAttribute("usuario");
     if(usuario != null){
@@ -105,7 +103,6 @@
     } 
 }else {
 %>
->>>>>>> Stashed changes
 <nav>
     <div class="container columnas ptb-3 navbar">
         <div class="columna">
@@ -121,3 +118,6 @@
         </div>
     </div>
 </nav>
+<%
+}
+%>
