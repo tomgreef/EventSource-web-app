@@ -24,6 +24,7 @@
                 edad = "", password = "", id = "";
         Integer sexo = 0;
         Integer rol = 0;
+        int crearOEditar = 1; //Variable que permite al admin editar rol 0, pero no crearla
         String botonSubmit = "Registrarse";
 
         if (usuario != null) { // Editar
@@ -38,6 +39,7 @@
             id = usuario.getUsuarioId().toString();
             botonSubmit = "Editar";
             rol = usuario.getRol();
+            crearOEditar = 0;
         }
     %>
     <body>
@@ -75,7 +77,7 @@
                     <select class="campo" name="rol">
                         <%
                             listaRols = new String[]{"Usuario", "Creador", "Analista", "Teleoperador", "Administrador"};
-                            for (int i = 0; i < 5; i++) {
+                            for (int i = crearOEditar; i < 5; i++) {
                                 String strSeleccionado = "";
                                 if (i == rol) {
                                     strSeleccionado = "selected";

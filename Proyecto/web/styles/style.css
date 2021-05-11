@@ -267,7 +267,7 @@ label {
     background: linear-gradient(180deg, #9D4EDD 0%, #9D4EDD 0.01%, #240046 100%);
     min-height: 100%;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
