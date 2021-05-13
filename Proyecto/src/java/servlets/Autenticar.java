@@ -64,6 +64,8 @@ public class Autenticar extends HttpServlet {
                 goTo = "login.jsp";
             } else { //Login correcto
                 session.setAttribute("usuario", usuario);
+                if (usuario.getRol() == 4) // Admin
+                    goTo = "eventosAdmin.jsp";
             }
         }
         

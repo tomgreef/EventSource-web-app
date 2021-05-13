@@ -10,6 +10,7 @@ import entidades.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,11 +22,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author tomvg
  */
-@WebServlet(name = "UsuarioGuardar", urlPatterns = {"/UsuarioGuardar"})
-public class UsuarioGuardar extends HttpServlet {
+@WebServlet(name = "BorrarUsuario", urlPatterns = {"/BorrarUsuario"})
+public class BorrarUsuario extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuarioFacade;
+    private UsuariosFacade usuariosFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,52 +38,13 @@ public class UsuarioGuardar extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String strTo = "index.jsp";
-        String id, nombre, email, apellidos, domicilio, ciudad, sexo, edad, password, rol;
-        Usuarios usuario;
+            throws ServletException, IOException {        
+            String strId = request.getParameter("id");
 
-        id = request.getParameter("id");
-        nombre = request.getParameter("nombre");
-        apellidos = request.getParameter("apellidos");
-        email = request.getParameter("email");
-        domicilio = request.getParameter("domicilio");
-        ciudad = request.getParameter("ciudad");
-        edad = request.getParameter("edad");
-        sexo = request.getParameter("sexo");
-        password = request.getParameter("password");
-        rol = request.getParameter("rol");
+            Usuarios elCliente = this.usuariosFacade.find(new Integer(strId));        
+            this.usuariosFacade.remove(elCliente);
 
-        if (id == null || id.isEmpty()) { // Crear nuevo cliente
-            usuario = new Usuarios();
-        } else { // Editar cliente existente
-            usuario = this.usuarioFacade.find(new Integer(id));
-        }
-
-        usuario.setNombre(nombre);
-        usuario.setApellidos(apellidos);
-        usuario.setEmail(email);
-        usuario.setDomicilio(domicilio);
-        usuario.setCiudad(ciudad);
-        usuario.setEdad(new Integer(edad));
-        usuario.setSexo(new Integer(sexo));
-        usuario.setPassword(password);
-
-        if (id == null || id.isEmpty()) { // Crear nuevo cliente 
-            usuario.setRol(0);
-            HttpSession session = request.getSession();
-            this.usuarioFacade.create(usuario);
-            Usuarios admin = (Usuarios) session.getAttribute("usuario");
-            if (admin != null && admin.getRol() == 4) {
-                strTo= "ListarUsuarios";
-            }
-        } else { // Editar cliente existente
-            strTo = "ListarUsuarios";
-            usuario.setRol(new Integer(rol));
-            this.usuarioFacade.edit(usuario);
-        }
-
-        response.sendRedirect(strTo);
+            response.sendRedirect("ListarUsuarios");        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
