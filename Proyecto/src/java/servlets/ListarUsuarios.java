@@ -41,22 +41,30 @@ public class ListarUsuarios extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Usuarios> usuarios;
+        String strTo = "usuarios.jsp";
+        HttpSession session = request.getSession();
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
 
-        String nombre = request.getParameter("nombre");
-        String apellidos = request.getParameter("apellidos");
+        if (admin == null || admin.getRol() != 4) {
+            request.setAttribute("error", "Usuario sin permisos");
+            strTo = "login.jsp";
+        } else {
 
-        if ((nombre != null && nombre.length() > 0)
-                || (apellidos != null && apellidos.length() > 0)) {// Estoy aplicando filtros
-            usuarios = new ArrayList<>();
-            usuarios = this.usuariosFacade.filter(nombre, apellidos);
-        } else {  // Quiero mostrar todos
-            usuarios = this.usuariosFacade.findAll();
+            List<Usuarios> usuarios;
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+
+            if ((nombre != null && nombre.length() > 0)
+                    || (apellidos != null && apellidos.length() > 0)) {// Estoy aplicando filtros
+                usuarios = new ArrayList<>();
+                usuarios     = this.usuariosFacade.filter(nombre, apellidos);
+            } else {  // Quiero mostrar todos
+                usuarios = this.usuariosFacade.findAll();
+            }
+
+            request.setAttribute("usuarios", usuarios);
         }
-
-        request.setAttribute("usuarios", usuarios);
-
-        RequestDispatcher rd = request.getRequestDispatcher("usuarios.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);
     }
 
