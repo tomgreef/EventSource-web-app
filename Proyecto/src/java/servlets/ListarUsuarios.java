@@ -43,11 +43,13 @@ public class ListarUsuarios extends HttpServlet {
             throws ServletException, IOException {
         List<Usuarios> usuarios;
 
-        String filtroNombre = request.getParameter("filtroNombre");
+        String nombre = request.getParameter("nombre");
+        String apellidos = request.getParameter("apellidos");
 
-        if (filtroNombre != null && filtroNombre.length() > 0) {// Estoy aplicando filtro
+        if ((nombre != null && nombre.length() > 0)
+                || (apellidos != null && apellidos.length() > 0)) {// Estoy aplicando filtros
             usuarios = new ArrayList<>();
-            usuarios.add(this.usuariosFacade.find(new Integer(1)));
+            usuarios = this.usuariosFacade.filter(nombre, apellidos);
         } else {  // Quiero mostrar todos
             usuarios = this.usuariosFacade.findAll();
         }

@@ -16,15 +16,20 @@
     <body>
         <jsp:include page="navBar.jsp" />   
         <div class="container">
-            <div class="columnas">
-                <div class="columna">
-                    <a href="" class="boton">Filtrar</a>
+            <form action="ListarUsuarios" method="POST">
+                <div class="columnas">
+                    <div class="columna">
+                        <input class="campo" type="text" placeholder="Nombre" name="nombre">
+                        <input class="campo" type="text" placeholder="Apellidos" name="apellidos">
+                    </div>
+                    <div class="columna">
+                        <input type="submit" value="Filtrar" class="boton"/>
+                    </div>
+                    <div class="columna">
+                        <a href="EditarAgregarUsuario" class="boton">Registrar</a>
+                    </div>
                 </div>
-                <div class="columna">
-                    <a href="EditarAgregarUsuario" class="boton">Registrar</a>
-                </div>
-
-            </div>
+            </form>
             <table class="tablaUsuarios">
                 <thead>
                     <tr>
