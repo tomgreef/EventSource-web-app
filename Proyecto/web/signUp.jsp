@@ -68,7 +68,7 @@
                     <%
                         }
                     %>
-
+                  
                     <input class="campo" type="password" placeholder="Contraseña*" name="password" value="<%= password%>">
                     <%
                         Usuarios admin = (Usuarios) session.getAttribute("usuario");

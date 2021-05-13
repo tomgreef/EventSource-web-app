@@ -1,6 +1,5 @@
 <%@page import="entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%
     Usuarios usuario = (Usuarios) session.getAttribute("usuario");
     if(usuario != null){
@@ -52,6 +51,7 @@
                 <span class="logo">Eventsource</span>
             </a>    
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
+            <a href="ChatListar" class="objeto-col enlace-negro">Chats</a>
         </div>
         <div class="columna">
             <a href="Desautenticar" class="objeto-col boton">

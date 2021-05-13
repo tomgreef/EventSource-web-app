@@ -6,9 +6,11 @@
 package dao;
 
 import entidades.Eventos;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,47 @@ public class EventosFacade extends AbstractFacade<Eventos> {
     public EventosFacade() {
         super(Eventos.class);
     }
+    
+    public List<Eventos> filtroNombreSimilar (String filtro){
+        Query q;
+        
+        q = em.createNamedQuery("Eventos.findByTitulo");
+        q.setParameter("titulo", "%" + filtro + "%");
+        return q.getResultList();
+    }
+    
+    public List<Eventos> filtroCosteSimilar (String filtro){
+        Query q;
+        
+        q = em.createNamedQuery("Eventos.findByCoste");
+        q.setParameter("coste", "%" + filtro + "%");
+        return q.getResultList();
+    }
+    
+    public List<Eventos> filtroFechaInicio (String filtro){
+        Query q;
+        
+        q = em.createNamedQuery("SELECT e FROM Eventos e WHERE e.fecha >= :fecha");
+        q.setParameter("fecha", "%" + filtro + "%");
+        return q.getResultList();
+    }
+    
+    public List<Eventos> filtroFechaLimite (String filtro){
+        Query q;
+        
+        q = em.createNamedQuery("SELECT e FROM Eventos e WHERE e.fecha <= :fecha");
+        q.setParameter("fechaLimite", "%" + filtro + "%");
+        return q.getResultList();
+    }
+    /*
+    public List<Eventos> filtroFechaLimite (String filtro){
+        Query q;
+        
+        q = em.createNamedQuery("SELECT e FROM Eventos e WHERE e.fecha BETWEEN :fecha AND :fechaLimite");
+        q.setParameter("fechaLimite", "%" + filtro + "%");
+        return q.getResultList();
+    }
+    */
+    
     
 }

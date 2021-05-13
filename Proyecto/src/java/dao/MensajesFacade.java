@@ -6,9 +6,11 @@
 package dao;
 
 import entidades.Mensajes;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,12 @@ public class MensajesFacade extends AbstractFacade<Mensajes> {
         super(Mensajes.class);
     }
     
+    public List<Mensajes> getMensajesById(String id){
+        Query q;
+        
+        //q = em.createQuery("SELECT m FROM Mensajes m");
+        q = em.createQuery("SELECT m FROM Mensajes m WHERE m.mensajesPK.chatId = :chatId");
+        q.setParameter("chatId", new Integer(id));
+        return q.getResultList(); 
+    }
 }
