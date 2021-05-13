@@ -48,4 +48,31 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
             return listaUsuarios.get(0);
         }
     }
+
+    public List<Usuarios> filter(String nombre, String apellidos) {
+        Query q;
+        List<Usuarios> listaUsuarios;
+
+        if (nombre.length() > 0) {
+            if (apellidos.length() > 0) {
+                q = this.em.createQuery("SELECT a FROM Usuarios a WHERE a.nombre LIKE :nombre AND a.apellidos LIKE :apellidos");
+                q.setParameter("nombre", "%" + nombre+ "%");
+                q.setParameter("apellidos", "%"  + apellidos + "%");
+            } else {
+                q = this.em.createQuery("SELECT a FROM Usuarios a WHERE a.nombre LIKE :nombre");
+                q.setParameter("nombre", "%" + nombre + "%");
+
+            }
+        } else {
+            if (apellidos.length() > 0) {
+                q = this.em.createQuery("SELECT a FROM Usuarios a WHERE a.apellidos LIKE :apellidos");
+                q.setParameter("apellidos", "%" + apellidos + "%");
+            } else {
+                q = this.em.createQuery("SELECT a FROM Usuarios a");
+            }
+        }
+
+        listaUsuarios = q.getResultList();
+        return listaUsuarios;
+    }
 }
