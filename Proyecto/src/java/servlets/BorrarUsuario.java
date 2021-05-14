@@ -8,7 +8,6 @@ package servlets;
 import dao.UsuariosFacade;
 import entidades.Usuarios;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -48,8 +47,8 @@ public class BorrarUsuario extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
             rd.forward(request, response);
         } else {
-            Usuarios elCliente = this.usuariosFacade.find(new Integer(strId));
-            this.usuariosFacade.remove(elCliente);
+            Usuarios usuario = this.usuariosFacade.find(new Integer(strId));
+            this.usuariosFacade.remove(usuario);
             response.sendRedirect("ListarUsuarios");
         }
     }

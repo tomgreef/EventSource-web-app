@@ -8,8 +8,6 @@ package servlets;
 import dao.UsuariosFacade;
 import entidades.Usuarios;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
