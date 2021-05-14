@@ -24,7 +24,7 @@
             <div class="login-square">
                 <h2 class="titulo logo" align="center">Eventsource</h2>
                 <form class="formulario" method="POST" action="ServletAutenticar">
-                    <%= strError %> <br/>
+                    <p class="centrar" style="color:red; font-weight: bold"><%= strError %><p> 
                     <input class="campo" type="text" align="center" placeholder="Email" name="email">
                     <input class="campo" type="password" align="center" placeholder="Contrase&ntilde;a" name="password">
                     <input class="submit" type="submit" align="center">

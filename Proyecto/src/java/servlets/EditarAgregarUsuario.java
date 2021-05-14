@@ -46,7 +46,7 @@ public class EditarAgregarUsuario extends HttpServlet {
         
         if (admin == null || admin.getRol() != 4) {
             request.setAttribute("error", "Usuario sin permisos");
-            strTo = "autentica.jsp";
+            strTo = "login.jsp";
         } else {
             String id = request.getParameter("id");
 

@@ -38,13 +38,20 @@ public class BorrarUsuario extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
-            String strId = request.getParameter("id");
+            throws ServletException, IOException {
+        String strId = request.getParameter("id");
+        HttpSession session = request.getSession();
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
 
-            Usuarios elCliente = this.usuariosFacade.find(new Integer(strId));        
+        if (admin == null || admin.getRol() != 4) {
+            request.setAttribute("error", "Usuario sin permisos");
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        } else {
+            Usuarios elCliente = this.usuariosFacade.find(new Integer(strId));
             this.usuariosFacade.remove(elCliente);
-
-            response.sendRedirect("ListarUsuarios");        
+            response.sendRedirect("ListarUsuarios");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
