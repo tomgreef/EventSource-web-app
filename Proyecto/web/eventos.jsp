@@ -24,12 +24,25 @@
                         Filtros
                     </h2>
                 </li>
-                <li>
-                    <label for="start">Precio máximo</label>
-                    <input id="rangeInput" type="range" min="0" max="2000" oninput="amount.value=rangeInput.value" />
-                    <br>
-                    <input id="amount" type="number" value="200" min="0" max="0200" oninput="rangeInput.value=amount.value" />
-                </li>
+                
+                <form action="ListarEventos" method="POST">
+                    <li>
+                    <input class="campo" type="text" placeholder="Nombre del evento" name="nombre_evento">
+                    </li>
+
+                    <li>
+                        <label for="start">Precio máximo</label>
+                        <input id="rangeInput" type="range" min="0" max="500" oninput="amount.value=rangeInput.value"name="precio_evento" />
+                        <br>
+                        <input id="amount" type="number" value="200" min="0" max="500" oninput="rangeInput.value=amount.value"  />
+                    </li>
+
+                    <li>
+                         <input type="submit" value="Filtrar" class="boton"/>
+                    </li>
+                </form>
+                
+                <%--
                 <li>
                     <br>
                     <label for="start">Desde:</label>
@@ -56,6 +69,7 @@
                     <label for="start">nº asientos disponibles</label>
                     <input type="number" id="quantity" name="quantity" min="1" max="2000">
                 </li>
+         
                 
                 <li>
                     <label for="start">Tags</label>
@@ -69,9 +83,7 @@
                     <button class="boton" type="button">Charla</button> <button class="boton" type="button">Taller</button>
                 </li>
                 <br>
-                <li>
-                     <button class="boton" type="button">Aplicar</button>
-                </li>
+                --%>
            </ul>
         </div>
         <div class ="filas">
@@ -113,6 +125,12 @@
            <strong>Aforo:</strong>
            <br>
            <%=e.getAforo()%>
+           </div>
+           
+           <div style="color:white" class="fila alinearDerecha">
+           <strong>Precio</strong>
+           <br>
+           <%=e.getCoste()%>
            </div>
 		    
            <button class="boton alinearDerecha" href="/login.jsp">
