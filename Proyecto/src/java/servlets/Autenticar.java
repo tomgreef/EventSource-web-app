@@ -62,8 +62,6 @@ public class Autenticar extends HttpServlet {
                 request.setAttribute("error", strError);
                 goTo = "login.jsp";
             } else { //Login correcto
-                if(session.getAttribute("usuario") != null)
-                    session.invalidate();
                 session.setAttribute("usuario", usuario);
                 
                 // Redireccionamos por rol
