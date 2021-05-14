@@ -8,8 +8,6 @@ package servlets;
 import dao.UsuariosFacade;
 import entidades.Usuarios;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -56,7 +54,6 @@ public class ListarUsuarios extends HttpServlet {
 
             if ((nombre != null && nombre.length() > 0)
                     || (apellidos != null && apellidos.length() > 0)) {// Estoy aplicando filtros
-                usuarios = new ArrayList<>();
                 usuarios     = this.usuariosFacade.filter(nombre, apellidos);
             } else {  // Quiero mostrar todos
                 usuarios = this.usuariosFacade.findAll();

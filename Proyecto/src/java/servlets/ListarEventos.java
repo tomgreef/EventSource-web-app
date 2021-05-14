@@ -5,8 +5,8 @@
  */
 package servlets;
 
-import dao.MensajesFacade;
-import entidades.Mensajes;
+import dao.EventosFacade;
+import entidades.Eventos;
 import entidades.Usuarios;
 import java.io.IOException;
 import java.util.List;
@@ -21,10 +21,13 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author kkeyl
+ * @author tomvg
  */
-@WebServlet(name = "MensajeListar", urlPatterns = {"/MensajeListar"})
-public class MensajeListar extends HttpServlet {
+@WebServlet(name = "ListarEventos", urlPatterns = {"/ListarEventos"})
+public class ListarEventos extends HttpServlet {
+
+    @EJB
+    private EventosFacade eventosFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,29 +38,32 @@ public class MensajeListar extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    @EJB
-    MensajesFacade mensajesFacade;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        String goTo = "mensajes.jsp";
+        String strTo = "eventos.jsp";
         HttpSession session = request.getSession();
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        if(usuario != null){ //El usuario está autenticado
-            String id = request.getParameter("id");
-            List<Mensajes> mensajes = this.mensajesFacade.getMensajesById(id);
-            request.setAttribute("mensajes", mensajes);
-        } else { //No está logeado y no puede ver los chats
-            request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
-            goTo = "login.jsp";
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+
+        if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
+            // Excluimos usuarios, analistas y teleoperadores
+            request.setAttribute("error", "Usuario sin permisos");
+            strTo = "login.jsp";
+        } else {
+            List<Eventos> eventos;
+            String titulo = request.getParameter("titulo");
+            String coste = request.getParameter("coste");
+
+            if ((titulo != null && titulo.length() > 0)
+                    || (coste != null && coste.length() > 0)) {// Estoy aplicando filtros
+                eventos = this.eventosFacade.filter(titulo, coste);
+            } else {  // Quiero mostrar todos
+                eventos = this.eventosFacade.findAll();
+            }
+
+            request.setAttribute("eventos", eventos);
         }
-        
-        RequestDispatcher rd = request.getRequestDispatcher(goTo);
+        RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

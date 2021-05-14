@@ -5,11 +5,10 @@
  */
 package servlets;
 
-import dao.MensajesFacade;
-import entidades.Mensajes;
+import dao.EventosFacade;
+import entidades.Eventos;
 import entidades.Usuarios;
 import java.io.IOException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,11 +20,14 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author kkeyl
+ * @author tomvg
  */
-@WebServlet(name = "MensajeListar", urlPatterns = {"/MensajeListar"})
-public class MensajeListar extends HttpServlet {
+@WebServlet(name = "BorrarEvento", urlPatterns = {"/BorrarEvento"})
+public class BorrarEvento extends HttpServlet {
 
+    @EJB
+    private EventosFacade eventosFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,29 +37,22 @@ public class MensajeListar extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    @EJB
-    MensajesFacade mensajesFacade;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        String goTo = "mensajes.jsp";
+        String strId = request.getParameter("id");
         HttpSession session = request.getSession();
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        if(usuario != null){ //El usuario está autenticado
-            String id = request.getParameter("id");
-            List<Mensajes> mensajes = this.mensajesFacade.getMensajesById(id);
-            request.setAttribute("mensajes", mensajes);
-        } else { //No está logeado y no puede ver los chats
-            request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
-            goTo = "login.jsp";
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+
+         if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
+            // Excluimos usuarios, analistas y teleoperadores
+            request.setAttribute("error", "Usuario sin permisos");
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        } else {
+            Eventos evento = this.eventosFacade.find(new Integer(strId));
+            this.eventosFacade.remove(evento);
+            response.sendRedirect("ListarUsuarios");
         }
-        
-        RequestDispatcher rd = request.getRequestDispatcher(goTo);
-        rd.forward(request, response);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

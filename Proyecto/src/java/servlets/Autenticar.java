@@ -8,7 +8,6 @@ package servlets;
 import dao.UsuariosFacade;
 import entidades.Usuarios;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,7 +40,7 @@ public class Autenticar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String email, password, strError = "", goTo = "index.jsp";
+        String email, password, strError, goTo = "index.jsp";
         Usuarios usuario;
         RequestDispatcher rd;
         HttpSession session = request.getSession();
@@ -63,7 +62,11 @@ public class Autenticar extends HttpServlet {
                 request.setAttribute("error", strError);
                 goTo = "login.jsp";
             } else { //Login correcto
+                if(session.getAttribute("usuario") != null)
+                    session.invalidate();
                 session.setAttribute("usuario", usuario);
+                
+                // Redireccionamos por rol
                 if (usuario.getRol() == 4) // Admin
                     goTo = "eventosAdmin.jsp";
             }
