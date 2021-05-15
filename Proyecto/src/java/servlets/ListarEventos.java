@@ -50,11 +50,11 @@ public class ListarEventos extends HttpServlet {
             strTo = "login.jsp";
         } else {
             List<Eventos> eventos;
-            String titulo = request.getParameter("titulo");
-            String coste = request.getParameter("coste");
+            String titulo = request.getParameter("nombre_evento")!=null?request.getParameter("nombre_evento"):null;
+            String costeStr = request.getParameter("precio_evento")!=null?request.getParameter("precio_evento"):null;
+            Double coste = costeStr!=null?(Double.parseDouble(costeStr)):0.0;
 
-            if ((titulo != null && titulo.length() > 0)
-                    || (coste != null && coste.length() > 0)) {// Estoy aplicando filtros
+            if ((titulo != null && titulo.length() > 0) || coste != 0) {// Estoy aplicando filtros
                 eventos = this.eventosFacade.filter(titulo, coste);
             } else {  // Quiero mostrar todos
                 eventos = this.eventosFacade.findAll();
