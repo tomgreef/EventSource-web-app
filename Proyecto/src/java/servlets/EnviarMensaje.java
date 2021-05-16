@@ -6,14 +6,11 @@
 package servlets;
 
 import dao.MensajesFacade;
-import dao.UsuariosFacade;
 import entidades.Mensajes;
 import entidades.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,45 +24,32 @@ import javax.servlet.http.HttpSession;
  *
  * @author kkeyl
  */
-@WebServlet(name = "MensajeListar", urlPatterns = {"/MensajeListar"}, asyncSupported=true)
-public class MensajeListar extends HttpServlet {
+@WebServlet(name = "EnviarMensaje", urlPatterns = {"/EnviarMensaje"})
+public class EnviarMensaje extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
     @EJB
     MensajesFacade mensajesFacade;
     
-    @EJB
-    UsuariosFacade usuariosFacade;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String goTo = "mensajes.jsp";
         HttpSession session = request.getSession();
         Usuarios usuario = (Usuarios)session.getAttribute("usuario");
         
-        if(usuario != null){ //El usuario está autenticado
-            String chatId = request.getParameter("id");
-            request.setAttribute("chatId", chatId);
-            List<Mensajes> mensajes = this.mensajesFacade.getMensajesById(chatId);
-            request.setAttribute("mensajes", mensajes);
-        } else { //No está logeado y no puede ver los chats
-            request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
-            goTo = "login.jsp";
-        }
+        String usuarioId = request.getParameter("usuarioId");
+        String mensaje = request.getParameter("mensaje");
+        String chatId = request.getParameter("chatId");
+        Date date = new Date();
         
+        if (mensaje != null) {
+           Mensajes m = new Mensajes(new Integer(chatId), date, new Integer(usuarioId));
+           m.setMensaje(mensaje);
+           mensajesFacade.create(m);
+        } 
+        
+        String goTo = "MensajeListar?id="+chatId;
+        //RequestDispatcher rd = request.getRequestDispatcher("MensajeListar?id="+chatId);
         RequestDispatcher rd = request.getRequestDispatcher(goTo);
         rd.forward(request, response);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -94,7 +78,6 @@ public class MensajeListar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         processRequest(request, response);
     }
 

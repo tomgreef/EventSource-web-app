@@ -48,6 +48,21 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
             return listaUsuarios.get(0);
         }
     }
+    public Usuarios getTeleoperador(){
+        Query q;
+        List<Usuarios> listaUsuarios;
+
+        q = this.em.createQuery("SELECT a FROM Usuarios a WHERE a.rol = 3");
+        //q = this.getEntityManager().createNamedQuery("Usuarios.findByEmailAndPassword");
+
+        listaUsuarios = q.getResultList();
+
+        if (listaUsuarios == null || listaUsuarios.isEmpty()) {
+            return null;
+        } else {
+            return listaUsuarios.get(0);
+        }
+
 
     public List<Usuarios> filter(String nombre, String apellidos) {
         Query q;
