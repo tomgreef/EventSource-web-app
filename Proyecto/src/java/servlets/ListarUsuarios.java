@@ -8,6 +8,7 @@ package servlets;
 import dao.UsuariosFacade;
 import entidades.Usuarios;
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,13 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  *
  * @author tomvg
  */
-@WebServlet(name = "ServletAutenticar", urlPatterns = {"/ServletAutenticar"})
-public class Autenticar extends HttpServlet {
+@WebServlet(name = "ListarUsuarios", urlPatterns = {"/ListarUsuarios"})
+public class ListarUsuarios extends HttpServlet {
 
     @EJB
     private UsuariosFacade usuariosFacade;
@@ -39,42 +39,33 @@ public class Autenticar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String email, password, strError, goTo = "index.jsp";
-        Usuarios usuario;
-        RequestDispatcher rd;
+        String strTo = "usuarios.jsp";
         HttpSession session = request.getSession();
-        
-        email = request.getParameter("email");
-        password = request.getParameter("password");
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
 
-        if (email == null || email.isEmpty() || 
-            password == null || password.isEmpty()) {  // Error de autenticación por email o clave
-                                                       // vacíos o nulos.
-            strError = "Error de autenticación: alguno de los valores está vacío";
-            request.setAttribute("error", strError);
-            goTo = "login.jsp";
-        
-        } else { //El usuario sí está en la base de datos
-            usuario = this.usuariosFacade.findByEmailAndPassword(email, password);
-            if (usuario == null) { //La contraseña introducida es incorrecta
-                strError = "La clave es incorrecta";
-                request.setAttribute("error", strError);
-                goTo = "login.jsp";
-            } else { //Login correcto
-                session.setAttribute("usuario", usuario);
-                
-                // Redireccionamos por rol
-                if (usuario.getRol() == 4) // Admin
-                    goTo = "eventosAdmin.jsp";
+        if (admin == null || admin.getRol() != 4) {
+            request.setAttribute("error", "Usuario sin permisos");
+            strTo = "login.jsp";
+        } else {
+
+            List<Usuarios> usuarios;
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+
+            if ((nombre != null && nombre.length() > 0)
+                    || (apellidos != null && apellidos.length() > 0)) {// Estoy aplicando filtros
+                usuarios     = this.usuariosFacade.filter(nombre, apellidos);
+            } else {  // Quiero mostrar todos
+                usuarios = this.usuariosFacade.findAll();
             }
+
+            request.setAttribute("usuarios", usuarios);
         }
-        
-        rd = request.getRequestDispatcher(goTo);
+        RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

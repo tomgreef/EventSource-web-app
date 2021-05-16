@@ -3,6 +3,9 @@
 body {
     font-family: Montserrat;
     color: black;
+    background-image: url('../img/bg.svg');
+    background-size:cover;
+    background-repeat: no-repeat;
 }
 
 /* COMPONENTES */
@@ -196,9 +199,9 @@ label {
 
 .evento-square {
 
-	overflow: hidden;
-	min-height: 36px; /* Remember absolute positioning is outside the page flow! */
-	position: relative;
+    overflow: hidden;
+    min-height: 36px; /* Remember absolute positioning is outside the page flow! */
+    position: relative;
     background-color: #7B2CBF;
     width: 60%;
     height: 15%;
@@ -226,10 +229,8 @@ label {
 }
 
 .container {
-    padding: 0 15vh;
-    display: flex;
-    align-items: center;    
-    justify-content: center;
+    padding: 0 60px;
+
 }
 
 .boton {
@@ -238,12 +239,30 @@ label {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 150px;
-    height: 40px;
+    width: 12vh;
+    height: 5vh;
     color: white;
     font-weight: bold;
     background: #FF9E00;
     border-radius: 10px;
+}
+
+.boton-rojo {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 11vh;
+    height: 4vh;
+    color: white;
+    background: red;
+    border-radius: 10px;
+}
+
+.boton-peque {
+    width: 8vh;
+    height: 3vh;
 }
 
 .filas {
@@ -268,7 +287,7 @@ label {
 }
 
 .objeto-col {
-    padding: 0 2vh;
+    padding: 0 1vh;
 }
 
 .objeto-col:first-child {
@@ -284,13 +303,18 @@ label {
     padding-bottom: 3vh;
 }
 
+.centrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* LOGIN */
 .login-backround{
     background: linear-gradient(180deg, #9D4EDD 0%, #9D4EDD 0.01%, #240046 100%);
     min-height: 100%;
     width: 100%;
-    height: 100vH;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -408,9 +432,7 @@ label {
 footer {
     background: #240046;
     color: white;
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    position: relative;
     width: 100%;
 }
 
@@ -434,18 +456,35 @@ footer {
 /* SIGN IN */
 .signUp-square {
     background-color: #FFFFFF;
-    width: 550px;
-    height: 650px;
-    left: 492px;
-    top: 206px;
+    width: 50%;
     border-radius: 0.5em;
     box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 50px;
+    margin: 60px 0;
+}
+
+/* Lista ususarios */
+.tablaUsuarios {
+    width:100%;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+td {
+    background-color: #FF9E00;
+    padding: 5px;
+}
+th {
+    text-align: left;
+}
+
+.sinFondo{
+    background-color: transparent;
 }
 
 /* MENSAJES */

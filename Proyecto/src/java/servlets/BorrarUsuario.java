@@ -17,13 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  *
  * @author tomvg
  */
-@WebServlet(name = "ServletAutenticar", urlPatterns = {"/ServletAutenticar"})
-public class Autenticar extends HttpServlet {
+@WebServlet(name = "BorrarUsuario", urlPatterns = {"/BorrarUsuario"})
+public class BorrarUsuario extends HttpServlet {
 
     @EJB
     private UsuariosFacade usuariosFacade;
@@ -39,39 +38,19 @@ public class Autenticar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String email, password, strError, goTo = "index.jsp";
-        Usuarios usuario;
-        RequestDispatcher rd;
+        String strId = request.getParameter("id");
         HttpSession session = request.getSession();
-        
-        email = request.getParameter("email");
-        password = request.getParameter("password");
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
 
-        if (email == null || email.isEmpty() || 
-            password == null || password.isEmpty()) {  // Error de autenticación por email o clave
-                                                       // vacíos o nulos.
-            strError = "Error de autenticación: alguno de los valores está vacío";
-            request.setAttribute("error", strError);
-            goTo = "login.jsp";
-        
-        } else { //El usuario sí está en la base de datos
-            usuario = this.usuariosFacade.findByEmailAndPassword(email, password);
-            if (usuario == null) { //La contraseña introducida es incorrecta
-                strError = "La clave es incorrecta";
-                request.setAttribute("error", strError);
-                goTo = "login.jsp";
-            } else { //Login correcto
-                session.setAttribute("usuario", usuario);
-                
-                // Redireccionamos por rol
-                if (usuario.getRol() == 4) // Admin
-                    goTo = "eventosAdmin.jsp";
-            }
+        if (admin == null || admin.getRol() != 4) {
+            request.setAttribute("error", "Usuario sin permisos");
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        } else {
+            Usuarios usuario = this.usuariosFacade.find(new Integer(strId));
+            this.usuariosFacade.remove(usuario);
+            response.sendRedirect("ListarUsuarios");
         }
-        
-        rd = request.getRequestDispatcher(goTo);
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

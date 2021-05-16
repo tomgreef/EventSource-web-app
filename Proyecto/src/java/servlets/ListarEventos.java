@@ -5,9 +5,11 @@
  */
 package servlets;
 
-import dao.UsuariosFacade;
+import dao.EventosFacade;
+import entidades.Eventos;
 import entidades.Usuarios;
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,16 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  *
  * @author tomvg
  */
-@WebServlet(name = "ServletAutenticar", urlPatterns = {"/ServletAutenticar"})
-public class Autenticar extends HttpServlet {
+@WebServlet(name = "ListarEventos", urlPatterns = {"/ListarEventos"})
+public class ListarEventos extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuariosFacade;
+    private EventosFacade eventosFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,38 +40,29 @@ public class Autenticar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String email, password, strError, goTo = "index.jsp";
-        Usuarios usuario;
-        RequestDispatcher rd;
+        String strTo = "eventos.jsp";
         HttpSession session = request.getSession();
-        
-        email = request.getParameter("email");
-        password = request.getParameter("password");
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
 
-        if (email == null || email.isEmpty() || 
-            password == null || password.isEmpty()) {  // Error de autenticación por email o clave
-                                                       // vacíos o nulos.
-            strError = "Error de autenticación: alguno de los valores está vacío";
-            request.setAttribute("error", strError);
-            goTo = "login.jsp";
-        
-        } else { //El usuario sí está en la base de datos
-            usuario = this.usuariosFacade.findByEmailAndPassword(email, password);
-            if (usuario == null) { //La contraseña introducida es incorrecta
-                strError = "La clave es incorrecta";
-                request.setAttribute("error", strError);
-                goTo = "login.jsp";
-            } else { //Login correcto
-                session.setAttribute("usuario", usuario);
-                
-                // Redireccionamos por rol
-                if (usuario.getRol() == 4) // Admin
-                    goTo = "eventosAdmin.jsp";
+        if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
+            // Excluimos usuarios, analistas y teleoperadores
+            request.setAttribute("error", "Usuario sin permisos");
+            strTo = "login.jsp";
+        } else {
+            List<Eventos> eventos;
+            String titulo = request.getParameter("nombre_evento")!=null?request.getParameter("nombre_evento"):null;
+            String costeStr = request.getParameter("precio_evento")!=null?request.getParameter("precio_evento"):null;
+            Double coste = costeStr!=null?(Double.parseDouble(costeStr)):0.0;
+
+            if ((titulo != null && titulo.length() > 0) || coste != 0) {// Estoy aplicando filtros
+                eventos = this.eventosFacade.filter(titulo, coste);
+            } else {  // Quiero mostrar todos
+                eventos = this.eventosFacade.findAll();
             }
+
+            request.setAttribute("eventos", eventos);
         }
-        
-        rd = request.getRequestDispatcher(goTo);
+        RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);
     }
 

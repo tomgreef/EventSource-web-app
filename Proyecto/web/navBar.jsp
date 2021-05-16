@@ -72,7 +72,8 @@
                 <span class="logo">Eventsource</span>
             </a>    
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
-            <a href="usuarios.jsp" class="objeto-col enlace-negro">Usuarios</a>
+            <a href="ListarUsuarios" class="objeto-col enlace-negro">Usuarios</a>
+            <a href="eventosAdmin.jsp" class="objeto-col enlace-negro">Eventos</a>
         </div>
         <div class="columna">
             <a href="Desautenticar" class="objeto-col boton">

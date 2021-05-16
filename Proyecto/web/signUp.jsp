@@ -21,19 +21,25 @@
         String[] listaRols;
         Usuarios usuario = (Usuarios) request.getAttribute("usuario");
         String nombre = "", apellidos = "", email = "", domicilio = "", ciudad = "",
-                edad = "", sexo = "", password = "";
+                edad = "", password = "", id = "";
+        Integer sexo = 0;
+        Integer rol = 0;
+        int crearOEditar = 1; //Variable que permite al admin editar rol 0, pero no crearla
         String botonSubmit = "Registrarse";
-        
-        if (usuario != null) {
+
+        if (usuario != null) { // Editar
             nombre = usuario.getNombre();
             apellidos = usuario.getApellidos();
             email = usuario.getEmail();
             domicilio = usuario.getDomicilio();
             ciudad = usuario.getCiudad();
             edad = usuario.getEdad() + "";
-            sexo = usuario.getSexo() + "";
+            sexo = usuario.getSexo();
             password = usuario.getPassword();
+            id = usuario.getUsuarioId().toString();
             botonSubmit = "Editar";
+            rol = usuario.getRol();
+            crearOEditar = 0;
         }
     %>
     <body>
@@ -46,36 +52,46 @@
                     <input class="campo" type="text" placeholder="Email*" name="email" value="<%= email%>">
                     <input class="campo" type="text" placeholder="Domicilio*" name="domicilio" value="<%= domicilio%>">
                     <input class="campo" type="text" placeholder="Ciudad*" name="ciudad" value="<%= ciudad%>">
-                    <input class="campo" type="text" placeholder="Edad*" name="edad" value="<%= edad%>"><br/>
-                    <div style="margin-left:46px;">
-                        Sexo*:
-                        <div style="margin-left:55px;">
-                            <input type="radio" name="sexo" value="1"/>Mujer<br/>
-                            <input type="radio" name="sexo" value="0"/>Hombre<br/>
-                            <input type="radio" name="sexo" value="-1"/>Otro<br/>
-                        </div>
+                    <input class="campo" type="text" placeholder="Edad*" name="edad" value="<%= edad%>">
+                    <% if (sexo == 1) {
+                    %>
+                    <div class="campo">
+                        <input  type = "radio" name = "sexo" value = "0" /> Hombre
+                        <input checked type = "radio" name = "sexo" value = "1" /> Mujer
                     </div>
+                    <% } else {
+                    %>
+                    <div class="campo">
+                        <input checked type = "radio" name = "sexo" value = "0" /> Hombre
+                        <input  type = "radio" name = "sexo" value = "1" /> Mujer
+                    </div>
+                    <%
+                        }
+                    %>
+                  
                     <input class="campo" type="password" placeholder="Contraseña*" name="password" value="<%= password%>">
                     <%
                         Usuarios admin = (Usuarios) session.getAttribute("usuario");
                         if (admin != null && admin.getRol() == 4) { // Es admin
                     %>
-                    <select name="rol">
+                    <select class="campo" name="rol">
                         <%
                             listaRols = new String[]{"Usuario", "Creador", "Analista", "Teleoperador", "Administrador"};
-                            Integer rol = usuario.getRol();
-                            for (int i = 0; i < 4; i++) {
+                            for (int i = crearOEditar; i < 5; i++) {
                                 String strSeleccionado = "";
-                                if (i == rol)
-                                    strSeleccionado = "selected";     
+                                if (i == rol) {
+                                    strSeleccionado = "selected";
+                                }
                         %>
-                        <option <%= strSeleccionado %> value="<%= i %>"><%= listaRols[i] %>></option>
+                        <option <%= strSeleccionado%> value="<%= i%>"><%= listaRols[i]%></option>
+                        <%    }
+                        %>
                     </select>
-                    <%    }
-
+                    <input hidden value="<%= id%>" name="id">
+                    <%
                         }
                     %>
-                    <input class="submit" type="submit" align="center" value=<%= botonSubmit %>>
+                    <input class="submit" type="submit" align="center" value=<%= botonSubmit%>>
                 </form>
             </div>
 

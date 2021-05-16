@@ -1,3 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="dao.EventosFacade"%>
+<%@page import="entidades.Eventos"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -9,6 +13,9 @@
         <link rel="stylesheet" href="styles/normalize.css">
         <link rel="stylesheet" href="styles/style.css">
     </head>
+    <%
+        List<Eventos> listaEventos = (List) request.getAttribute("eventos");
+    %>
     <body>
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -17,11 +24,27 @@
                         Filtros
                     </h2>
                 </li>
+                
+                <form action="ListarEventos" method="POST">
+                    <li>
+                    <input class="campo" type="text" placeholder="Nombre del evento" name="nombre_evento">
+                    </li>
+
+                    <li>
+                        <label for="start">Precio máximo</label>
+                        <input id="rangeInput" type="range" min="0" max="500" oninput="amount.value=rangeInput.value"name="precio_evento" />
+                        <br>
+                        <input id="amount" type="number" value="200" min="0" max="500" oninput="rangeInput.value=amount.value"  />
+                    </li>
+
+                    <li>
+                         <input type="submit" value="Filtrar" class="boton"/>
+                    </li>
+                </form>
+                
+                <%--
                 <li>
-                    <label for="start">Precio máximo</label>
-                    <input type="range" min="1" max="100" value="50">
-                </li>
-                <li>
+                    <br>
                     <label for="start">Desde:</label>
 
                     <input 
@@ -43,35 +66,45 @@
                 
                 
                 <li>
-                    <label for="start">Número de asientos disponibles</label>
+                    <label for="start">nº asientos disponibles</label>
                     <input type="number" id="quantity" name="quantity" min="1" max="2000">
                 </li>
-                
+         
                 
                 <li>
-                    <a href="#">Tags</a>
+                    <label for="start">Tags</label>
                 </li> 
                 
+                <li>
+                    <button class="boton pull-left" type="button">Concierto</button> <button  class="boton" type="button">Teatro</button>
+                </li>
                 
                 <li>
-                    <div class="boton"> Aplicar</div>
+                    <button class="boton" type="button">Charla</button> <button class="boton" type="button">Taller</button>
                 </li>
+                <br>
+                --%>
            </ul>
         </div>
-        
-        <div style="margin-right:30%" class = "evento-square">
-        <div class = "columnas">   
+        <div class ="filas">
+             
+        <%
+        for (Eventos e : listaEventos) {
+            String pattern = "dd-MM-yyyy";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        %>
+        <div class = fila>
+            <div style="margin-right:30%" class = "evento-square">
+            <div class = "columnas">   
  
          <div class= "filas" ptb-3 >
  
            <div class="fila tituloConcierto"style="width:650px; margin:0 auto;">
-           Titulo
+            <%=e.getTitulo()%>
            </div>
  
            <div style="color:white" class="filas container">
-           <strong>Descripción loren ipsum loren ipsum loren ipsum loren ipsum loren ipsum
-		   loren ipsum loren ipsum loren ipsum loren ipsum loren ipsum loren ipsum 
-		   loren ipsum loren ipsum loren ipsum</strong>
+           <strong><%=e.getDescripcion()%></strong>
            </div>
          </div>
  
@@ -79,26 +112,42 @@
  
            <div style="color:white" class="fila alinearDerecha">
            <strong>Fecha del evento:</strong>
+           <%=simpleDateFormat.format(e.getFecha())%>
            </div>
  
            <div style="color:white" class="fila alinearDerecha">
            <strong>Fecha límite de reserva:</strong>
+           <br>
+            <%=simpleDateFormat.format(e.getFechaLimite())%>
            </div>
  
            <div style="color:white" class="fila alinearDerecha">
            <strong>Aforo:</strong>
+           <br>
+           <%=e.getAforo()%>
            </div>
-		   
+           
+           <div style="color:white" class="fila alinearDerecha">
+           <strong>Precio</strong>
+           <br>
+           <%=e.getCoste()%>
+           </div>
 		    
-           <div class="boton alinearDerecha">
+           <button class="boton alinearDerecha" href="/login.jsp">
            <strong>Reservar</strong>
-           </div>
+           </button>
 		   
          </div>
  
+            </div>
+            
         </div>
             
-            
+        </div>
+        <%
+        }
+            %>
+        </div>
             
     </body>
 </html>
