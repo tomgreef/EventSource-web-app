@@ -66,7 +66,7 @@ public class Autenticar extends HttpServlet {
                 
                 // Redireccionamos por rol
                 if (usuario.getRol() == 4) // Admin
-                    goTo = "eventosAdmin.jsp";
+                    goTo = "ListarEventos";
             }
         }
         

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : newEvent
-    Created on : 29-abr-2021, 18:33:36
-    Author     : yisus
---%>
-
 <%@page import="entidades.Etiquetas"%>
 <%@page import="entidades.Reservas"%>
 <%@page import="java.util.List"%>
@@ -31,8 +25,6 @@
         int aforo = 0;
         int entradasMaximas = 0;
         double coste = 0;
-        List<Reservas> reservasList = null;
-        List<Etiquetas> etiquetasList = null;
         int crearOEditar = 1;
         String botonSubmit = "Crear";
         
@@ -47,8 +39,6 @@
             aforo = evento.getAforo();
             entradasMaximas = evento.getEntradasMaxima();
             coste = evento.getCoste();
-            reservasList = evento.getReservasList();
-            etiquetasList = evento.getEtiquetasList();
             crearOEditar = 0;
             botonSubmit = "Editar";
         }
@@ -58,7 +48,7 @@
         <jsp:include page="navBar.jsp" />
         <% if(crearOEditar == 1){%>
             <h2 class="tituloCrearUyE" align="center"> CREAR NUEVO EVENTO </h2> 
-            <%}else if (crearOEditar == 0){%>
+            <%}else {%>
             <h2 class="tituloCrearUyE" align="center"> EDITAR EVENTO </h2>
             <% } %>
         <div class="crearUyE-square">
@@ -90,19 +80,8 @@
                 <p class="textoFormulario" align="left"> Descripcion del Evento:
                     <br><br/>
                     <textarea class="campo" type="text" align="left" 
-                              rows="5" cols="45" placeholder="Descripcion" name="descripcion" value="<%= descripcion%>"></textarea>
-<%-- 
+                              rows="5" cols="45" placeholder="Descripcion" name="descripcion"><%= descripcion%></textarea>
 
-               <%-- 
-
-                <% if(crearOEditar == 1){%>
-                <a href="CrearEvento" class="boton" align="right">
-                    Crear
-                <%}else if (crearOEditar == 0){%>
-                <a href="EditarEvento" class="boton" align="right">
-                    Editar
-                <% } %>
---%>
                 <input class="submit" type="submit" align="center" value=<%= botonSubmit%>>
 
             </form>

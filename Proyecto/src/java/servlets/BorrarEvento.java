@@ -51,7 +51,7 @@ public class BorrarEvento extends HttpServlet {
         } else {
             Eventos evento = this.eventosFacade.find(new Integer(strId));
             this.eventosFacade.remove(evento);
-            response.sendRedirect("ListarUsuarios");
+            response.sendRedirect("ListarEventos");
         }
     }
 

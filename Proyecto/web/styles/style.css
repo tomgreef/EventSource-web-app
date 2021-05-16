@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
 
-body {
+body, html {
     font-family: Montserrat;
     color: black;
     background-image: url('../img/bg.svg');
     background-size:cover;
     background-repeat: no-repeat;
+    min-height: 100%;
 }
 
 /* COMPONENTES */
@@ -438,6 +439,7 @@ footer {
     background: #240046;
     color: white;
     position: relative;
+    bottom: 0px;
     width: 100%;
 }
 

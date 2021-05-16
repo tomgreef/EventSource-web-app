@@ -79,9 +79,7 @@
             </a>    
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
             <a href="ListarUsuarios" class="objeto-col enlace-negro">Usuarios</a>
-            <a href="eventosAdmin.jsp" class="objeto-col enlace-negro">Eventos</a>
-            <a href="ListarEventos" class="objeto-col enlace-negro">Ver eventos</a>
-            <a href="ListarMisEventos" class="objeto-col enlace-negro">Mis eventos</a>
+            <a href="ListarEventos" class="objeto-col enlace-negro">Eventos</a>
         </div>
         
         <div class="columna">

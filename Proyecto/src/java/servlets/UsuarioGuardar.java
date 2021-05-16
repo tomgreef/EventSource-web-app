@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "UsuarioGuardar", urlPatterns = {"/UsuarioGuardar"})
 public class UsuarioGuardar extends HttpServlet {
-
+    
     @EJB
     private UsuariosFacade usuarioFacade;
 
@@ -40,7 +40,7 @@ public class UsuarioGuardar extends HttpServlet {
         String strTo = "index.jsp";
         String id, nombre, email, apellidos, domicilio, ciudad, sexo, edad, password, rol;
         Usuarios usuario;
-
+        
         id = request.getParameter("id");
         nombre = request.getParameter("nombre");
         apellidos = request.getParameter("apellidos");
@@ -51,13 +51,13 @@ public class UsuarioGuardar extends HttpServlet {
         sexo = request.getParameter("sexo");
         password = request.getParameter("password");
         rol = request.getParameter("rol");
-
+        
         if (id == null || id.isEmpty()) { // Crear nuevo cliente
             usuario = new Usuarios();
         } else { // Editar cliente existente
             usuario = this.usuarioFacade.find(new Integer(id));
         }
-
+        
         usuario.setNombre(nombre);
         usuario.setApellidos(apellidos);
         usuario.setEmail(email);
@@ -66,21 +66,28 @@ public class UsuarioGuardar extends HttpServlet {
         usuario.setEdad(new Integer(edad));
         usuario.setSexo(new Integer(sexo));
         usuario.setPassword(password);
-
+        
         if (id == null || id.isEmpty()) { // Crear nuevo cliente 
-            usuario.setRol(0);
+            if (rol == null || rol.isEmpty()) {
+                usuario.setRol(0);
+            } else {
+                usuario.setRol(new Integer(rol));
+            }
+            
             HttpSession session = request.getSession();
             this.usuarioFacade.create(usuario);
             Usuarios admin = (Usuarios) session.getAttribute("usuario");
             if (admin != null && admin.getRol() == 4) {
-                strTo= "ListarUsuarios";
+                strTo = "ListarUsuarios";
+            } else {
+                session.setAttribute("usuario", usuario);
             }
         } else { // Editar cliente existente
             strTo = "ListarUsuarios";
             usuario.setRol(new Integer(rol));
             this.usuarioFacade.edit(usuario);
         }
-
+        
         response.sendRedirect(strTo);
     }
 
