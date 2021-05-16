@@ -1,3 +1,4 @@
+<%@page import="entidades.Reservas"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.EventosFacade"%>
@@ -13,13 +14,17 @@
         <link rel="stylesheet" href="styles/normalize.css">
         <link rel="stylesheet" href="styles/style.css">
         
+        
     </head>
     <%
         List<Eventos> listaEventos = (List) request.getAttribute("eventos");
     %>
     <body>
-        
         <jsp:include page="navBar.jsp" /> 
+        
+        <h1 class="titulo">
+            Mis eventos (voy a asistir o he asistido)
+        </h1>
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
@@ -57,7 +62,15 @@
         <%
         for (Eventos e : listaEventos) {
             String pattern = "dd-MM-yyyy";
+            int i = 0;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            
+            Double coste =e.getCoste();
+            String costeString = coste.toString();
+            if(coste==0)
+            {
+                costeString = "gratis";
+            }
         %>
         <div class = fila>
             <div style="margin-right:30%" class = "evento-square">
@@ -69,13 +82,25 @@
             <%=e.getTitulo()%>
            </div>
  
-            <div style="color:white" class="filas container">
-                <p class="textoDescripcion"><%=e.getDescripcion()%></p>
-            </div>
+           <div style="color:white" class="fila container">
+               <p class="textoDescripcion"><strong><%=e.getDescripcion()%></strong></p>
+           </div>
+           
+           <div style="color:white" class="fila alinearDerecha">
+           <strong>Cantidad de entradas:</strong>
+           <%=e.getReservasList().get(i).getCantidad()%>
+           </div>
+           
+           <div style="color:white" class="fila alinearDerecha">
+           <strong>Fila y columna:</strong>
+           <%=e.getReservasList().get(i).getAsientoFila()%>,
+           <%=e.getReservasList().get(i).getAsientoColumna()%>
+           </div>
+           
          </div>
  
          <div class= "filas ptb-3">
- 
+             
            <div style="color:white" class="fila alinearDerecha">
            <strong>Fecha del evento:</strong>
            <%=simpleDateFormat.format(e.getFecha())%>
@@ -96,11 +121,9 @@
            <div style="color:white" class="fila alinearDerecha">
            <strong>Precio</strong>
            <br>
-           <%=e.getCoste()%>
-           </div>
-		    
-           <button class="boton alinearDerecha" href="/login.jsp">
-           <strong>Reservar</strong>
+           <%=costeString%>
+           </div>	    
+            <a href="CancelarReserva?id=<%= e.getReservasList().get(i).getReservaId()%>" class="boton boton-peque">Cancelar</a>
            </button>
 		   
          </div>
@@ -111,7 +134,7 @@
             
         </div>
         <%
-        }
+        i++;}
             %>
         </div>
             
