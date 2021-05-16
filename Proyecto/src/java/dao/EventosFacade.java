@@ -6,6 +6,9 @@
 package dao;
 
 import entidades.Eventos;
+import entidades.Reservas;
+import entidades.Usuarios;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -75,7 +78,6 @@ public class EventosFacade extends AbstractFacade<Eventos> {
             } else {
                 q = this.em.createQuery("SELECT a FROM Eventos a WHERE a.titulo LIKE :titulo");
                 q.setParameter("titulo", "%" + titulo + "%");
-
             }
         } else {
             if (coste != 0) {
@@ -87,6 +89,19 @@ public class EventosFacade extends AbstractFacade<Eventos> {
         }
 
         listaEventos = q.getResultList();
+        return listaEventos;
+    }
+    
+    public List<Eventos> filterAsistedAndAsisting(List<Reservas> reservas) {
+        Query q;
+        List<Eventos> listaEventos = new ArrayList<>();
+        q = this.em.createQuery("SELECT e FROM Eventos e WHERE e.eventoId = :reservaId");
+        
+        for(int i=0;i<reservas.size();i++)
+        {
+            q.setParameter("reservaId",(reservas.get(i).getEventoId().getEventoId()));
+            listaEventos.addAll(q.getResultList());
+        }
         return listaEventos;
     }
     
