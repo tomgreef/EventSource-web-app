@@ -63,12 +63,12 @@ public class EventosFacade extends AbstractFacade<Eventos> {
         return q.getResultList();
     }
     
-    public List<Eventos> filter(String titulo, String coste) {
+    public List<Eventos> filter(String titulo, double coste) {
         Query q;
         List<Eventos> listaEventos;
 
         if (titulo.length() > 0) {
-            if (coste.length() > 0) {
+            if (coste != 0) {
                 q = this.em.createQuery("SELECT a FROM Eventos a WHERE a.titulo LIKE :titulo AND a.coste <= :coste");
                 q.setParameter("titulo", "%" + titulo+ "%");
                 q.setParameter("coste", coste);
@@ -78,7 +78,7 @@ public class EventosFacade extends AbstractFacade<Eventos> {
 
             }
         } else {
-            if (coste.length() > 0) {
+            if (coste != 0) {
                 q = this.em.createQuery("SELECT a FROM Eventos a WHERE a.coste <= :coste");
                 q.setParameter("coste",coste);
             } else {
