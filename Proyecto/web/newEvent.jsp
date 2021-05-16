@@ -91,7 +91,10 @@
                     <br><br/>
                     <textarea class="campo" type="text" align="left" 
                               rows="5" cols="45" placeholder="Descripcion" name="descripcion" value="<%= descripcion%>"></textarea>
+<%-- 
+
                <%-- 
+
                 <% if(crearOEditar == 1){%>
                 <a href="CrearEvento" class="boton" align="right">
                     Crear
@@ -101,6 +104,7 @@
                 <% } %>
 --%>
                 <input class="submit" type="submit" align="center" value=<%= botonSubmit%>>
+
             </form>
         </div>    
     </body>
