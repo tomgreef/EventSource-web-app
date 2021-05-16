@@ -52,7 +52,7 @@
                     <input class="campo" type="text" placeholder="Email*" name="email" value="<%= email%>">
                     <input class="campo" type="text" placeholder="Domicilio*" name="domicilio" value="<%= domicilio%>">
                     <input class="campo" type="text" placeholder="Ciudad*" name="ciudad" value="<%= ciudad%>">
-                    <input class="campo" type="text" placeholder="Edad*" name="edad" value="<%= edad%>">
+                    <input class="campo" type="number" placeholder="Edad*" name="edad" value="<%= edad%>">
                     <% if (sexo == 1) {
                     %>
                     <div class="campo">

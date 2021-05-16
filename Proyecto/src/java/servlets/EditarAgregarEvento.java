@@ -50,9 +50,9 @@ public class EditarAgregarEvento extends HttpServlet {
         } else {
             String id = request.getParameter("id");
 
-            if (id != null) { // Es editar cliente
+            if (id != null) { // Es editar evento
                 Eventos evento = this.eventosFacade.find(new Integer(id));
-                request.setAttribute("usuario", evento);
+                request.setAttribute("evento", evento);
             }
         }
 

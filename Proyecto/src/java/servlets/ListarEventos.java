@@ -41,6 +41,7 @@ public class ListarEventos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String strTo = "eventos.jsp";
+        Double coste = 0.0;
         HttpSession session = request.getSession();
         Usuarios admin = (Usuarios) session.getAttribute("usuario");
 
@@ -50,17 +51,23 @@ public class ListarEventos extends HttpServlet {
             strTo = "login.jsp";
         } else {
             List<Eventos> eventos;
-            String titulo = request.getParameter("nombre_evento")!=null?request.getParameter("nombre_evento"):null;
-            String costeStr = request.getParameter("precio_evento")!=null?request.getParameter("precio_evento"):null;
-            Double coste = costeStr!=null?(Double.parseDouble(costeStr)):0.0;
-
-            if ((titulo != null && titulo.length() > 0) || coste != 0) {// Estoy aplicando filtros
+            String titulo = request.getParameter("titulo") != null ? request.getParameter("titulo") : null;
+            String costeStr = request.getParameter("coste") != null ? request.getParameter("coste") : null;
+            if (costeStr != null && costeStr.length() > 0){
+                coste =  new Double (costeStr);
+            }
+            
+            if ((titulo != null && titulo.length() > 0) || coste != 0.0) {// Estoy aplicando filtros
                 eventos = this.eventosFacade.filter(titulo, coste);
             } else {  // Quiero mostrar todos
                 eventos = this.eventosFacade.findAll();
             }
 
             request.setAttribute("eventos", eventos);
+
+            if (admin.getRol() == 4) {
+                strTo = "eventosAdmin.jsp";
+            }
         }
         RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);

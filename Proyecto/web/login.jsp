@@ -27,7 +27,7 @@
                     <p class="centrar" style="color:red; font-weight: bold"><%= strError %><p> 
                     <input class="campo" type="text" align="center" placeholder="Email" name="email">
                     <input class="campo" type="password" align="center" placeholder="Contrase&ntilde;a" name="password">
-                    <input class="submit" type="submit" align="center">
+                    <input class="submit" type="submit" align="center" value="Iniciar sesión">
                 </form>
                 <div align="center">
                     <a href="signUp.jsp" class="forgot">¡Registrate aquí!</a>
