@@ -46,7 +46,7 @@ public class EventoGuardar extends HttpServlet {
      */
      protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        String strTo = "eventos.jsp";
+        String strTo = "ListarEventos";
         String titulo, descripcion, eventoID, filas, columnas, fecha, fechaLimite, aforo, entradasMaximas, coste;
         Eventos evento;
         
@@ -87,10 +87,7 @@ public class EventoGuardar extends HttpServlet {
 
         if (eventoID == null || eventoID.isEmpty()) { // Crear nuevo cliente 
             this.eventosFacade.create(evento);
-            strTo = "ListarEventos";
-            
         } else { // Editar cliente existente
-            strTo = "ListarEventos";
             this.eventosFacade.edit(evento);
         }
 
