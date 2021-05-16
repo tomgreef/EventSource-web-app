@@ -92,6 +92,7 @@
                 <span class="logo">Eventsource</span>
             </a>    
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
+            <a href="ChatCrear" class="objeto-col enlace-negro">Crear Chat</a>
         </div>
         <div class="columna">
             <a href="Desautenticar" class="objeto-col boton">
