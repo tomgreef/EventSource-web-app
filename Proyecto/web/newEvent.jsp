@@ -83,6 +83,7 @@
                               rows="5" cols="45" placeholder="Descripcion" name="descripcion"><%= descripcion%></textarea>
 
                 <input class="submit" type="submit" align="center" value=<%= botonSubmit%>>
+
             </form>
         </div>    
     </body>
