@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
  *
  * @author tomvg
  */
+
 @Stateless
 public class UsuariosService {
 

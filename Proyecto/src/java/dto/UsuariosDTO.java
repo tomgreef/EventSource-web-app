@@ -103,5 +103,4 @@ public class UsuariosDTO {
     public void setRol(int rol) {
         this.rol = rol;
     }
-
 }
