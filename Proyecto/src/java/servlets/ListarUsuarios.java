@@ -5,7 +5,7 @@
  */
 package servlets;
 
-import dao.UsuariosFacade;
+import dto.UsuariosDTO;
 import entidades.Usuarios;
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.UsuariosService;
 
 /**
  *
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpSession;
 public class ListarUsuarios extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuariosFacade;
+    private UsuariosService usuariosService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,16 +49,11 @@ public class ListarUsuarios extends HttpServlet {
             strTo = "login.jsp";
         } else {
 
-            List<Usuarios> usuarios;
+            List<UsuariosDTO> usuarios;
             String nombre = request.getParameter("nombre");
             String apellidos = request.getParameter("apellidos");
 
-            if ((nombre != null && nombre.length() > 0)
-                    || (apellidos != null && apellidos.length() > 0)) {// Estoy aplicando filtros
-                usuarios     = this.usuariosFacade.filter(nombre, apellidos);
-            } else {  // Quiero mostrar todos
-                usuarios = this.usuariosFacade.findAll();
-            }
+            usuarios = this.usuariosService.listarClientes(nombre, apellidos);
 
             request.setAttribute("usuarios", usuarios);
         }
