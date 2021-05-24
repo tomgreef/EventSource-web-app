@@ -6,7 +6,6 @@
 package servlets;
 
 import dto.UsuariosDTO;
-import entidades.Usuarios;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -42,7 +41,7 @@ public class ListarUsuarios extends HttpServlet {
             throws ServletException, IOException {
         String strTo = "usuarios.jsp";
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
 
         if (admin == null || admin.getRol() != 4) {
             request.setAttribute("error", "Usuario sin permisos");

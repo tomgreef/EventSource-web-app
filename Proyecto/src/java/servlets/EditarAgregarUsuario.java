@@ -5,8 +5,7 @@
  */
 package servlets;
 
-import dao.UsuariosFacade;
-import entidades.Usuarios;
+import dto.UsuariosDTO;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.UsuariosService;
 
 /**
  *
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 public class EditarAgregarUsuario extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuariosFacade;
+    private UsuariosService usuariosService;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,7 +40,7 @@ public class EditarAgregarUsuario extends HttpServlet {
             throws ServletException, IOException {
         String strTo = "signUp.jsp";
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
         
         if (admin == null || admin.getRol() != 4) {
             request.setAttribute("error", "Usuario sin permisos");
@@ -49,7 +49,7 @@ public class EditarAgregarUsuario extends HttpServlet {
             String id = request.getParameter("id");
 
             if (id != null) { // Es editar cliente
-                Usuarios usuario = this.usuariosFacade.find(new Integer(id));
+                UsuariosDTO usuario = this.usuariosService.find(new Integer(id));
                 request.setAttribute("usuario", usuario);
             }
         }

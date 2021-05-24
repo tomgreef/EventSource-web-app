@@ -5,8 +5,7 @@
  */
 package servlets;
 
-import dao.UsuariosFacade;
-import entidades.Usuarios;
+import dto.UsuariosDTO;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.UsuariosService;
 
 
 /**
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 public class Autenticar extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuariosFacade;
+    private UsuariosService usuariosService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +41,7 @@ public class Autenticar extends HttpServlet {
             throws ServletException, IOException {
 
         String email, password, strError, goTo = "index.jsp";
-        Usuarios usuario;
+        UsuariosDTO usuario;
         RequestDispatcher rd;
         HttpSession session = request.getSession();
         
@@ -56,7 +56,7 @@ public class Autenticar extends HttpServlet {
             goTo = "login.jsp";
         
         } else { //El usuario sí está en la base de datos
-            usuario = this.usuariosFacade.findByEmailAndPassword(email, password);
+            usuario = this.usuariosService.findByEmailAndPassword(email, password);
             if (usuario == null) { //La contraseña introducida es incorrecta
                 strError = "La clave es incorrecta";
                 request.setAttribute("error", strError);

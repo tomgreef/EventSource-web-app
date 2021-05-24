@@ -4,9 +4,9 @@
     Author     : kkeyl
 --%>
 
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,7 +19,7 @@
     </head>
     <%
         String[] listaRols;
-        Usuarios usuario = (Usuarios) request.getAttribute("usuario");
+        UsuariosDTO usuario = (UsuariosDTO) request.getAttribute("usuario");
         String nombre = "", apellidos = "", email = "", domicilio = "", ciudad = "",
                 edad = "", password = "", id = "";
         Integer sexo = 0;
@@ -71,7 +71,7 @@
                   
                     <input class="campo" type="password" placeholder="Contraseña*" name="password" value="<%= password%>">
                     <%
-                        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+                        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
                         if (admin != null && admin.getRol() == 4) { // Es admin
                     %>
                     <select class="campo" name="rol">
