@@ -5,8 +5,7 @@
  */
 package servlets;
 
-import dao.UsuariosFacade;
-import entidades.Usuarios;
+import dto.UsuariosDTO;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.UsuariosService;
 
 /**
  *
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 public class BorrarUsuario extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuariosFacade;
+    private UsuariosService usuariosService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,15 +40,14 @@ public class BorrarUsuario extends HttpServlet {
             throws ServletException, IOException {
         String strId = request.getParameter("id");
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
 
         if (admin == null || admin.getRol() != 4) {
             request.setAttribute("error", "Usuario sin permisos");
             RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
             rd.forward(request, response);
         } else {
-            Usuarios usuario = this.usuariosFacade.find(new Integer(strId));
-            this.usuariosFacade.remove(usuario);
+            this.usuariosService.remove(new Integer(strId));
             response.sendRedirect("ListarUsuarios");
         }
     }

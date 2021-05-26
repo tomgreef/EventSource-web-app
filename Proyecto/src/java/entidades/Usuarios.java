@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import dto.UsuariosDTO;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -260,4 +261,19 @@ public class Usuarios implements Serializable {
         return "entidades.Usuarios[ usuarioId=" + usuarioId + " ]";
     }
     
+    public UsuariosDTO getDTO() {
+        UsuariosDTO dto = new UsuariosDTO();
+        
+        dto.setUsuarioId(usuarioId);
+        dto.setNombre(nombre);
+        dto.setApellidos(apellidos);
+        dto.setDomicilio(domicilio);
+        dto.setCiudad(ciudad);
+        dto.setEdad(edad);
+        dto.setSexo(sexo);
+        dto.setRol(rol);
+        dto.setEmail(email);
+        
+        return dto;
+    }
 }

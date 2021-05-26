@@ -6,8 +6,8 @@
 package servlets;
 
 import dao.EventosFacade;
+import dto.UsuariosDTO;
 import entidades.Eventos;
-import entidades.Usuarios;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -43,7 +43,7 @@ public class ListarEventos extends HttpServlet {
         String strTo = "eventos.jsp";
         Double coste = 0.0;
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
 
         if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
             // Excluimos usuarios, analistas y teleoperadores
