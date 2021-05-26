@@ -1,3 +1,4 @@
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="entidades.Usuarios" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -10,7 +11,7 @@
         <link rel="stylesheet" href="styles/style.css">
     </head>
     <%
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        UsuariosDTO usuario = (UsuariosDTO)session.getAttribute("usuario");
         if(usuario != null){
     %>
            <jsp:forward page="index.jsp"></jsp:forward>

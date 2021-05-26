@@ -1,3 +1,4 @@
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,7 +12,7 @@
         <link rel="stylesheet" href="styles/style.css">
     </head>
     <%
-        List<Usuarios> lista = (List) request.getAttribute("usuarios");
+        List<UsuariosDTO> lista = (List) request.getAttribute("usuarios");
     %>
     <body>
         <jsp:include page="navBar.jsp" />   
@@ -45,7 +46,7 @@
                 </thead>
                 <tbody>
                     <%
-                        for (Usuarios u : lista) {
+                        for (UsuariosDTO u : lista) {
                     %>
                     <tr>
                         <td><%= u.getUsuarioId()%></td>
