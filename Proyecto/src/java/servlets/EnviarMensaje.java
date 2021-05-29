@@ -5,8 +5,12 @@
  */
 package servlets;
 
-import dto.UsuariosDTO;
+import dao.MensajesFacade;
+import entidades.Mensajes;
+import entidades.Usuarios;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,46 +19,36 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import service.UsuariosService;
 
 /**
  *
- * @author tomvg
+ * @author kkeyl
  */
-@WebServlet(name = "EditarAgregarUsuario", urlPatterns = {"/EditarAgregarUsuario"})
-public class EditarAgregarUsuario extends HttpServlet {
+@WebServlet(name = "EnviarMensaje", urlPatterns = {"/EnviarMensaje"})
+public class EnviarMensaje extends HttpServlet {
 
     @EJB
-    private UsuariosService usuariosService;
+    MensajesFacade mensajesFacade;
     
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "signUp.jsp";
         HttpSession session = request.getSession();
-        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
         
-        if (admin == null || admin.getRol() != 4) {
-            request.setAttribute("error", "Usuario sin permisos");
-            strTo = "login.jsp";
-        } else {
-            String id = request.getParameter("id");
-
-            if (id != null) { // Es editar cliente
-                UsuariosDTO usuario = this.usuariosService.find(new Integer(id));
-                request.setAttribute("usuario", usuario);
-            }
-        }
-
-        RequestDispatcher rd = request.getRequestDispatcher(strTo);
+        String usuarioId = request.getParameter("usuarioId");
+        String mensaje = request.getParameter("mensaje");
+        String chatId = request.getParameter("chatId");
+        Date date = new Date();
+        
+        if (mensaje != null) {
+           Mensajes m = new Mensajes(new Integer(chatId), date, new Integer(usuarioId));
+           m.setMensaje(mensaje);
+           mensajesFacade.create(m);
+        } 
+        
+        String goTo = "MensajeListar?id="+chatId;
+        //RequestDispatcher rd = request.getRequestDispatcher("MensajeListar?id="+chatId);
+        RequestDispatcher rd = request.getRequestDispatcher(goTo);
         rd.forward(request, response);
     }
 

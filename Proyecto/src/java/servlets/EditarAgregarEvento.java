@@ -6,8 +6,8 @@
 package servlets;
 
 import dao.EventosFacade;
+import dto.UsuariosDTO;
 import entidades.Eventos;
-import entidades.Usuarios;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -41,7 +41,7 @@ public class EditarAgregarEvento extends HttpServlet {
             throws ServletException, IOException {
         String strTo = "newEvent.jsp";
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
 
         if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
             // Excluimos usuarios, analistas y teleoperadores
@@ -50,9 +50,9 @@ public class EditarAgregarEvento extends HttpServlet {
         } else {
             String id = request.getParameter("id");
 
-            if (id != null) { // Es editar cliente
+            if (id != null) { // Es editar evento
                 Eventos evento = this.eventosFacade.find(new Integer(id));
-                request.setAttribute("usuario", evento);
+                request.setAttribute("evento", evento);
             }
         }
 

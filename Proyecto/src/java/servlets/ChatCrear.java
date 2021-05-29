@@ -5,8 +5,13 @@
  */
 package servlets;
 
-import dto.UsuariosDTO;
+import dao.ChatsFacade;
+import dao.UsuariosFacade;
+import entidades.Chats;
+import entidades.Usuarios;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,47 +20,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import service.UsuariosService;
 
 /**
  *
- * @author tomvg
+ * @author kkeyl
  */
-@WebServlet(name = "EditarAgregarUsuario", urlPatterns = {"/EditarAgregarUsuario"})
-public class EditarAgregarUsuario extends HttpServlet {
+@WebServlet(name = "ChatCrear", urlPatterns = {"/ChatCrear"})
+public class ChatCrear extends HttpServlet {
 
     @EJB
-    private UsuariosService usuariosService;
+    private ChatsFacade chatsFacade;
     
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    @EJB
+    private UsuariosFacade usuariosFacade;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "signUp.jsp";
         HttpSession session = request.getSession();
-        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        Usuarios teleoperador = usuariosFacade.getTeleoperador();
+        Chats chat = new Chats();
+        Date date = new Date();
+        chat.setFecha(date);
+        chat.setUsuarioId(usuario);
+        chat.setTeleoperadorId(teleoperador);
         
-        if (admin == null || admin.getRol() != 4) {
-            request.setAttribute("error", "Usuario sin permisos");
-            strTo = "login.jsp";
-        } else {
-            String id = request.getParameter("id");
-
-            if (id != null) { // Es editar cliente
-                UsuariosDTO usuario = this.usuariosService.find(new Integer(id));
-                request.setAttribute("usuario", usuario);
-            }
-        }
-
-        RequestDispatcher rd = request.getRequestDispatcher(strTo);
-        rd.forward(request, response);
+        this.chatsFacade.create(chat);
+        
+        request.setAttribute("chatId", chat.getChatId());
+        response.sendRedirect("MensajeListar?id="+chat.getChatId());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

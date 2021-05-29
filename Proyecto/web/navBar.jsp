@@ -1,7 +1,8 @@
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+    UsuariosDTO usuario = (UsuariosDTO) session.getAttribute("usuario");
     if(usuario != null){
     switch (usuario.getRol()) {
         case 1: // Creador de eventos
@@ -79,9 +80,7 @@
             </a>    
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
             <a href="ListarUsuarios" class="objeto-col enlace-negro">Usuarios</a>
-            <a href="eventosAdmin.jsp" class="objeto-col enlace-negro">Eventos</a>
-            <a href="ListarEventos" class="objeto-col enlace-negro">Ver eventos</a>
-            <a href="ListarMisEventos" class="objeto-col enlace-negro">Mis eventos</a>
+            <a href="ListarEventos" class="objeto-col enlace-negro">Eventos</a>
         </div>
         
         <div class="columna">
@@ -103,6 +102,7 @@
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
             <a href="ListarEventos" class="objeto-col enlace-negro">Ver eventos</a>
             <a href="ListarMisEventos" class="objeto-col enlace-negro">Mis eventos</a>
+            <a href="ChatCrear" class="objeto-col enlace-negro">Crear Chat</a>
         </div>
         
         <div class="columna">

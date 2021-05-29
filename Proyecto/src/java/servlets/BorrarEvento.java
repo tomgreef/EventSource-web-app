@@ -6,8 +6,8 @@
 package servlets;
 
 import dao.EventosFacade;
+import dto.UsuariosDTO;
 import entidades.Eventos;
-import entidades.Usuarios;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -41,7 +41,7 @@ public class BorrarEvento extends HttpServlet {
             throws ServletException, IOException {
         String strId = request.getParameter("id");
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
 
          if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
             // Excluimos usuarios, analistas y teleoperadores
@@ -51,7 +51,7 @@ public class BorrarEvento extends HttpServlet {
         } else {
             Eventos evento = this.eventosFacade.find(new Integer(strId));
             this.eventosFacade.remove(evento);
-            response.sendRedirect("ListarUsuarios");
+            response.sendRedirect("ListarEventos");
         }
     }
 
