@@ -2,7 +2,6 @@
 <%@page import="java.util.List"%>
 <%@page import="dao.EventosFacade"%>
 <%@page import="entidades.Eventos"%>
-<%@page import="entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -16,7 +15,6 @@
         
     </head>
     <%
-        Usuarios usuario = (Usuarios)request.getAttribute("usuario");
         List<Eventos> listaEventos = (List) request.getAttribute("eventos");
     %>
     <body>
@@ -46,7 +44,12 @@
                          <input type="submit" value="Filtrar" class="boton"/>
                     </li>
                 </form>
-
+                
+                  <li class="sidebar-brand boton">
+                    <button>
+                        Mis eventos
+                    </button>
+                </li>
            </ul>
         </div>
         <div class ="filas">
@@ -95,9 +98,11 @@
            <br>
            <%=e.getCoste()%>
            </div>
-
-           <a href="CrearReserva?idEvento=<%= e.getEventoId()%>&idUsuario=<%=usuario.getUsuarioId()%>" class="boton boton-peque">Reservar</a> 
-           
+		    
+           <button class="boton alinearDerecha" href="/login.jsp">
+           <strong>Reservar</strong>
+           </button>
+		   
          </div>
  
             </div>

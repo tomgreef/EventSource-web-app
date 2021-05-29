@@ -63,7 +63,6 @@ public class ListarEventos extends HttpServlet {
                 eventos = this.eventosFacade.findAll();
             }
 
-            request.setAttribute("usuario", admin);
             request.setAttribute("eventos", eventos);
 
             if (admin.getRol() == 4) {
