@@ -60,6 +60,7 @@ public class ListarEventos extends HttpServlet {
                 eventos = this.eventosFacade.findAll();
             }
 
+            request.setAttribute("usuario", admin);
             request.setAttribute("eventos", eventos);
         }
         RequestDispatcher rd = request.getRequestDispatcher(strTo);
