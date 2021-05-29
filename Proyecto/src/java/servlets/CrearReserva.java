@@ -6,10 +6,13 @@
 package servlets;
 
 import dao.EventosFacade;
-import dto.UsuariosDTO;
+import dao.ReservasFacade;
+import dao.UsuariosFacade;
 import entidades.Eventos;
+import entidades.Reservas;
+import entidades.Usuarios;
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,13 +24,21 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author tomvg
+ * @author Kevin
  */
-@WebServlet(name = "ListarEventos", urlPatterns = {"/ListarEventos"})
-public class ListarEventos extends HttpServlet {
+@WebServlet(name = "CrearReserva", urlPatterns = {"/CrearReserva"})
+public class CrearReserva extends HttpServlet {
+
 
     @EJB
+    private ReservasFacade reservasFacade;
+    
+    @EJB
     private EventosFacade eventosFacade;
+    
+    @EJB
+    private UsuariosFacade usuariosFacade;
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,37 +51,19 @@ public class ListarEventos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "eventos.jsp";
-        Double coste = 0.0;
-        HttpSession session = request.getSession();
-        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
+    
+        response.setContentType("text/html;charset=UTF-8");
+        String idEvento = request.getParameter("idEvento");
+        String idUsuario = request.getParameter("idUsuario");
+        
+        Eventos evento = eventosFacade.find(Integer.parseInt(idEvento));
+        Usuarios usuario = usuariosFacade.find(Integer.parseInt(idUsuario));
+        
+        request.setAttribute("usuario", usuario);
+        request.setAttribute("evento", evento);
+        
 
-        if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
-            // Excluimos usuarios, analistas y teleoperadores
-            request.setAttribute("error", "Usuario sin permisos");
-            strTo = "login.jsp";
-        } else {
-            List<Eventos> eventos;
-            String titulo = request.getParameter("titulo") != null ? request.getParameter("titulo") : null;
-            String costeStr = request.getParameter("coste") != null ? request.getParameter("coste") : null;
-            if (costeStr != null && costeStr.length() > 0){
-                coste =  new Double (costeStr);
-            }
-            
-            if ((titulo != null && titulo.length() > 0) || coste != 0.0) {// Estoy aplicando filtros
-                eventos = this.eventosFacade.filter(titulo, coste);
-            } else {  // Quiero mostrar todos
-                eventos = this.eventosFacade.findAll();
-            }
-
-            request.setAttribute("usuario", admin);
-            request.setAttribute("eventos", eventos);
-
-            if (admin.getRol() == 4) {
-                strTo = "eventosAdmin.jsp";
-            }
-        }
-        RequestDispatcher rd = request.getRequestDispatcher(strTo);
+        RequestDispatcher rd = request.getRequestDispatcher("crearReserva.jsp");
         rd.forward(request, response);
     }
 

@@ -20,7 +20,7 @@ body, html {
 /* Toggle Styles */
 .textoDescripcion {
    word-wrap: break-word;
-   width: 100%;
+   width: 50px;
 }
 
 label {
