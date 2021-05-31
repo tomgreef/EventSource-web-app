@@ -8,6 +8,8 @@ package servlets;
 import dao.EventosFacade;
 import dao.ReservasFacade;
 import dao.UsuariosFacade;
+import dto.EventosDTO;
+import dto.UsuariosDTO;
 import entidades.Eventos;
 import entidades.Reservas;
 import entidades.Usuarios;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.EventosService;
 
 /**
  *
@@ -34,7 +37,7 @@ public class CrearReserva extends HttpServlet {
     private ReservasFacade reservasFacade;
     
     @EJB
-    private EventosFacade eventosFacade;
+    private EventosService eventosService;
     
     @EJB
     private UsuariosFacade usuariosFacade;
@@ -51,18 +54,17 @@ public class CrearReserva extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
-        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        
         String idEvento = request.getParameter("idEvento");
         String idUsuario = request.getParameter("idUsuario");
+        String checkBoxes = request.getParameter("asientoCheckbox")!=null?request.getParameter("asientoCheckbox"):"";
         
-        Eventos evento = eventosFacade.find(Integer.parseInt(idEvento));
-        Usuarios usuario = usuariosFacade.find(Integer.parseInt(idUsuario));
+        EventosDTO evento = this.eventosService.find(Integer.parseInt(idEvento));
+        UsuariosDTO usuario = (UsuariosDTO) session.getAttribute("usuario");
         
-        request.setAttribute("usuario", usuario);
         request.setAttribute("evento", evento);
         
-
         RequestDispatcher rd = request.getRequestDispatcher("crearReserva.jsp");
         rd.forward(request, response);
     }
