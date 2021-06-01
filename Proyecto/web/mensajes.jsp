@@ -49,7 +49,7 @@
                 </tbody>
             </table>
         </div> 
-        
+        <!--
         <div style="margin: 5%">
             <form method="POST" action="EnviarMensaje">
                 <input type="hidden" id="usuarioId" name="usuarioId" value="<%=usuario.getUsuarioId() %>" />
@@ -58,6 +58,8 @@
                 <input type="submit" value="Enviar" />
             </form>
         </div>
+        -->
+        <a href="RedactarMensaje?chatId=<%=chatId %>" class="boton" >Redactar mensaje</a>
            
         <jsp:include page="footer.jsp" />
     </body>

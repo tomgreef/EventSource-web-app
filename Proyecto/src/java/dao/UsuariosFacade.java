@@ -63,7 +63,7 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
             return listaUsuarios.get(0);
         }
 
-
+    }
     public List<Usuarios> filter(String nombre, String apellidos) {
         Query q;
         List<Usuarios> listaUsuarios;

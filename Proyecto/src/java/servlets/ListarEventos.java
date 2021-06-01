@@ -55,7 +55,7 @@ public class ListarEventos extends HttpServlet {
             Double coste = costeStr!=null?(Double.parseDouble(costeStr)):0.0;
 
             if ((titulo != null && titulo.length() > 0) || coste != 0) {// Estoy aplicando filtros
-                eventos = this.eventosFacade.filter(titulo, coste);
+                eventos = this.eventosFacade.filter(titulo, coste.toString());
             } else {  // Quiero mostrar todos
                 eventos = this.eventosFacade.findAll();
             }
