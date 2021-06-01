@@ -38,12 +38,10 @@ public class ChatCrear extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        Usuarios teleoperador = usuariosFacade.getTeleoperador();
         Chats chat = new Chats();
         Date date = new Date();
         chat.setFecha(date);
         chat.setUsuarioId(usuario);
-        chat.setTeleoperadorId(teleoperador);
         
         this.chatsFacade.create(chat);
         

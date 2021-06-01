@@ -9,7 +9,7 @@ import dao.ChatsFacade;
 import entidades.Chats;
 import entidades.Usuarios;
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,38 +23,28 @@ import javax.servlet.http.HttpSession;
  *
  * @author kkeyl
  */
-@WebServlet(name = "ChatListar", urlPatterns = {"/ChatListar"})
-public class ChatListar extends HttpServlet {
+@WebServlet(name = "ChatBorrar", urlPatterns = {"/ChatBorrar"})
+public class ChatBorrar extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     
-    @EJB
-    private ChatsFacade chatsFacade;
+    @EJB 
+    ChatsFacade chatsFacade;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String goTo = "chats.jsp";
+        String goTo = "ChatListar";
         HttpSession session = request.getSession();
         Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        if(usuario != null){ //El usuario está autenticado
-            if(usuario.getRol()==3 ){ //Es un teleoperador
-                List<Chats> chats = this.chatsFacade.findAll();
-                request.setAttribute("chats", chats);
-            } else { //Es un usuario  "normal"
-                List<Chats> chats = this.chatsFacade.getChatsUsuario(usuario.getUsuarioId().toString());
-                request.setAttribute("chats", chats);
-            }
+        
+        
+        if(usuario != null && usuario.getRol()==3){ //El usuario está autenticado
+            String chatId = request.getParameter("id");
+            Chats chat = chatsFacade.find(new Integer(chatId));
+
+            chatsFacade.remove(chat);
+            
         } else { //No está logeado y no puede ver los chats
-            request.setAttribute("error", "Para ver los chats hay que estar logueado");
+            request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
             goTo = "login.jsp";
         }
         

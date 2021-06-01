@@ -4,6 +4,7 @@
     Author     : kkeyl
 --%>
 
+<%@page import="entidades.Usuarios"%>
 <%@page import="entidades.Chats"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,7 +20,7 @@
     </head>
     <%
         List<Chats> chats = (List)request.getAttribute("chats");
-        
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
     %>
     <body>
         <jsp:include page="navBar.jsp" />                    
@@ -28,19 +29,71 @@
         <div class="messages-square">
             <table class="table">
                 <tr>
+                     <th>Teleoperador</th>
+                    <% 
+                   if(usuario.getRol()== 3){
+                   %>
                     <th>Cliente</th>
+                    <%
+                    } else {
+                    %>
+                    <th>Fecha de creación del chat</th>
+                    <%
+                    }
+                    %>
+                    <th></th>
+                    <th></th>
                     <th></th>
                 </tr>
                <% 
                    for (Chats chat: chats){
                %>
                <tr>
-                    <td><%=chat.getUsuarioId().getNombre() %></td>
-                    <td><a href="MensajeListar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Mostrar chat</p></a></td>
-                    <!--td><a href="MensajeListar?id=<%= chat.getChatId()%>">Mostrar conversaci&oacute;n</a></td>-->
+                   <%
+                   if(chat.getTeleoperadorId()!=null ){
+                   %>
+                    <td><%=chat.getTeleoperadorId().getNombre() %></td>
+                   <%
+                    } else {
+                    %>
+                    <td>Teleoperador no asignado</td>
                     <%
                     }
-               %>
+                    %>
+                   <% 
+                   if(usuario.getRol()== 3){
+                   %>
+                    <td><%=chat.getUsuarioId().getNombre() %></td>
+                   <%
+                    } else {
+                    %>
+                    <td><%=chat.getFecha().toString() %></td>
+                    <%
+                    }
+                    %>
+                    <td><a href="MensajeListar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Mostrar chat</p></a></td>
+                    <!--td><a href="MensajeListar?id=<%= chat.getChatId()%>">Mostrar conversaci&oacute;n</a></td>-->
+                        <%
+                       if(usuario.getRol()== 3){
+                           if(chat.getTeleoperadorId()!=null){
+                       %>
+                            <!--<td><a href="ChatDesignar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Desasignar teleoperador</p></a></td>-->
+                            <td><a href="ChatDesignar?id=<%= chat.getChatId()%>" class="btn btn-warning btn-lg active"> Desasignar teleoperador</a></td>
+                       <%
+                           } else {
+                        %>
+                            <!--<td><a href="ChatAsignar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Asignarme este chat</p></a></td>-->
+                            <td><a href="ChatAsignar?id=<%= chat.getChatId()%>" class="btn btn-primary btn-lg active"> Asignarme este chat</a></td>
+                        <%
+                            }
+                        }
+                        %>
+                        <!--<td><a href="ChatBorrar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Borrar chat</p></a></td>-->
+                        <td><a href="ChatBorrar?id=<%= chat.getChatId()%>" class="btn btn-danger btn-lg active"> Borrar chat</a></td>
+                    <%
+                    }
+                    %>
+                    
                </tr>
             </table>
         </div>
