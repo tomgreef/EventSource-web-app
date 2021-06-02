@@ -29,11 +29,19 @@
         
         <p class="titulo" style="margin-left: 5%;"> Mis conversaciones </p>
         <div class="messages-square">
+            <% 
+            if(usuario.getRol()==3){
+            %>    
+            
             <form action="ChatListar" method="POST">
                 Filtrar por nombre 
                 <input  type="text" placeholder="Nombre del usuario" name="nombre">
                 <input type="submit" value="Filtrar" />
             </form>
+            
+            <%
+            }    
+            %>
             <table class="table">
                 <tr>
                      <th>Teleoperador</th>
