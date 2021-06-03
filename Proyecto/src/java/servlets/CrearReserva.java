@@ -5,8 +5,14 @@
  */
 package servlets;
 
-import dto.UsuariosDTO;
+import dao.EventosFacade;
+import dao.ReservasFacade;
+import dao.UsuariosFacade;
+import entidades.Eventos;
+import entidades.Reservas;
+import entidades.Usuarios;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,18 +21,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import service.UsuariosService;
 
 /**
  *
- * @author tomvg
+ * @author Kevin
  */
-@WebServlet(name = "EditarAgregarUsuario", urlPatterns = {"/EditarAgregarUsuario"})
-public class EditarAgregarUsuario extends HttpServlet {
+@WebServlet(name = "CrearReserva", urlPatterns = {"/CrearReserva"})
+public class CrearReserva extends HttpServlet {
+
 
     @EJB
-    private UsuariosService usuariosService;
+    private ReservasFacade reservasFacade;
     
+    @EJB
+    private EventosFacade eventosFacade;
+    
+    @EJB
+    private UsuariosFacade usuariosFacade;
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,23 +51,19 @@ public class EditarAgregarUsuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "signUp.jsp";
-        HttpSession session = request.getSession();
-        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
+    
+        response.setContentType("text/html;charset=UTF-8");
+        String idEvento = request.getParameter("idEvento");
+        String idUsuario = request.getParameter("idUsuario");
         
-        if (admin == null || admin.getRol() != 4) {
-            request.setAttribute("error", "Usuario sin permisos");
-            strTo = "login.jsp";
-        } else {
-            String id = request.getParameter("id");
+        Eventos evento = eventosFacade.find(Integer.parseInt(idEvento));
+        Usuarios usuario = usuariosFacade.find(Integer.parseInt(idUsuario));
+        
+        request.setAttribute("usuario", usuario);
+        request.setAttribute("evento", evento);
+        
 
-            if (id != null) { // Es editar cliente
-                UsuariosDTO usuario = this.usuariosService.find(new Integer(id));
-                request.setAttribute("usuario", usuario);
-            }
-        }
-
-        RequestDispatcher rd = request.getRequestDispatcher(strTo);
+        RequestDispatcher rd = request.getRequestDispatcher("crearReserva.jsp");
         rd.forward(request, response);
     }
 

@@ -5,8 +5,7 @@
  */
 package servlets;
 
-import dao.UsuariosFacade;
-import entidades.Usuarios;
+import dto.UsuariosDTO;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.UsuariosService;
 
 /**
  *
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 public class UsuarioGuardar extends HttpServlet {
 
     @EJB
-    private UsuariosFacade usuarioFacade;
+    private UsuariosService usuariosService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,7 +39,7 @@ public class UsuarioGuardar extends HttpServlet {
             throws ServletException, IOException {
         String strTo = "index.jsp";
         String id, nombre, email, apellidos, domicilio, ciudad, sexo, edad, password, rol;
-        Usuarios usuario;
+        UsuariosDTO usuario;
 
         id = request.getParameter("id");
         nombre = request.getParameter("nombre");
@@ -52,33 +52,21 @@ public class UsuarioGuardar extends HttpServlet {
         password = request.getParameter("password");
         rol = request.getParameter("rol");
 
-        if (id == null || id.isEmpty()) { // Crear nuevo cliente
-            usuario = new Usuarios();
-        } else { // Editar cliente existente
-            usuario = this.usuarioFacade.find(new Integer(id));
+        if (id == null || id.isEmpty()) { // Crear
+            if (rol == null || rol.isEmpty()) { // Usuario normal
+                this.usuariosService.create(email, nombre, apellidos, domicilio, ciudad, new Integer(edad), new Integer(sexo), password);
+            } else { // Usuario admin
+                this.usuariosService.createAsAdmin(email, nombre, apellidos, domicilio, ciudad, new Integer(edad), new Integer(sexo), new Integer(rol), password);
+            }
+
+        } else { // Editar
+            this.usuariosService.edit(new Integer(id), email, nombre, apellidos, domicilio, ciudad, new Integer(edad), new Integer(sexo), new Integer(rol), password);
         }
 
-        usuario.setNombre(nombre);
-        usuario.setApellidos(apellidos);
-        usuario.setEmail(email);
-        usuario.setDomicilio(domicilio);
-        usuario.setCiudad(ciudad);
-        usuario.setEdad(new Integer(edad));
-        usuario.setSexo(new Integer(sexo));
-        usuario.setPassword(password);
-
-        if (id == null || id.isEmpty()) { // Crear nuevo cliente 
-            usuario.setRol(0);
-            HttpSession session = request.getSession();
-            this.usuarioFacade.create(usuario);
-            Usuarios admin = (Usuarios) session.getAttribute("usuario");
-            if (admin != null && admin.getRol() == 4) {
-                strTo= "ListarUsuarios";
-            }
-        } else { // Editar cliente existente
+        HttpSession session = request.getSession();
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
+        if (admin != null && admin.getRol() == 4) {
             strTo = "ListarUsuarios";
-            usuario.setRol(new Integer(rol));
-            this.usuarioFacade.edit(usuario);
         }
 
         response.sendRedirect(strTo);

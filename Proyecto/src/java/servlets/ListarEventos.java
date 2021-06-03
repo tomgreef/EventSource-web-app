@@ -6,8 +6,8 @@
 package servlets;
 
 import dao.EventosFacade;
+import dto.UsuariosDTO;
 import entidades.Eventos;
-import entidades.Usuarios;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -41,8 +41,9 @@ public class ListarEventos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String strTo = "eventos.jsp";
+        Double coste = 0.0;
         HttpSession session = request.getSession();
-        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
 
         if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
             // Excluimos usuarios, analistas y teleoperadores
@@ -50,17 +51,24 @@ public class ListarEventos extends HttpServlet {
             strTo = "login.jsp";
         } else {
             List<Eventos> eventos;
-            String titulo = request.getParameter("nombre_evento")!=null?request.getParameter("nombre_evento"):null;
-            String costeStr = request.getParameter("precio_evento")!=null?request.getParameter("precio_evento"):null;
-            Double coste = costeStr!=null?(Double.parseDouble(costeStr)):0.0;
-
-            if ((titulo != null && titulo.length() > 0) || coste != 0) {// Estoy aplicando filtros
-                eventos = this.eventosFacade.filter(titulo, coste.toString());
+            String titulo = request.getParameter("titulo") != null ? request.getParameter("titulo") : null;
+            String costeStr = request.getParameter("coste") != null ? request.getParameter("coste") : null;
+            if (costeStr != null && costeStr.length() > 0){
+                coste =  new Double (costeStr);
+            }
+            
+            if ((titulo != null && titulo.length() > 0) || coste != 0.0) {// Estoy aplicando filtros
+                eventos = this.eventosFacade.filter(titulo, coste);
             } else {  // Quiero mostrar todos
                 eventos = this.eventosFacade.findAll();
             }
 
+            request.setAttribute("usuario", admin);
             request.setAttribute("eventos", eventos);
+
+            if (admin.getRol() == 4) {
+                strTo = "eventosAdmin.jsp";
+            }
         }
         RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);

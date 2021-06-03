@@ -5,8 +5,14 @@
  */
 package servlets;
 
-import dto.UsuariosDTO;
+import dao.EventosFacade;
+import entidades.Eventos;
+import entidades.Reservas;
+import entidades.Usuarios;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import javafx.css.StyleOrigin;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,18 +21,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import service.UsuariosService;
 
 /**
  *
- * @author tomvg
+ * @author Kevin
  */
-@WebServlet(name = "EditarAgregarUsuario", urlPatterns = {"/EditarAgregarUsuario"})
-public class EditarAgregarUsuario extends HttpServlet {
+@WebServlet(name = "ListarMisEventos", urlPatterns = {"/ListarMisEventos"})
+public class ListarMisEventos extends HttpServlet {
 
-    @EJB
-    private UsuariosService usuariosService;
-    
+    @EJB private EventosFacade eventosFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,24 +39,26 @@ public class EditarAgregarUsuario extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+        protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "signUp.jsp";
+        String strTo = "misEventos.jsp";
         HttpSession session = request.getSession();
-        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
-        
-        if (admin == null || admin.getRol() != 4) {
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+
+        if (admin == null || admin.getRol() == 0 || admin.getRol() == 2 || admin.getRol() == 3) {
+            // Excluimos usuarios, analistas y teleoperadores
             request.setAttribute("error", "Usuario sin permisos");
             strTo = "login.jsp";
         } else {
-            String id = request.getParameter("id");
+            List<Eventos> eventos;
 
-            if (id != null) { // Es editar cliente
-                UsuariosDTO usuario = this.usuariosService.find(new Integer(id));
-                request.setAttribute("usuario", usuario);
-            }
+            List<Reservas> reservas = admin.getReservasList();
+            eventos = this.eventosFacade.filterAsistedAndAsisting(admin.getReservasList());
+
+            
+            //request.setAttribute("reservasList", reservas);
+            request.setAttribute("eventos", eventos);
         }
-
         RequestDispatcher rd = request.getRequestDispatcher(strTo);
         rd.forward(request, response);
     }

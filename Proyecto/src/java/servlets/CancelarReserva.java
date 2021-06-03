@@ -5,8 +5,11 @@
  */
 package servlets;
 
-import dto.UsuariosDTO;
+import dao.ReservasFacade;
+import entidades.Reservas;
+import entidades.Usuarios;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,18 +18,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import service.UsuariosService;
 
 /**
  *
- * @author tomvg
+ * @author Kevin
  */
-@WebServlet(name = "EditarAgregarUsuario", urlPatterns = {"/EditarAgregarUsuario"})
-public class EditarAgregarUsuario extends HttpServlet {
+@WebServlet(name = "CancelarReserva", urlPatterns = {"/CancelarReserva"})
+public class CancelarReserva extends HttpServlet {
 
     @EJB
-    private UsuariosService usuariosService;
-    
+    private ReservasFacade reservasFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,24 +40,16 @@ public class EditarAgregarUsuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "signUp.jsp";
+        response.setContentType("text/html;charset=UTF-8");
+        String strId = request.getParameter("id");
         HttpSession session = request.getSession();
-        UsuariosDTO admin = (UsuariosDTO) session.getAttribute("usuario");
+        Usuarios admin = (Usuarios) session.getAttribute("usuario");
+
         
-        if (admin == null || admin.getRol() != 4) {
-            request.setAttribute("error", "Usuario sin permisos");
-            strTo = "login.jsp";
-        } else {
-            String id = request.getParameter("id");
-
-            if (id != null) { // Es editar cliente
-                UsuariosDTO usuario = this.usuariosService.find(new Integer(id));
-                request.setAttribute("usuario", usuario);
-            }
-        }
-
-        RequestDispatcher rd = request.getRequestDispatcher(strTo);
-        rd.forward(request, response);
+            Reservas reserva = this.reservasFacade.find(new Integer(strId));
+            this.reservasFacade.remove(reserva);
+            response.sendRedirect("ListarMisEventos");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

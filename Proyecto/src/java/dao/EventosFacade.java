@@ -6,6 +6,9 @@
 package dao;
 
 import entidades.Eventos;
+import entidades.Reservas;
+import entidades.Usuarios;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -63,22 +66,21 @@ public class EventosFacade extends AbstractFacade<Eventos> {
         return q.getResultList();
     }
     
-    public List<Eventos> filter(String titulo, String coste) {
+    public List<Eventos> filter(String titulo, double coste) {
         Query q;
         List<Eventos> listaEventos;
 
         if (titulo.length() > 0) {
-            if (coste.length() > 0) {
+            if (coste != 0) {
                 q = this.em.createQuery("SELECT a FROM Eventos a WHERE a.titulo LIKE :titulo AND a.coste <= :coste");
                 q.setParameter("titulo", "%" + titulo+ "%");
                 q.setParameter("coste", coste);
             } else {
                 q = this.em.createQuery("SELECT a FROM Eventos a WHERE a.titulo LIKE :titulo");
                 q.setParameter("titulo", "%" + titulo + "%");
-
             }
         } else {
-            if (coste.length() > 0) {
+            if (coste != 0) {
                 q = this.em.createQuery("SELECT a FROM Eventos a WHERE a.coste <= :coste");
                 q.setParameter("coste",coste);
             } else {
@@ -87,6 +89,19 @@ public class EventosFacade extends AbstractFacade<Eventos> {
         }
 
         listaEventos = q.getResultList();
+        return listaEventos;
+    }
+    
+    public List<Eventos> filterAsistedAndAsisting(List<Reservas> reservas) {
+        Query q;
+        List<Eventos> listaEventos = new ArrayList<>();
+        q = this.em.createQuery("SELECT e FROM Eventos e WHERE e.eventoId = :reservaId");
+        
+        for(int i=0;i<reservas.size();i++)
+        {
+            q.setParameter("reservaId",(reservas.get(i).getEventoId().getEventoId()));
+            listaEventos.addAll(q.getResultList());
+        }
         return listaEventos;
     }
     
