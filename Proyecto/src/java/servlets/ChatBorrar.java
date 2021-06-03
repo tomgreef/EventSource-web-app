@@ -6,12 +6,10 @@
 package servlets;
 
 import dao.ChatsFacade;
-import dao.UsuariosFacade;
 import entidades.Chats;
 import entidades.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,28 +23,33 @@ import javax.servlet.http.HttpSession;
  *
  * @author kkeyl
  */
-@WebServlet(name = "ChatCrear", urlPatterns = {"/ChatCrear"})
-public class ChatCrear extends HttpServlet {
+@WebServlet(name = "ChatBorrar", urlPatterns = {"/ChatBorrar"})
+public class ChatBorrar extends HttpServlet {
 
-    @EJB
-    private ChatsFacade chatsFacade;
     
-    @EJB
-    private UsuariosFacade usuariosFacade;
+    @EJB 
+    ChatsFacade chatsFacade;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String goTo = "ChatListar";
         HttpSession session = request.getSession();
         Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        Chats chat = new Chats();
-        Date date = new Date();
-        chat.setFecha(date);
-        chat.setUsuarioId(usuario);
         
-        this.chatsFacade.create(chat);
         
-        request.setAttribute("chatId", chat.getChatId());
-        response.sendRedirect("MensajeListar?id="+chat.getChatId());
+        if(usuario != null && usuario.getRol()==3){ //El usuario está autenticado
+            String chatId = request.getParameter("id");
+            Chats chat = chatsFacade.find(new Integer(chatId));
+
+            chatsFacade.remove(chat);
+            
+        } else { //No está logeado y no puede ver los chats
+            request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
+            goTo = "login.jsp";
+        }
+        
+        RequestDispatcher rd = request.getRequestDispatcher(goTo);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

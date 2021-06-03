@@ -25,16 +25,6 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ChatListar", urlPatterns = {"/ChatListar"})
 public class ChatListar extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     
     @EJB
     private ChatsFacade chatsFacade;
@@ -46,8 +36,19 @@ public class ChatListar extends HttpServlet {
         HttpSession session = request.getSession();
         Usuarios usuario = (Usuarios)session.getAttribute("usuario");
         if(usuario != null){ //El usuario está autenticado
-            List<Chats> chats = this.chatsFacade.getAll();
-            request.setAttribute("chats", chats);
+            if(usuario.getRol()==3 ){ //Es un teleoperador
+                List<Chats> chats;
+                String nombre = request.getParameter("nombre")!=null?request.getParameter("nombre"):null;
+                if(nombre != null && nombre.length()>0 ){
+                    chats = this.chatsFacade.getChatsUsuarioByNombre(nombre.toLowerCase());
+                } else {
+                    chats = this.chatsFacade.findAll();
+                }
+               request.setAttribute("chats", chats);
+            } else { //Es un usuario  "normal"
+                List<Chats> chats = this.chatsFacade.getChatsUsuario(usuario.getUsuarioId().toString());
+                request.setAttribute("chats", chats);
+            }
         } else { //No está logeado y no puede ver los chats
             request.setAttribute("error", "Para ver los chats hay que estar logueado");
             goTo = "login.jsp";

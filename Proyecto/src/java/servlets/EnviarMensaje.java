@@ -6,6 +6,7 @@
 package servlets;
 
 import dao.MensajesFacade;
+import dao.UsuariosFacade;
 import entidades.Mensajes;
 import entidades.Usuarios;
 import java.io.IOException;
@@ -30,20 +31,26 @@ public class EnviarMensaje extends HttpServlet {
     @EJB
     MensajesFacade mensajesFacade;
     
+    @EJB
+    UsuariosFacade usuariosFacade;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        //HttpSession session = request.getSession();
+        //Usuarios usuario = (Usuarios)session.getAttribute("usuario");
         
         String usuarioId = request.getParameter("usuarioId");
         String mensaje = request.getParameter("mensaje");
         String chatId = request.getParameter("chatId");
         Date date = new Date();
         
-        if (mensaje != null) {
+        if (mensaje != null && mensaje.length()>0) {
            Mensajes m = new Mensajes(new Integer(chatId), date, new Integer(usuarioId));
            m.setMensaje(mensaje);
+           Usuarios u = this.usuariosFacade.find(new Integer(usuarioId));
+           m.setUsuarios(u);
            mensajesFacade.create(m);
+           this.usuariosFacade.edit(u);
         } 
         
         String goTo = "MensajeListar?id="+chatId;

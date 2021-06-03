@@ -6,12 +6,12 @@
 package servlets;
 
 import dao.ChatsFacade;
-import dao.UsuariosFacade;
 import entidades.Chats;
+import entidades.Mensajes;
 import entidades.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,28 +25,45 @@ import javax.servlet.http.HttpSession;
  *
  * @author kkeyl
  */
-@WebServlet(name = "ChatCrear", urlPatterns = {"/ChatCrear"})
-public class ChatCrear extends HttpServlet {
+@WebServlet(name = "ChatAsignar", urlPatterns = {"/ChatAsignar"})
+public class ChatAsignar extends HttpServlet {
 
-    @EJB
-    private ChatsFacade chatsFacade;
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     
-    @EJB
-    private UsuariosFacade usuariosFacade;
+    @EJB 
+    ChatsFacade chatsFacade;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String goTo = "ChatListar";
         HttpSession session = request.getSession();
         Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        Chats chat = new Chats();
-        Date date = new Date();
-        chat.setFecha(date);
-        chat.setUsuarioId(usuario);
         
-        this.chatsFacade.create(chat);
         
-        request.setAttribute("chatId", chat.getChatId());
-        response.sendRedirect("MensajeListar?id="+chat.getChatId());
+        if(usuario != null && usuario.getRol()==3){ //El usuario está autenticado
+            String chatId = request.getParameter("id");
+            //request.setAttribute("chatId", chatId);
+            Chats chat = chatsFacade.find(new Integer(chatId));
+            chat.setTeleoperadorId(usuario);
+            chatsFacade.edit(chat);
+            
+        } else { //No está logeado y no puede ver los chats
+            request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
+            goTo = "login.jsp";
+        }
+        
+        RequestDispatcher rd = request.getRequestDispatcher(goTo);
+        rd.forward(request, response);
+         //response.sendRedirect("ChatListar");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

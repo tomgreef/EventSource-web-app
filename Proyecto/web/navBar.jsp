@@ -102,6 +102,7 @@
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
             <a href="ListarEventos" class="objeto-col enlace-negro">Ver eventos</a>
             <a href="ListarMisEventos" class="objeto-col enlace-negro">Mis eventos</a>
+            <a href="ChatListar" class="objeto-col enlace-negro">Chats</a>
             <a href="ChatCrear" class="objeto-col enlace-negro">Crear Chat</a>
         </div>
         

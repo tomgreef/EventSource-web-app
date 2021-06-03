@@ -31,10 +31,19 @@ public class ChatsFacade extends AbstractFacade<Chats> {
         super(Chats.class);
     }
     
-    public List<Chats> getAll(){
+    public List<Chats> getChatsUsuario(String id){
         Query q;
         
-        q = em.createQuery("SELECT c FROM Chats c");
+        q = em.createQuery("SELECT c FROM Chats c WHERE c.usuarioId.usuarioId = :usuarioId");
+        q.setParameter("usuarioId", new Integer(id));
+        return q.getResultList(); 
+    }
+    
+    public List<Chats> getChatsUsuarioByNombre(String nombre){
+        Query q;
+        
+        q = em.createQuery("SELECT c FROM Chats c WHERE lower(c.usuarioId.nombre) LIKE :nombre OR lower(c.teleoperadorId.nombre) LIKE :nombre");
+        q.setParameter("nombre", "%" + nombre+ "%");
         return q.getResultList(); 
     }
 }
