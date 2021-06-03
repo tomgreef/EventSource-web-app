@@ -50,9 +50,7 @@ public class EstudiosListar extends HttpServlet {
         } else {
 
             List<Estudios> estudios;
-
             estudios = this.estudiosFacade.findAll();
-
             request.setAttribute("estudios", estudios);
         }
         RequestDispatcher rd = request.getRequestDispatcher(strTo);

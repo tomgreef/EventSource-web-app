@@ -15,12 +15,12 @@
         <h1> Formulario </h1>
         <h2>Crear un estudio</h2>
 
-        <form action="EstudiosGuardar" method="POST">  
+        <form action="CrearEstudioServlet" method="POST">  
 
             Nombre: <input type="text" name="nombre" value=""/>
             <br/>
-            Edad: <input type="text" name="edadInicial" value="" size=3/> a 
-                  <input type="text" name="edadFinal" value="" size=3/>
+            Edad: <input type="text" name="edadInicial" value="0" size=3/> a 
+                  <input type="text" name="edadFinal" value="100" size=3/>
             <br/>
             Fecha <input type="date" name="fechaInicial" value=""/> a
                   <input type="date" name="fechaFinal" value=""/>
@@ -35,7 +35,7 @@
                 <br/>
         
             <input type="submit" value="Enviar" name="enviar" />
-            <input type="button" value="Cancelar" name="cancelar" />
+            <a href="EstudiosListar">Cancelar</a>
         </form>
     </body>
 </html>

@@ -7,6 +7,7 @@ package servlets;
 
 import dao.EstudiosFacade;
 import dao.UsuariosFacade;
+import dto.UsuariosDTO;
 import entidades.Estudios;
 import entidades.Usuarios;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,9 +50,10 @@ public class CrearEstudioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "index.jsp";
+        String strTo = "EstudiosListar";
         
-        String estudioID = request.getParameter("estudioID");
+        String estudioID = request.getParameter("estudioId");
+        String analistaID = request.getParameter("usuarioId");
         String nombre = request.getParameter("nombre");
         String edadInicial = request.getParameter("edadInicial");
         String edadFinal = request.getParameter("edadFinal");
@@ -66,6 +69,9 @@ public class CrearEstudioServlet extends HttpServlet {
             estudio = this.estudiosFacade.findByID(new Integer(estudioID));
         }
         
+        
+        estudio.setEstudioId(new Integer(estudioID));
+        estudio.setUsuarioId(new Usuarios(new Integer (analistaID)));
         estudio.setNombre(nombre);
         estudio.setEdadInferior(new Integer(edadInicial));
         estudio.setEdadSuperior(new Integer(edadFinal));
@@ -81,18 +87,18 @@ public class CrearEstudioServlet extends HttpServlet {
         }
         estudio.setSexo(new Integer(sexo));
         
-        if(estudioID == null || estudioID.isEmpty()){
-            HttpSession session = request.getSession();
-            this.estudiosFacade.create(estudio);
-            Usuarios analista = (Usuarios) session.getAttribute("usuario");
-            if (analista != null && analista.getRol() == 2){
-                strTo = "EstudiosListar";
-            }
-        } else { //Editar un estudio
-            strTo = "EstudiosListar";
-            this.estudiosFacade.edit(estudio);
+        HttpSession session = request.getSession();
+        UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
+        if (analista != null && analista.getRol() == 2){
+            if(estudioID == null || estudioID.isEmpty()){
+                this.estudiosFacade.create(estudio);
+            } else { //Editar un estudio
+                this.estudiosFacade.edit(estudio);
+            }    
         }
-                
+        
+        RequestDispatcher rd = request.getRequestDispatcher(strTo);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
