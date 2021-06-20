@@ -38,7 +38,7 @@
         <h1> Formulario </h1>
         <h2>Datos de un estudio</h2>
 
-        <form action="CrearEstudioServlet" method="POST">  
+        <form action="EstudiosGuardar" method="POST">  
 
             Nombre: <input type="text" name="nombre" value=""/>
             <br/>

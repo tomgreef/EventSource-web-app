@@ -51,17 +51,15 @@ public class EstudiosGuardar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+       
         String strTo = "EstudiosListar";
         
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
         
-        if(analista.getRol() != 2 || analista == null){
+        if(analista == null || analista.getRol() != 2){
             strTo = "login.jsp";
         } else {
-            String estudioID = request.getParameter("estudioId");
-            String analistaID = request.getParameter("usuarioId");
             String nombre = request.getParameter("nombre");
             String edadInicial = request.getParameter("edadInicial");
             String edadFinal = request.getParameter("edadFinal");
@@ -69,19 +67,13 @@ public class EstudiosGuardar extends HttpServlet {
             String fechaFinal = request.getParameter("fechaFinal");
             String sexo = request.getParameter("sexo");
         
-            Estudios estudio;
-        
-            if (estudioID != null && !estudioID.isEmpty()){
-                estudio = this.estudiosFacade.find(new Integer(estudioID));
-            } else {
-                estudio = new Estudios();
-            }
+            Estudios estudio = new Estudios();
             
             Integer ei = new Integer(edadInicial);
             Integer ef = new Integer(edadFinal);
             Integer s = new Integer(sexo);
             
-            estudio.setUsuarioId(new Usuarios(analista.getUsuarioId()));
+            estudio.setUsuarioId(this.usuariosFacade.find(analista.getUsuarioId()));
             estudio.setNombre(nombre);
             estudio.setEdadInferior(ei);
             estudio.setEdadSuperior(ef);
@@ -111,15 +103,10 @@ public class EstudiosGuardar extends HttpServlet {
                 Logger.getLogger(EstudiosGuardar.class.getName()).log(Level.SEVERE, null, ex);
             }
             */
-            if(estudioID != null && !estudioID.isEmpty()){
-                this.estudiosFacade.edit(estudio);
-            } else {
                 this.estudiosFacade.create(estudio);
-            }
         }
         
-        RequestDispatcher rd = request.getRequestDispatcher("EstudiosListar");
-        rd.forward(request, response); 
+         response.sendRedirect("EstudiosListar");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

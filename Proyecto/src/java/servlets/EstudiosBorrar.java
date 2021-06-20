@@ -29,7 +29,7 @@ public class EstudiosBorrar extends HttpServlet {
 
     @EJB
     private EstudiosFacade estudiosFacade;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,23 +41,23 @@ public class EstudiosBorrar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "EstudioListar";
-        
+        String strTo = "EstudiosListar";
+
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
 
         if (analista == null || analista.getRol() != 2) {
             request.setAttribute("error", "Usuario sin permisos");
             strTo = "login.jsp";
+
+            RequestDispatcher rd = request.getRequestDispatcher(strTo);
+            rd.forward(request, response);
         } else {
             String id = request.getParameter("estudioId");
             Estudios estudio = this.estudiosFacade.find(new Integer(id));
             this.estudiosFacade.remove(estudio);
             response.sendRedirect(strTo);
         }
-
-        RequestDispatcher rd = request.getRequestDispatcher(strTo);
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

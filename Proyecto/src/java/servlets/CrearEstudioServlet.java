@@ -51,7 +51,7 @@ public class CrearEstudioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "EstudiosGuardar";
+        String strTo = "crearEstudio.jsp";
         
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
