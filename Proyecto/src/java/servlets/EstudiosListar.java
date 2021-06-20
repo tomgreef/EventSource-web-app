@@ -8,6 +8,7 @@ package servlets;
 import dao.EstudiosFacade;
 import dto.UsuariosDTO;
 import entidades.Estudios;
+import entidades.Usuarios;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;

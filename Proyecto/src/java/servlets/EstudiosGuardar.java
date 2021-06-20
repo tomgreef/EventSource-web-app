@@ -6,11 +6,16 @@
 package servlets;
 
 import dao.EstudiosFacade;
+import dao.UsuariosFacade;
+import dto.UsuariosDTO;
 import entidades.Estudios;
+import entidades.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -20,6 +25,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,6 +33,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "EstudiosGuardar", urlPatterns = {"/EstudiosGuardar"})
 public class EstudiosGuardar extends HttpServlet {
+
+    @EJB
+    private UsuariosFacade usuariosFacade;
 
     @EJB
     private EstudiosFacade estudiosFacade;
@@ -43,41 +52,70 @@ public class EstudiosGuardar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String strTo = "estudios.jsp";
-        String estudioID = request.getParameter("estudioId");
-        String analistaID = request.getParameter("usuarioId");
-        String edadInicial = request.getParameter("edadInicial");
-        String edadFinal = request.getParameter("edadFinal");
-        String fechaInicial = request.getParameter("fechaInicial");
-        String fechaFinal = request.getParameter("fechaFinal");
-        String sexo = request.getParameter("sexo");
+        String strTo = "EstudiosListar";
         
-        Estudios estudio;
+        HttpSession session = request.getSession();
+        UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
         
-        if (estudioID != null && !estudioID.isEmpty()){
-            estudio = this.estudiosFacade.find(new Integer(estudioID));
+        if(analista.getRol() != 2 || analista == null){
+            strTo = "login.jsp";
         } else {
-            estudio = new Estudios(new Integer(estudioID));
-        }
-    
-        estudio.setEdadInferior(new Integer(edadInicial));
-        estudio.setEdadSuperior(new Integer(edadFinal));
-        try {
-            estudio.setFechaInicial(new SimpleDateFormat("dd-mm-yyyy").parse(fechaInicial));
-        } catch (ParseException ex) {
-            Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            estudio.setFechaFinal(new SimpleDateFormat("dd-mm-yyyy").parse(fechaFinal));
-        } catch (ParseException ex) {
-            Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        estudio.setSexo(new Integer(sexo));
-       
-        if(estudioID != null && !estudioID.isEmpty()){
-            this.estudiosFacade.edit(estudio);
-        } else {
-            this.estudiosFacade.create(estudio);
+            String estudioID = request.getParameter("estudioId");
+            String analistaID = request.getParameter("usuarioId");
+            String nombre = request.getParameter("nombre");
+            String edadInicial = request.getParameter("edadInicial");
+            String edadFinal = request.getParameter("edadFinal");
+            String fechaInicial = request.getParameter("fechaInicial");
+            String fechaFinal = request.getParameter("fechaFinal");
+            String sexo = request.getParameter("sexo");
+        
+            Estudios estudio;
+        
+            if (estudioID != null && !estudioID.isEmpty()){
+                estudio = this.estudiosFacade.find(new Integer(estudioID));
+            } else {
+                estudio = new Estudios();
+            }
+            
+            Integer ei = new Integer(edadInicial);
+            Integer ef = new Integer(edadFinal);
+            Integer s = new Integer(sexo);
+            
+            estudio.setUsuarioId(new Usuarios(analista.getUsuarioId()));
+            estudio.setNombre(nombre);
+            estudio.setEdadInferior(ei);
+            estudio.setEdadSuperior(ef);
+            try {
+                estudio.setFechaInicial(new SimpleDateFormat("dd-mm-yyyy").parse(fechaInicial));
+            } catch (ParseException ex) {
+                Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                estudio.setFechaFinal(new SimpleDateFormat("dd-mm-yyyy").parse(fechaFinal));
+            } catch (ParseException ex) {
+                Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            estudio.setSexo(s);
+            /*
+            try {
+                Date fi = new SimpleDateFormat("dd-mm-yyyy").parse(fechaInicial);
+                Date ff = new SimpleDateFormat("dd-mm-yyyy").parse(fechaFinal);
+                
+                java.sql.Date newFI = new java.sql.Date(fi.getTime());
+                java.sql.Date newFF = new java.sql.Date(ff.getTime());
+                
+                Integer cantidad = usuariosFacade.numberOfPeople(newFI, newFF, ei, ef, s);
+                estudio.setCantidad(cantidad);
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(EstudiosGuardar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            */
+            if(estudioID != null && !estudioID.isEmpty()){
+                this.estudiosFacade.edit(estudio);
+            } else {
+                this.estudiosFacade.create(estudio);
+            }
         }
         
         RequestDispatcher rd = request.getRequestDispatcher("EstudiosListar");

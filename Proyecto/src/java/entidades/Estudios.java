@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import dto.UsuariosDTO;
 import entidades.Usuarios;
 import java.io.Serializable;
 import java.util.Date;

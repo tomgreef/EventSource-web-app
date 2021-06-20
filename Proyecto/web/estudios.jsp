@@ -55,8 +55,8 @@
                     <td><%= estudio.getEdadSuperior() %></td>
                     <td><%= estudio.getSexo() %></td>
                     <td><%= estudio.getCantidad() %></td>
-                    <td><a href="CrearEstudioServlet"></a></td>
-                    <td>Borrar</td>
+                    <td><a href="CrearEstudioServlet?estudioId=<%= estudio.getEstudioId() %>">Editar</a></td>
+                    <td><a href="EstudiosBorrar?estudioId=<%= estudio.getEstudioId() %>">Borrar</a></td>
                 </tr>
             <%
                 }

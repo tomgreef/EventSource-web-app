@@ -6,18 +6,11 @@
 package servlets;
 
 import dao.EstudiosFacade;
-import dao.UsuariosFacade;
 import dto.UsuariosDTO;
 import entidades.Estudios;
-import entidades.Usuarios;
+import entidades.Eventos;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,14 +24,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author Alberto
  */
-@WebServlet(name = "CrearEstudioServlet", urlPatterns = {"/CrearEstudioServlet"})
-public class CrearEstudioServlet extends HttpServlet {
+@WebServlet(name = "EstudiosBorrar", urlPatterns = {"/EstudiosBorrar"})
+public class EstudiosBorrar extends HttpServlet {
 
     @EJB
     private EstudiosFacade estudiosFacade;
-
-    @EJB
-    private UsuariosFacade usuariosFacade;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,7 +41,7 @@ public class CrearEstudioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "EstudiosGuardar";
+        String strTo = "EstudioListar";
         
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
@@ -60,12 +50,10 @@ public class CrearEstudioServlet extends HttpServlet {
             request.setAttribute("error", "Usuario sin permisos");
             strTo = "login.jsp";
         } else {
-            String id = request.getParameter("id");
-
-            if (id != null) { // Hay un estudio, luego es para editarlo  
-                Estudios estudio = this.estudiosFacade.find(new Integer(id));
-                request.setAttribute("estudio", estudio);
-            }
+            String id = request.getParameter("estudioId");
+            Estudios estudio = this.estudiosFacade.find(new Integer(id));
+            this.estudiosFacade.remove(estudio);
+            response.sendRedirect(strTo);
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(strTo);
