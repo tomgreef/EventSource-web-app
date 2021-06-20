@@ -5,14 +5,11 @@
  */
 package servlets;
 
-import dao.EventosFacade;
 import dao.ReservasFacade;
 import dao.UsuariosFacade;
-import entidades.Eventos;
-import entidades.Reservas;
-import entidades.Usuarios;
+import dto.EventosDTO;
+import dto.UsuariosDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.EventosService;
+import service.ReservasService;
 
 /**
  *
@@ -30,15 +29,17 @@ import javax.servlet.http.HttpSession;
 public class CrearReserva extends HttpServlet {
 
 
+
+
     @EJB
     private ReservasFacade reservasFacade;
     
-    @EJB
-    private EventosFacade eventosFacade;
+    @EJB 
+    private EventosService eventosService;
     
-    @EJB
-    private UsuariosFacade usuariosFacade;
-
+    
+    @EJB 
+    private ReservasService reservasService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,18 +53,37 @@ public class CrearReserva extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     
-        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        String goTo = "crearReserva.jsp";
         String idEvento = request.getParameter("idEvento");
-        String idUsuario = request.getParameter("idUsuario");
+        if(session.getAttribute("eventoId")!= null)
+        {
+            idEvento = (String) session.getAttribute("eventoId");
+        }
+        EventosDTO evento = eventosService.find(Integer.parseInt(idEvento));
+        UsuariosDTO usuario = (UsuariosDTO) session.getAttribute("usuario");
         
-        Eventos evento = eventosFacade.find(Integer.parseInt(idEvento));
-        Usuarios usuario = usuariosFacade.find(Integer.parseInt(idUsuario));
+        String checkBoxes[] = request.getParameterValues("asientoCheckbox");
         
-        request.setAttribute("usuario", usuario);
-        request.setAttribute("evento", evento);
-        
-
-        RequestDispatcher rd = request.getRequestDispatcher("crearReserva.jsp");
+        if(checkBoxes!=null)
+        {
+            for(String asiento :checkBoxes)
+            {
+                String[] filasYColumnasDivididas = asiento.split("/");
+                Integer fila = Integer.parseInt(filasYColumnasDivididas[0]);
+                Integer columna = Integer.parseInt(filasYColumnasDivididas[1]);
+                
+                this.reservasService.create(fila,columna,evento.getEventoId(),usuario.getUsuarioId());
+            }
+                
+            goTo="ListarEventos";
+        }
+        else
+        {
+            request.setAttribute("evento", evento);
+            
+        }
+        RequestDispatcher rd = request.getRequestDispatcher(goTo);
         rd.forward(request, response);
     }
 

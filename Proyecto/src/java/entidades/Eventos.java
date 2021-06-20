@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import dto.EventosDTO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -233,6 +234,22 @@ public class Eventos implements Serializable {
     @Override
     public String toString() {
         return "entidades.Eventos[ eventoId=" + eventoId + " ]";
+    }
+    
+    
+    public EventosDTO getDTO() {
+        EventosDTO dto = new EventosDTO();
+ 
+        dto.setTitulo(titulo);
+        dto.setAforo(eventoId);
+        dto.setCoste(coste);
+        dto.setDescripcion(descripcion);
+        dto.setEntradasMaxima(entradasMaxima);
+        dto.setEventoId(eventoId);
+        dto.setFecha(fecha);
+        dto.setFechaLimite(fechaLimite);
+ 
+        return dto;
     }
     
 }
