@@ -28,11 +28,6 @@ import service.ReservasService;
 @WebServlet(name = "CrearReserva", urlPatterns = {"/CrearReserva"})
 public class CrearReserva extends HttpServlet {
 
-
-
-
-    @EJB
-    private ReservasFacade reservasFacade;
     
     @EJB 
     private EventosService eventosService;

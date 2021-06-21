@@ -6,8 +6,12 @@
 package service;
  
 import dao.EventosFacade;
+import dao.ReservasFacade;
+import dao.UsuariosFacade;
 import dto.EventosDTO;
 import entidades.Eventos;
+import entidades.Reservas;
+import entidades.Usuarios;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -21,9 +25,14 @@ import javax.ejb.Stateless;
 @Stateless
 public class EventosService {
  
- 
+    @EJB 
+    private UsuariosFacade usuariosFacade;
+    
     @EJB 
     private EventosFacade eventosFacade;
+    
+    @EJB 
+    private ReservasFacade reservasFacade;
  
     public EventosDTO find(int idEvento)
     {
@@ -71,5 +80,17 @@ public class EventosService {
         }
     }
  
+    public void guardarReserva (Integer idUsuario, Integer idEvento, String asiento){
+        Usuarios usuario = this.usuariosFacade.find(idUsuario);
+        Eventos evento = this.eventosFacade.find(idEvento);
+        
+        Reservas reserva = new Reservas();
+        reserva.setAsientoFila(Integer.parseInt(String.valueOf(asiento.charAt(0))));
+        reserva.setAsientoColumna(Integer.parseInt(String.valueOf(asiento.charAt(1))));
+        reserva.setEventoId(evento);
+        reserva.setUsuarioId(usuario);
+        
+        this.reservasFacade.create(reserva);
+    }
 }
  

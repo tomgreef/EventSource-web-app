@@ -13,10 +13,7 @@
 <!DOCTYPE html>
 <html>
     <%
-        
         EventosDTO evento = (EventosDTO) request.getAttribute("evento");
-        session.setAttribute("eventoId", evento.getEventoId());
-        //UsuariosDTO usuario = (UsuariosDTO) session.getAttribute("usuario");
     %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -26,36 +23,35 @@
         <link rel="stylesheet" href="styles/style.css">
     </head>
 
- <body>
+    <body>
         <jsp:include page="navBar.jsp" />
-        <div class="crearUyE-square"
-        <h2>Crear reserva para evento <%= evento.getTitulo()%></h2>     
-        <form action="CrearReserva">
-            <table style="width:60%">
-                <%=evento.getDescripcion()%>
-                <%for(int i=0;i<evento.getEntradasMaxima()-40;i++)
-                {
+        <h2 class="centrar">Crear reserva para evento: </h2>
+        <h1 class="titulo centrar"><%= evento.getTitulo()%></h1>
+        <h3 class="centrar"><%=evento.getDescripcion()%></h3>
 
-                    %>
+        <div class="crearUyE-square">
+             <form action="GuardarReserva" method="post">
+                 <input type="hidden" value="<%= evento.getEventoId() %>" name="id">
+                 <% if (evento.getFilas() != 0 && evento.getColumnas() != 0) { %>
+                 <p>Eligir asiento:</p>
+                <table width="100%">
+                    <% for (int i = 0; i < evento.getFilas(); i++) { %>
                     <tr>
-                    <%
-                    for(int j=0;j<evento.getEntradasMaxima()-40;j++)
-                    {
-                    %>
-                    <td><input type="checkbox" name="asientoCheckbox" value="<%=i+1%>/<%=j+1%>"></td>
-                    <%
-                    }
-                    %>
+                        <% for (int j = 0; j < evento.getColumnas(); j++) {%>
+                        <td><input type="checkbox" name="asientoCheckbox" value="<%= i+1%><%= j+1%>"> - <%= i + 1 %> <%= j + 1%></td> 
+                            <% } %>
                     </tr>
 
-                <%
-                }
-                %>    
-                <tr>
-                    <td><input type="submit" value="OK"/></td>
-                </tr>
-            </table>
-        </form>
+                    <%
+                        }
+                    %>    
+                </table>
+                    <input type="submit" value="OK" class="boton"/>
+                <% }else {  %>
+                    <h2>Confirmar reserva <h2>
+                            <input type="submit" value="Reservar" class="boton" style="width: 20vh"/>
+                <% } %>
+            </form>
         </div>
     </body>
 </html>

@@ -97,7 +97,7 @@
            <%=e.getCoste()%>
            </div>
 
-           <a href="CrearReserva?idEvento=<%= e.getEventoId()%>&idUsuario=<%=usuario.getUsuarioId()%>" class="boton boton-peque">Reservar</a>
+           <a href="CrearReserva?idEvento=<%= e.getEventoId()%>" class="boton">Reservar</a>
            
          </div>
  

@@ -5,10 +5,10 @@
  */
 package servlets;
 
-import dao.EventosFacade;
-import entidades.Eventos;
+import dto.EventosDTO;
+import dto.UsuariosDTO;
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,18 +16,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import service.EventosService;
 
 /**
  *
- * @author yisus
+ * @author tomvg
  */
-@WebServlet(name = "EventoListar", urlPatterns = {"/EventoListar"})
-public class EventoListar extends HttpServlet {
+@WebServlet(name = "GuardarReserva", urlPatterns = {"/GuardarReserva"})
+public class GuardarReserva extends HttpServlet {
 
-    @EJB
-    private EventosFacade eventosFacade;
-
-    
+     @EJB 
+    private EventosService eventosService;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,14 +40,27 @@ public class EventoListar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UsuariosDTO usuario = (UsuariosDTO) session.getAttribute("usuario");
+        String goTo = "EventoListar";
         
-        List<Eventos> lista;
-        lista = this.eventosFacade.findAll();
+        if (usuario == null) {
+            request.setAttribute("error", "Usuario no autenticado");
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        } else {
+            String id = request.getParameter("id");
+            String checkBoxes[] = request.getParameterValues("asientoCheckbox");
+            if(checkBoxes != null && checkBoxes.length > 0){
+                for (String checkBoxe : checkBoxes) {
+                    this.eventosService.guardarReserva(usuario.getUsuarioId(), new Integer(id), checkBoxe);
+                }
+            } else {
+                this.eventosService.guardarReserva(usuario.getUsuarioId(), new Integer(id), "00");
+            }
+        }
         
-        request.setAttribute("eventos",lista);
-        
-        RequestDispatcher rd = request.getRequestDispatcher("eventos.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("EventoListar");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

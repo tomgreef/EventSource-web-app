@@ -248,6 +248,15 @@ public class Eventos implements Serializable {
         dto.setEventoId(eventoId);
         dto.setFecha(fecha);
         dto.setFechaLimite(fechaLimite);
+        if(filas == null)
+            dto.setFilas(0);
+        else
+            dto.setFilas(filas);
+        
+        if(columnas == null)
+            dto.setColumnas(0);
+        else
+            dto.setColumnas(columnas);
  
         return dto;
     }
