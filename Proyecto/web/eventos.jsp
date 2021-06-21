@@ -1,3 +1,4 @@
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.EventosFacade"%>
@@ -16,8 +17,8 @@
         
     </head>
     <%
-        Usuarios usuario = (Usuarios)request.getAttribute("usuario");
         List<Eventos> listaEventos = (List) request.getAttribute("eventos");
+        UsuariosDTO usuario = (UsuariosDTO) session.getAttribute("usuario");
     %>
     <body>
         
@@ -96,7 +97,7 @@
            <%=e.getCoste()%>
            </div>
 
-           <a href="CrearReserva?idEvento=<%= e.getEventoId()%>&idUsuario=<%=usuario.getUsuarioId()%>" class="boton boton-peque">Reservar</a> 
+           <a href="CrearReserva?idEvento=<%= e.getEventoId()%>" class="boton">Reservar</a>
            
          </div>
  

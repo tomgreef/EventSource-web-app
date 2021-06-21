@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Reservas.findAll", query = "SELECT r FROM Reservas r")
     , @NamedQuery(name = "Reservas.findByReservaId", query = "SELECT r FROM Reservas r WHERE r.reservaId = :reservaId")
-    , @NamedQuery(name = "Reservas.findByCantidad", query = "SELECT r FROM Reservas r WHERE r.cantidad = :cantidad")
     , @NamedQuery(name = "Reservas.findByAsientoFila", query = "SELECT r FROM Reservas r WHERE r.asientoFila = :asientoFila")
     , @NamedQuery(name = "Reservas.findByAsientoColumna", query = "SELECT r FROM Reservas r WHERE r.asientoColumna = :asientoColumna")})
 public class Reservas implements Serializable {
@@ -40,8 +39,6 @@ public class Reservas implements Serializable {
     @Basic(optional = false)
     @Column(name = "RESERVA_ID")
     private Integer reservaId;
-    @Column(name = "CANTIDAD")
-    private Integer cantidad;
     @Column(name = "ASIENTO_FILA")
     private Integer asientoFila;
     @Column(name = "ASIENTO_COLUMNA")
@@ -67,15 +64,6 @@ public class Reservas implements Serializable {
     public void setReservaId(Integer reservaId) {
         this.reservaId = reservaId;
     }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
     public Integer getAsientoFila() {
         return asientoFila;
     }
