@@ -36,6 +36,7 @@
                 <span class="logo">Eventsource</span>
             </a>    
             <a href="index.jsp" class="objeto-col enlace-negro">Home</a>
+            <a href="EstudiosListar" class="objeto-col enlace-negro">Ver estudios</a>
             <a href="ListarEventos" class="objeto-col enlace-negro">Ver eventos</a>
         </div>
         <div class="columna">
