@@ -5,11 +5,8 @@
  */
 package servlets;
 
-import dao.ChatsFacade;
-import entidades.Chats;
-import entidades.Usuarios;
+import dto.UsuariosDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.ChatsService;
 
 /**
  *
@@ -28,20 +26,18 @@ public class ChatDesignar extends HttpServlet {
 
     
     @EJB 
-    ChatsFacade chatsFacade;
+    private ChatsService chatsService;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String goTo = "ChatListar";
         HttpSession session = request.getSession();
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        UsuariosDTO usuario = (UsuariosDTO)session.getAttribute("usuario");
         
         
         if(usuario != null && usuario.getRol()==3){ //El usuario está autenticado
             String chatId = request.getParameter("id");
-            Chats chat = chatsFacade.find(new Integer(chatId));
-            chat.setTeleoperadorId(null);
-            chatsFacade.edit(chat);
+            this.chatsService.designarChat(chatId);
         } else { //No está logeado y no puede ver los chats
             request.setAttribute("error", "Para ver los mensajes hay que estar logueado");
             goTo = "login.jsp";

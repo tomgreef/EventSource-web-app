@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import dto.MensajesDTO;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -123,4 +124,14 @@ public class Mensajes implements Serializable {
         return "entidades.Mensajes[ mensajesPK=" + mensajesPK + " ]";
     }
     
+    
+    public MensajesDTO getDTO(){
+        MensajesDTO dto = new MensajesDTO();
+        
+        dto.setMensaje(mensaje);
+        dto.setMensajesPK(mensajesPK);
+        dto.setUsuarios(usuarios.getDTO());
+        
+        return dto;
+    }
 }
