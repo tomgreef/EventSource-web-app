@@ -5,21 +5,16 @@
  */
 package servlets;
 
-import dao.ChatsFacade;
-import dao.UsuariosFacade;
-import entidades.Chats;
-import entidades.Usuarios;
+import dto.UsuariosDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.ChatsService;
 
 /**
  *
@@ -29,24 +24,15 @@ import javax.servlet.http.HttpSession;
 public class ChatCrear extends HttpServlet {
 
     @EJB
-    private ChatsFacade chatsFacade;
-    
-    @EJB
-    private UsuariosFacade usuariosFacade;
+    private ChatsService chatsService;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-        Chats chat = new Chats();
-        Date date = new Date();
-        chat.setFecha(date);
-        chat.setUsuarioId(usuario);
+        UsuariosDTO usuario = (UsuariosDTO)session.getAttribute("usuario");
+        this.chatsService.crearChat(usuario.getUsuarioId());
         
-        this.chatsFacade.create(chat);
-        
-        request.setAttribute("chatId", chat.getChatId());
-        response.sendRedirect("MensajeListar?id="+chat.getChatId());
+        response.sendRedirect("ChatListar");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -4,8 +4,8 @@
     Author     : kkeyl
 --%>
 
-<%@page import="entidades.Usuarios"%>
-<%@page import="entidades.Mensajes"%>
+<%@page import="dto.MensajesDTO"%>
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,8 +19,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     </head>
      <%
-        List<Mensajes> mensajes = (List)request.getAttribute("mensajes");
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        List<MensajesDTO> mensajes = (List)request.getAttribute("mensajes");
+        UsuariosDTO usuario = (UsuariosDTO)session.getAttribute("usuario");
         String chatId = (String)request.getAttribute("chatId");
     %>
     <body>
@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                     <% 
-                        for (Mensajes mensaje: mensajes){
+                        for (MensajesDTO mensaje: mensajes){
                     %>
                     <tr>
                          <td><%=mensaje.getUsuarios().getNombre() %></td>

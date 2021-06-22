@@ -269,6 +269,62 @@ label {
     width: 8vh;
     height: 3vh;
 }
+/*Botones chats*/
+.boton-chats-mostrar {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 14vh;
+    height: 6vh;
+    color: white;
+    font-weight: bold;
+    background: #FF9E00;
+    border-radius: 10px;
+}
+
+.boton-chats-asignar {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 14vh;
+    height: 6vh;
+    color: white;
+    font-weight: bold;
+    background: green;
+    border-radius: 10px;
+}
+
+.boton-chats-desasignar {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 14vh;
+    height: 6vh;
+    color: white;
+    font-weight: bold;
+    background: #EED202;
+    border-radius: 10px;
+}
+
+.boton-chats-borrar {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 14vh;
+    height: 6vh;
+    color: white;
+    font-weight: bold;
+    background: red;
+    border-radius: 10px;
+}
 
 .filas {
     display: flex;

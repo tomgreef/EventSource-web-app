@@ -4,7 +4,8 @@
     Author     : kkeyl
 --%>
 
-<%@page import="entidades.Usuarios"%>
+<%@page import="dto.ChatsDTO"%>
+<%@page import="dto.UsuariosDTO"%>
 <%@page import="entidades.Chats"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,8 +20,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     </head>
     <%
-        List<Chats> chats = (List)request.getAttribute("chats");
-        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        List<ChatsDTO> chats = (List)request.getAttribute("chats");
+        UsuariosDTO usuario = (UsuariosDTO)session.getAttribute("usuario");
     %>
     <body>
         <jsp:include page="navBar.jsp" />                    
@@ -61,7 +62,7 @@
                     <th></th>
                 </tr>
                <% 
-                   for (Chats chat: chats){
+                   for (ChatsDTO chat: chats){
                %>
                <tr>
                    <%
@@ -87,24 +88,24 @@
                     }
                     %>
                     <!--<td><a href="MensajeListar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Mostrar chat</p></a></td>-->
-                    <td><a href="MensajeListar?id=<%= chat.getChatId()%>" class="boton"> Mostrar chat</a></td>
+                    <td><a href="MensajeListar?id=<%= chat.getChatId()%>" class="boton-chats-mostrar"> Mostrar chat</a></td>
                     <!--td><a href="MensajeListar?id=<%= chat.getChatId()%>">Mostrar conversaci&oacute;n</a></td>-->
                         <%
                        if(usuario.getRol()== 3){
                            if(chat.getTeleoperadorId()!=null){
                        %>
                                 <!--<td><a href="ChatDesignar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Desasignar teleoperador</p></a></td>-->
-                                <td><a href="ChatDesignar?id=<%= chat.getChatId()%>" class="boton" style="background: orangered;"> Desasignar<br/>teleoperador</a></td>
+                                <td><a href="ChatDesignar?id=<%= chat.getChatId()%>" class="boton-chats-desasignar"> Desasignar<br/>teleoperador</a></td>
                         <%
                            } else {
                             %>
                                 <!--<td><a href="ChatAsignar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Asignarme este chat</p></a></td>-->
-                                <td><a href="ChatAsignar?id=<%= chat.getChatId()%>" class="boton" style="background: green;"> Asignarme<br/>este chat</a></td>
+                                <td><a href="ChatAsignar?id=<%= chat.getChatId()%>" class="boton-chats-asignar"> Asignarme<br/>este chat</a></td>
                             <%
                             }
                             %>
                             <!--<td><a href="ChatBorrar?id=<%= chat.getChatId()%>"> <p class="ver-chat"> Borrar chat</p></a></td>-->
-                            <td><a href="ChatBorrar?id=<%= chat.getChatId()%>" class="boton" style="background: red;"> Borrar chat</a></td>
+                            <td><a href="ChatBorrar?id=<%= chat.getChatId()%>" class="boton-chats-borrar" style="background: red;"> Borrar chat</a></td>
                        <%
                         }
                         %>

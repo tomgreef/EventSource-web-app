@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import dto.ChatsDTO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -138,4 +139,14 @@ public class Chats implements Serializable {
         return "entidades.Chats[ chatId=" + chatId + " ]";
     }
     
+    public ChatsDTO getDTO(){
+        ChatsDTO dto = new ChatsDTO();
+        
+        dto.setChatId(chatId);
+        dto.setFecha(fecha);
+        if(teleoperadorId != null) dto.setTeleoperadorId(teleoperadorId.getDTO());
+        dto.setUsuarioId(usuarioId.getDTO());
+        
+        return dto;
+    }
 }

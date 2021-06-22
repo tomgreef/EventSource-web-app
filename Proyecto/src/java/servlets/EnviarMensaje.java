@@ -5,13 +5,7 @@
  */
 package servlets;
 
-import dao.MensajesFacade;
-import dao.UsuariosFacade;
-import entidades.Mensajes;
-import entidades.Usuarios;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import service.MensajesService;
 
 /**
  *
@@ -29,10 +23,7 @@ import javax.servlet.http.HttpSession;
 public class EnviarMensaje extends HttpServlet {
 
     @EJB
-    MensajesFacade mensajesFacade;
-    
-    @EJB
-    UsuariosFacade usuariosFacade;
+    private MensajesService mensajesService;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,15 +33,9 @@ public class EnviarMensaje extends HttpServlet {
         String usuarioId = request.getParameter("usuarioId");
         String mensaje = request.getParameter("mensaje");
         String chatId = request.getParameter("chatId");
-        Date date = new Date();
         
         if (mensaje != null && mensaje.length()>0) {
-           Mensajes m = new Mensajes(new Integer(chatId), date, new Integer(usuarioId));
-           m.setMensaje(mensaje);
-           Usuarios u = this.usuariosFacade.find(new Integer(usuarioId));
-           m.setUsuarios(u);
-           mensajesFacade.create(m);
-           this.usuariosFacade.edit(u);
+           this.mensajesService.create(mensaje, chatId, usuarioId);
         } 
         
         String goTo = "MensajeListar?id="+chatId;
