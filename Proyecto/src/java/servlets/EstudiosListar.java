@@ -41,7 +41,7 @@ public class EstudiosListar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                String strTo = "estudios.jsp";
+        String strTo = "estudios.jsp";
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
 

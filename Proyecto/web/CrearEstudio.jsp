@@ -38,12 +38,12 @@
         <h1> Formulario </h1>
         <h2>Datos de un estudio</h2>
 
-        <form action="CrearEstudioServlet" method="POST">  
+        <form action="EstudiosGuardar" method="POST">  
 
             Nombre: <input type="text" name="nombre" value=""/>
             <br/>
-            Edad: <input type="text" name="edadInicial" value="" size=3/> a 
-                  <input type="text" name="edadFinal" value="" size=3/>
+            Edad: <input type="text" name="edadInicial" value="<%= edadInicial%>" size=3/> a 
+                  <input type="text" name="edadFinal" value="<%= edadFinal%>" size=3/>
             <br/>
             Fecha <input type="date" name="fechaInicial" value=""/> a
                   <input type="date" name="fechaFinal" value=""/>

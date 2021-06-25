@@ -47,7 +47,7 @@
             %>
                 <tr>
                     <td><%= estudio.getEstudioId() %></td>
-                    <td><%= estudio.getUsuarioId() %></td>
+                    <td><%= estudio.getUsuarioId().getUsuarioId() %></td>
                     <td><%= estudio.getNombre() %></td>
                     <td><%= estudio.getFechaInicial() %></td>
                     <td><%= estudio.getFechaFinal() %></td>
@@ -66,7 +66,5 @@
             %>
             </tbody>
         </table>
-
-        
     </body>
 </html>

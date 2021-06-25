@@ -57,7 +57,7 @@ public class EstudiosGuardar extends HttpServlet {
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
         
-        if(analista.getRol() != 2 || analista == null){
+        if(analista == null || analista.getRol() != 2){
             strTo = "login.jsp";
         } else {
             String estudioID = request.getParameter("estudioId");
@@ -96,7 +96,7 @@ public class EstudiosGuardar extends HttpServlet {
                 Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             estudio.setSexo(s);
-            /*
+            // Consulta
             try {
                 Date fi = new SimpleDateFormat("dd-mm-yyyy").parse(fechaInicial);
                 Date ff = new SimpleDateFormat("dd-mm-yyyy").parse(fechaFinal);
@@ -110,7 +110,7 @@ public class EstudiosGuardar extends HttpServlet {
             } catch (ParseException ex) {
                 Logger.getLogger(EstudiosGuardar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            */
+            // Fin de la consulta
             if(estudioID != null && !estudioID.isEmpty()){
                 this.estudiosFacade.edit(estudio);
             } else {
