@@ -5,7 +5,9 @@
  */
 package dao;
 
+import entidades.Estudios;
 import entidades.Usuarios;
+import java.sql.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -91,4 +93,21 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
         listaUsuarios = q.getResultList();
         return listaUsuarios;
     }
+    /*
+    public Integer numberOfPeople(Date fechaInicial, Date fechaFinal, Integer edadInferior, Integer edadSuperior, Integer sexo){
+        
+        Query q;
+        
+        q = em.createQuery("SELECT u FROM Usuarios u, Reservas r, Eventos e WHERE u.usuarioId = r.usuarioId AND r.eventoId = e.eventoId");
+        //q.setParameter("fechaInicial", fechaInicial);
+        //q.setParameter("fechaFinal", fechaFinal);
+        //q.setParameter("edadInferior", edadInferior);
+        //q.setParameter("edadSuperior", edadSuperior);
+        //q.setParameter("sexo", sexo);
+        
+        List<Integer> listaEnteros = q.getResultList();
+        
+        return listaEnteros.size();
+    }
+    */
 }
