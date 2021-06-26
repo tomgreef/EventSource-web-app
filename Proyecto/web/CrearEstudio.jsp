@@ -4,6 +4,7 @@
     Author     : Alberto
 --%>
 
+<%@page import="dto.EstudiosDTO"%>
 <%@page import="java.util.Date"%>
 <%@page import="entidades.Estudios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,7 +16,7 @@
     </head>
     
     <%
-    Estudios estudio = (Estudios) request.getAttribute("estudio");
+    EstudiosDTO estudio = (EstudiosDTO) request.getAttribute("estudio");
     Integer estudioId = 0;
     Integer edadInicial = 0;
     Integer edadFinal = 100;
@@ -40,13 +41,13 @@
 
         <form action="EstudiosGuardar" method="POST">  
 
-            Nombre: <input type="text" name="nombre" value=""/>
+            Nombre: <input type="text" name="nombre" value="<%= estudio.getNombre() %>"/>
             <br/>
             Edad: <input type="text" name="edadInicial" value="<%= edadInicial%>" size=3/> a 
                   <input type="text" name="edadFinal" value="<%= edadFinal%>" size=3/>
             <br/>
-            Fecha <input type="date" name="fechaInicial" value=""/> a
-                  <input type="date" name="fechaFinal" value=""/>
+            Fecha <input type="date" name="fechaInicial" value="<%= estudio.getFechaInicial() %>"/> a
+                  <input type="date" name="fechaFinal" value="<%= estudio.getFechaFinal() %>"/>
             <br/>
             Sexo: <br/>
             <%

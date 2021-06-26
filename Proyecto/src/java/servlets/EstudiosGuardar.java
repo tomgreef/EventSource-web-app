@@ -7,6 +7,7 @@ package servlets;
 
 import dao.EstudiosFacade;
 import dao.UsuariosFacade;
+import dto.EstudiosDTO;
 import dto.UsuariosDTO;
 import entidades.Estudios;
 import entidades.Usuarios;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.EstudiosService;
 
 /**
  *
@@ -33,6 +35,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "EstudiosGuardar", urlPatterns = {"/EstudiosGuardar"})
 public class EstudiosGuardar extends HttpServlet {
+
+    @EJB
+    private EstudiosService estudiosService;
 
     @EJB
     private UsuariosFacade usuariosFacade;
@@ -50,8 +55,8 @@ public class EstudiosGuardar extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+            throws ServletException, IOException, ParseException {
+       
         String strTo = "EstudiosListar";
         
         HttpSession session = request.getSession();
@@ -60,66 +65,23 @@ public class EstudiosGuardar extends HttpServlet {
         if(analista == null || analista.getRol() != 2){
             strTo = "login.jsp";
         } else {
-            String estudioID = request.getParameter("estudioId");
-            String analistaID = request.getParameter("usuarioId");
+            String estudioId = request.getParameter("estudioId");
             String nombre = request.getParameter("nombre");
             String edadInicial = request.getParameter("edadInicial");
             String edadFinal = request.getParameter("edadFinal");
-            String fechaInicial = request.getParameter("fechaInicial");
-            String fechaFinal = request.getParameter("fechaFinal");
+            String fi = request.getParameter("fechaInicial");
+            String ff = request.getParameter("fechaFinal");
             String sexo = request.getParameter("sexo");
         
-            Estudios estudio;
+            
+            if(estudioId != null){
+                this.estudiosService.editarEstudio(nombre, analista, edadInicial, edadFinal, fi, ff, sexo);
+            } else {
+                this.estudiosService.crearEstudio(nombre, analista, edadInicial, edadFinal, fi, ff, sexo);
+            }
         
-            if (estudioID != null && !estudioID.isEmpty()){
-                estudio = this.estudiosFacade.find(new Integer(estudioID));
-            } else {
-                estudio = new Estudios();
-            }
-            
-            Integer ei = new Integer(edadInicial);
-            Integer ef = new Integer(edadFinal);
-            Integer s = new Integer(sexo);
-            
-            estudio.setUsuarioId(new Usuarios(analista.getUsuarioId()));
-            estudio.setNombre(nombre);
-            estudio.setEdadInferior(ei);
-            estudio.setEdadSuperior(ef);
-            try {
-                estudio.setFechaInicial(new SimpleDateFormat("dd-mm-yyyy").parse(fechaInicial));
-            } catch (ParseException ex) {
-                Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                estudio.setFechaFinal(new SimpleDateFormat("dd-mm-yyyy").parse(fechaFinal));
-            } catch (ParseException ex) {
-                Logger.getLogger(CrearEstudioServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            estudio.setSexo(s);
-            // Consulta
-            try {
-                Date fi = new SimpleDateFormat("dd-mm-yyyy").parse(fechaInicial);
-                Date ff = new SimpleDateFormat("dd-mm-yyyy").parse(fechaFinal);
-                
-                java.sql.Date newFI = new java.sql.Date(fi.getTime());
-                java.sql.Date newFF = new java.sql.Date(ff.getTime());
-                
-                Integer cantidad = usuariosFacade.numberOfPeople(newFI, newFF, ei, ef, s);
-                estudio.setCantidad(cantidad);
-                
-            } catch (ParseException ex) {
-                Logger.getLogger(EstudiosGuardar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            // Fin de la consulta
-            if(estudioID != null && !estudioID.isEmpty()){
-                this.estudiosFacade.edit(estudio);
-            } else {
-                this.estudiosFacade.create(estudio);
-            }
+         response.sendRedirect("EstudiosListar");
         }
-        
-        RequestDispatcher rd = request.getRequestDispatcher("EstudiosListar");
-        rd.forward(request, response); 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -134,7 +96,11 @@ public class EstudiosGuardar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+                    try {
+               processRequest(request, response);   
+            } catch (ParseException ex) {
+                Logger.getLogger(EstudiosGuardar.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 
     /**
@@ -148,7 +114,13 @@ public class EstudiosGuardar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            try {
+               processRequest(request, response);   
+            } catch (ParseException ex) {
+                Logger.getLogger(EstudiosGuardar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
     }
 
     /**

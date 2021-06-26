@@ -4,6 +4,7 @@
     Author     : Alberto
 --%>
 
+<%@page import="dto.EstudiosDTO"%>
 <%@page import="entidades.Estudios"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,18 +16,18 @@
     </head>
     
     <%
-        List<Estudios> listaEstudios = (List) request.getAttribute("estudios");
+        List<EstudiosDTO> listaEstudios = (List) request.getAttribute("estudios");
     %>
     
     <body>
         <h1>Lista de estudios</h1>
-            <a href="CrearEstudio.jsp" > </a>
+            <a href="CrearEstudioServlet" >Nuevo estudio </a>
         <table border="1">
             <thead>
                 <tr>
                     <th>ESTUDIO_ID</th>
-                    <th>ANALISTA_ID</th>
-                    <th>NOMBRE</th>
+                    <th>ANALISTA</th>
+                    <th>ESTUDIO</th>
                     <th>FECHA_INICIAL</th>
                     <th>FECHA_FINAL</th>
                     <th>EDAD_INFERIOR</th>
@@ -43,11 +44,11 @@
             %>
             
             <%
-                for (Estudios estudio : listaEstudios) {
+                for (EstudiosDTO estudio : listaEstudios) {
             %>
                 <tr>
                     <td><%= estudio.getEstudioId() %></td>
-                    <td><%= estudio.getUsuarioId().getUsuarioId() %></td>
+                    <td><%= estudio.getAnalistaNombre() %></td>
                     <td><%= estudio.getNombre() %></td>
                     <td><%= estudio.getFechaInicial() %></td>
                     <td><%= estudio.getFechaFinal() %></td>

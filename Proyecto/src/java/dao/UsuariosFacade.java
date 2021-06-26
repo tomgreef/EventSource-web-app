@@ -93,7 +93,7 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
         listaUsuarios = q.getResultList();
         return listaUsuarios;
     }
-    
+    /*
     public Integer numberOfPeople(Date fechaInicial, Date fechaFinal, Integer edadInferior, Integer edadSuperior, Integer sexo){
         
         Query q;
@@ -109,4 +109,5 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
         
         return listaEnteros.size();
     }
+    */
 }

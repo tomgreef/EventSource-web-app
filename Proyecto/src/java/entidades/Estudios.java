@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import dto.EstudiosDTO;
 import dto.UsuariosDTO;
 import entidades.Usuarios;
 import java.io.Serializable;
@@ -184,6 +185,19 @@ public class Estudios implements Serializable {
     @Override
     public String toString() {
         return "entity.Estudios[ estudioId=" + estudioId + " ]";
+    }
+    
+    public EstudiosDTO getDTO(){
+        EstudiosDTO dto = new EstudiosDTO();
+        dto.setEstudioId(estudioId);
+        dto.setNombre(nombre);
+        dto.setEdadInferior(edadInferior);
+        dto.setEdadSuperior(edadSuperior);
+        dto.setFechaInicial(fechaInicial);
+        dto.setFechaFinal(fechaFinal);
+        dto.setCantidad(cantidad);
+        dto.setSexo(sexo);
+        return dto;
     }
     
 }

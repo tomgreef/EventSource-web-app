@@ -7,6 +7,7 @@ package servlets;
 
 import dao.EstudiosFacade;
 import dao.UsuariosFacade;
+import dto.EstudiosDTO;
 import dto.UsuariosDTO;
 import entidades.Estudios;
 import entidades.Usuarios;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.EstudiosService;
 
 /**
  *
@@ -35,10 +37,7 @@ import javax.servlet.http.HttpSession;
 public class CrearEstudioServlet extends HttpServlet {
 
     @EJB
-    private EstudiosFacade estudiosFacade;
-
-    @EJB
-    private UsuariosFacade usuariosFacade;
+    private EstudiosService estudiosService;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,7 +50,7 @@ public class CrearEstudioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String strTo = "EstudiosGuardar";
+        String strTo = "CrearEstudio.jsp";
         
         HttpSession session = request.getSession();
         UsuariosDTO analista = (UsuariosDTO) session.getAttribute("usuario");
@@ -60,10 +59,10 @@ public class CrearEstudioServlet extends HttpServlet {
             request.setAttribute("error", "Usuario sin permisos");
             strTo = "login.jsp";
         } else {
-            String id = request.getParameter("id");
+            String id = request.getParameter("estudioId");
 
             if (id != null) { // Hay un estudio, luego es para editarlo  
-                Estudios estudio = this.estudiosFacade.find(new Integer(id));
+                EstudiosDTO estudio = this.estudiosService.buscarEstudio(new Integer(id));
                 request.setAttribute("estudio", estudio);
             }
         }

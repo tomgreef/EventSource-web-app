@@ -6,6 +6,7 @@
 package servlets;
 
 import dao.EstudiosFacade;
+import dto.EstudiosDTO;
 import dto.UsuariosDTO;
 import entidades.Estudios;
 import entidades.Usuarios;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import service.EstudiosService;
+import service.UsuariosService;
 
 /**
  *
@@ -28,7 +31,7 @@ import javax.servlet.http.HttpSession;
 public class EstudiosListar extends HttpServlet {
 
     @EJB
-    private EstudiosFacade estudiosFacade;
+    private EstudiosService estudiosService;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,8 +53,7 @@ public class EstudiosListar extends HttpServlet {
             strTo = "login.jsp";
         } else {
 
-            List<Estudios> estudios;
-            estudios = this.estudiosFacade.findAll();
+            List<EstudiosDTO> estudios = this.estudiosService.listarEstudios();
             request.setAttribute("estudios", estudios);
         }
         RequestDispatcher rd = request.getRequestDispatcher(strTo);
